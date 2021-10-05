@@ -1,37 +1,11 @@
-## Welcome to GitHub Pages
+## 欢迎来到 TalexTouchQ 官方文档
 
-You can use the [editor on GitHub](https://github.com/TalexDreamSoul/touchq/edit/gitpages/docs/index.md) to maintain and preview the content for your website in Markdown files.
+> TalexTouchQ 新一代IM应用程序
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+TalexTouchQ 围绕 **轻(应用轻量)、美(界面优美)、优(性能优异)** 三个特征进行打造
+参考多个软件设计，基于知名框架编写
 
-### Markdown
+### 适配
+TouchQ 支持在 Windows, Linux, MacOS 操作系统上进行无障碍使用
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/TalexDreamSoul/touchq/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### 详情请见 GitHub
