@@ -13,9 +13,7 @@
 
 TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) 制作的适合于Linux的 [QQ](https://im.qq.com/) 客户端, 目的皆在使用户获得更完美的UI体验
 
-除此之外, TouchQ 还使用了部分其他的优秀框架 [Vue2](https://cn.vuejs.org/) [KoiShi](https://koishi.js.org/) [Element](https://element.eleme.io/#/zh-CN) [go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
-
-(排名不分先后, 其余更多详见项目内)
+除此之外, TouchQ 还使用了部分其他的优秀框架 [Vue2](https://cn.vuejs.org/) [KoiShi](https://koishi.js.org/) [Element](https://element.eleme.io/#/zh-CN) [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) (排名不分先后, 其余更多详见项目内)
 
 <div align="center">
 </div>
