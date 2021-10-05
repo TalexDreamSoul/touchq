@@ -1,7 +1,7 @@
 <div align="center">
-  <a href="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" target="_blank">
-    <img width="160" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" alt="logo">
-  </a>
+  
+  <img width="160" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" alt="logo">
+  
   <h1>TouchQ</h1>
 
 [![GitHub forks](https://img.shields.io/github/forks/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/network)
@@ -15,7 +15,7 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 
 除此之外, TouchQ 还使用了部分其他的优秀框架
 
-[Vue2](https://cn.vuejs.org/) [KoiShi](https://koishi.js.org/) [Element](https://element.eleme.io/#/zh-CN) [go-cqhttp] https://github.com/Mrs4s/go-cqhttp
+[Vue2](https://cn.vuejs.org/) [KoiShi](https://koishi.js.org/) [Element](https://element.eleme.io/#/zh-CN) [go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
 
 (排名不分先后, 其余更多详见项目内)
 
