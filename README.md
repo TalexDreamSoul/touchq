@@ -11,7 +11,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
 [![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/badge/release-1.0.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
-
+[![GitHub pages](https://img.shields.io/badge/page-doc-ffcd42?style=flat-square)](https://talexdreamsoul.github.io/touchq/)
+  
 </div>
 
 TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) 制作的适合于Linux的 [QQ](https://im.qq.com/) 客户端, 目的皆在使用户获得更完美的UI体验
