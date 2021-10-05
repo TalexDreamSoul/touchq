@@ -2,7 +2,7 @@
 
   <img width="160" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" alt="logo">
 
-  <h1>TouchQ</h1>
+  <h1><a href="https://talexdreamsoul.github.io/touchq/">TouchQ</a></h1>
 
 设计参考 TDesignS
 
