@@ -23,6 +23,23 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 
 因为依赖框架原因, 本项目使用 [AGPL-3.0](./LICENSE) 协议开源
 
+## 食用方式
+
+#### Build Setup
+
+``` bash
+
+# 进入目录后安装依赖
+npm install
+
+# 打开测试环境 (localhost:9080)
+npm run dev
+
+# 打包生成
+npm run build
+
+```
+
 ## Issue
 
 > 请注意, 任何不符合模板要求的 Issue 均会被直接关闭
