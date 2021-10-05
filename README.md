@@ -1,22 +1,75 @@
-# talextouchqq
+<div align="center">
 
-> A thrid qq client
+  <img width="160" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" alt="logo">
 
-#### Build Setup
+  <h1>TouchQ</h1>
+
+设计参考 TDesignS
+
+[![GitHub forks](https://img.shields.io/github/forks/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/network)
+[![GitHub stars](https://img.shields.io/github/stars/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
+[![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/badge/release-1.0.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
+
+</div>
+
+TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) 制作的适合于Linux的 [QQ](https://im.qq.com/) 客户端, 目的皆在使用户获得更完美的UI体验
+
+除此之外, TouchQ 还使用了部分其他的优秀框架 [Vue2](https://cn.vuejs.org/) [KoiShi](https://koishi.js.org/) [Element](https://element.eleme.io/#/zh-CN) [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) (排名不分先后, 其余更多详见项目内)
+
+<div align="center">
+</div>
+
+> 介于目前开发未完成, 问题较多, 故请各位先耐心等待.
+
+## 使用协议
+
+因为依赖框架原因, 本项目使用 [AGPL-3.0](./LICENSE) 协议开源
+
+## 食用方式
+
+#### 安装环境
 
 ``` bash
-# install dependencies
+
+# 进入目录后安装依赖
 npm install
 
-# serve with hot reload at localhost:9080
+# 打开测试环境 (localhost:9080)
 npm run dev
 
-# build electron application for production
+# 打包生成
 npm run build
-
 
 ```
 
----
+#### 后端环境
+##### 除此之外, 当前版本中并没有整合配套的后端, 请自己提供
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[8d4ed60](https://github.com/SimulatedGREG/electron-vue/tree/8d4ed607d65300381a8f47d97923eb07832b1a9a) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+在 [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 这里找到安装方式, 然后启动默认会填写信息
+
+## 图片展示
+
+> 内置 亮/暗 两种模式
+![image](https://user-images.githubusercontent.com/59305952/136044683-e59428a3-dd28-4803-a4c3-bccc9fbd89e8.png)
+![image](https://user-images.githubusercontent.com/59305952/136044716-2eb8a9fb-b961-42c3-a31c-4dc1fc7c1520.png)
+
+> 动画动效
+![image](https://user-images.githubusercontent.com/59305952/136044813-355105a2-d367-42bb-b1b4-f07706cae116.png)
+
+> 主体展示
+![image](https://user-images.githubusercontent.com/59305952/136044912-03b428ca-47b6-4b45-b4bf-5664ed006a7b.png)
+![image](https://user-images.githubusercontent.com/59305952/136045304-bf52e1ae-d8c1-44ae-af48-29e11300a93b.png)
+
+## Issue
+
+> 请注意, 任何不符合模板要求的 Issue 均会被直接关闭
+
+请记住，开发者并没有义务解决您的 Issue 就连这个项目以及开源和维护均是建立在开发者的空闲时间之上
+
+## 联系方式
+
+您可以通过邮箱 (TalexDreamSoul@gmail) 联系我, 也可在本项目发送 Issue 提供您的问题
+
+Copyright © 2021 TalexDreamSoul
