@@ -17,8 +17,6 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 
 (排名不分先后, 其余更多详见项目内)
 
-同时的, 本项目
-
 <div align="center">
 </div>
 
