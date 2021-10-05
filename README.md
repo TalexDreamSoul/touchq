@@ -8,7 +8,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
 [![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
-[!(GitHub release)(https://img.shields.io/badge/release-1.0.0--beta-1b7cb9?style=flat-square)]
+[!(GitHub release)](https://img.shields.io/badge/release-1.0.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
   
 </div>
 
