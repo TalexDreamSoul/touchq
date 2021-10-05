@@ -1,5 +1,3 @@
-![TalexTouchChat-Small.png](https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png)
-
 <div align="center">
   <a href="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" target="_blank">
     <img width="160" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" alt="logo">
