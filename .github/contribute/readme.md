@@ -60,7 +60,8 @@ touchq 处于萌芽阶段，个人开发者的力量是微不足道的。作者�
    - Build<xxx>: message
    - Docs<xxx>: message (说明文档)
    - Add<xxx>: message (新增具体的文件 用来干什么的)
-   - Change<xxx>: message (变动很多, 包含 Add Fix 等)
+   - Upd<xxx>: message (更新)
+   - Change<xxx>: message (变动很多, 包含 Add Fix Upd 等)
 3. 上面的 xxx 应该是您更新的区域或模块:
    - 抽象的大范围 Chat
    - 具体的单文件 TalexLightChat

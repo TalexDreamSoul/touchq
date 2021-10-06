@@ -499,7 +499,7 @@ export default {
   height: 480px;
   width: 520px;
 
-  transform: translate(-50%, -50%) translateY(-3%);
+  transform: translate(-50%, -50%) translateY(-2%);
 
   border-radius: 50%;
 
@@ -639,13 +639,13 @@ export default {
 
   0%, 100% {
 
-    transform: translate(-50%, -50%) translateY(-5%) rotate(360deg) scale(1.1, 1.105);
+    transform: translate(-50%, -50%) translateY(-2%) rotate(360deg) scale(1.1, 1.105);
 
   }
 
   50% {
 
-    transform: translate(-50%, -50%) translateY(-5%) rotate(0);
+    transform: translate(-50%, -50%) translateY(-2%) rotate(0);
 
   }
 
