@@ -68,6 +68,10 @@ npm run build
 
 请记住，开发者并没有义务解决您的 Issue 就连这个项目以及开源和维护均是建立在开发者的空闲时间之上
 
+## 贡献指南
+
+[这里](.github/contribute/readme.md)
+
 ## 联系方式
 
 您可以通过邮箱 (TalexDreamSoul@gmail) 联系我, 也可在本项目发送 Issue 提供您的问题
