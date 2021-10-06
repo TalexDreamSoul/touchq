@@ -463,7 +463,7 @@ export default {
 </script>
 
 <!--聊天大致布局样式-->
-<style lang="less" scoped>
+<style lang="scss" scoped>
 
 .BubbleMessageContainer {
 
@@ -641,7 +641,7 @@ export default {
 
           color: rgba(255, 227, 223, 0.8);
 
-          &:extend(.slideShine);
+          @extend .slideShine;
 
         }
 
@@ -805,7 +805,7 @@ export default {
 
     div {
 
-      &:extend(.bubble_frame);
+      @extend .bubble_frame;
 
     }
 
@@ -861,7 +861,7 @@ export default {
 
 </style>
 
-<style lang="less">
+<style lang="scss">
 
 .TalexTouchChat-Page_container {
 
@@ -1194,7 +1194,7 @@ export default {
 </style>
 
 <!--相关杂项和动画-->
-<style lang="less">
+<style lang="scss">
 
 .content_timer {
 

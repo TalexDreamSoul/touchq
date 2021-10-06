@@ -845,7 +845,7 @@ export default {
   margin: 2px;
   padding: -10px;
 
-  max-width: 128px;
+  max-width: 512px;
   height: auto;
   opacity: 0.95;
 
