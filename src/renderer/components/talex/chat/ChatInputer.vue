@@ -2,6 +2,40 @@
 
   <div class="ChatInputer-Page" ref="ChatInputer" @keydown.prevent.enter="sendMessage">
 
+    <div class="_input__toolbox">
+
+      <div class="toolbox_icon">
+
+        <icon class="el-icon-eleme"></icon>
+
+      </div>
+
+      <div class="toolbox_icon">
+
+        <icon class="el-icon-scissors"></icon>
+
+      </div>
+
+      <div class="toolbox_icon">
+
+        <icon class="el-icon-picture-outline"></icon>
+
+      </div>
+
+      <div class="toolbox_icon">
+
+        <icon class="el-icon-folder"></icon>
+
+      </div>
+
+      <div class="toolbox_icon">
+
+        <icon class="el-icon"></icon>
+
+      </div>
+
+    </div>
+
     <VueTribute ref="atTribute" class="tribute" :options="atOptions">
 
       <div @paste.prevent="pasteData" @input="handleInput" @keydown="handleInput" ref="UserInputer" class="inputer" v-model="inputer.origin" :contenteditable="!sending">
@@ -367,8 +401,8 @@ body {
   top: 0;
   left: 0;
 
-  overflow-x: hidden;
-  overflow-y: auto;
+  //overflow-x: hidden;
+  //overflow-y: auto;
 
   margin: 0 0 0 15px;
   padding: 0;
@@ -484,6 +518,76 @@ body {
 
 <style lang="scss" scoped>
 
+._input__toolbox {
+
+  .toolbox_icon {
+
+    display: inline-block;
+
+    margin-right: 15px;
+    padding-bottom: -5px;
+
+    transform: scale(1.5);
+    border-radius: 50%;
+
+    transition: all .35s;
+
+    icon {
+
+      position: relative;
+
+      top: 1px;
+
+      color: var(--textColor) !important;
+      transform: scale(0.65) !important;
+
+    }
+
+  }
+
+  .toolbox_icon:hover {
+
+    cursor: pointer;
+    background-color: rgba(27, 124, 185, 0.4) !important;
+
+  }
+
+  position: relative;
+
+  padding: 0 5px;
+  margin-bottom: 2px;
+
+  left: 0;
+  width: 100%;
+
+  border-top: 2px solid var(--hoverBg);
+
+}
+
+::-webkit-scrollbar-thumb {
+
+  background-color: var(--scrollColor);
+  border-radius: 5px;
+
+  transition: all .25s;
+
+}
+::-webkit-scrollbar-track {
+
+  border-radius: 1px;
+  background-color: var(--containerBg);
+
+  transition: all .25s;
+
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 .sendButton:hover {
 
   filter: drop-shadow(0 0 5px var(--buttonBg)) invert(5%);
@@ -497,8 +601,8 @@ body {
   width: 42px;
   height: 42px;
 
-  right: 20px;
-  bottom: 20px;
+  right: 10px;
+  bottom: 50px;
 
   border-radius: 50%;
 
@@ -540,6 +644,10 @@ body {
 
   position: relative;
 
+  padding-left: 2px;
+
+  z-index: 10000;
+
   top: 0;
   left: 0;
 
@@ -548,16 +656,13 @@ body {
   min-height: 100%;
   max-height: 100%;
 
-  z-index: 10000;
-  border-top: 2px solid var(--hoverBg);
+  overflow: hidden;
 
 }
 
 .inputer, .tribute {
 
   position: relative;
-
-  padding: 8px 5px 5px 5px;
 
   min-width: 100%;
   max-width: 100%;
@@ -567,7 +672,7 @@ body {
   max-height: 100%;
 
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 
   outline: none;
 
@@ -575,24 +680,6 @@ body {
 
   color: var(--textColor);
   font-size: 14px;
-
-}
-
-::-webkit-scrollbar-thumb {
-
-  background-color: var(--scrollColor);
-  border-radius: 3px;
-
-  transition: all .25s;
-
-}
-::-webkit-scrollbar-track {
-
-  border-radius: 1px;
-  width: 10px !important;
-  background-color: var(--containerBg);
-
-  transition: all .25s;
 
 }
 

@@ -573,7 +573,7 @@ export default {
   text-align: center;
 
   box-sizing: border-box;
-  transition: all .45s;
+  transition: all .35s;
 
 }
 

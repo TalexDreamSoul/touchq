@@ -90,6 +90,8 @@ export default {
 
   created() {
 
+    if(this.destroy) return
+
     try {
 
       this.listener.friendMessage = this.$touchq.$app.on('message/private', data => {
@@ -114,68 +116,64 @@ export default {
 
     }
 
-    //加载用户缓存数据 延迟一下防止动画一加载就好了 给人一种加载很快的错觉
-    setTimeout(() => {
+    //加载用户缓存数据
+    const interval = setInterval(() => {
 
-      const interval = setInterval(() => {
+      if(this.destroy) {
 
-        if(this.destroy) {
+        clearInterval(interval)
 
-          clearInterval(interval)
+        return
 
-          return
+      }
 
-        }
+      const data = this.$touchq.$userData.data
 
-        const data = this.$touchq.$userData.data
+      if(data !== undefined && data !== null) {
 
-        if(data !== undefined && data !== null) {
+        clearInterval(interval)
 
-          clearInterval(interval)
+        this.darkMode = (this.$touchq.theme && this.$touchq.theme.dark) || false
 
-          this.darkMode = (this.$touchq.theme && this.$touchq.theme.dark) || false
+        if(data.chatList) {
 
-          if(data.chatList) {
+          // console.log("----- @DataList: " , data.chatList)
 
-            // console.log("----- @DataList: " , data.chatList)
+          const list = data.chatList
 
-            const list = data.chatList
+          list.forEach((chat, index) => {
 
-            list.forEach((chat, index) => {
+            this.chatList.set(chat.key, chat)
 
-              this.chatList.set(chat.key, chat)
+          })
 
-            })
-
-            this.chatListArray = Array.from(this.chatList.values())
-
-          }
-
-          if(data.chatMessages) {
-
-            // console.log("----- @MessageList: " , data.chatMessages)
-
-            const list = data.chatMessages
-
-            list.forEach((chat, index) => {
-
-              if(chat.length < 1) return
-
-              // console.log("扫描: " + index, "成员列表: ", chat, "Key: " + chat[0])
-
-              this.chatMessageMap.set(chat[0], chat[1])
-
-            })
-
-          }
-
-          this.dialogLoadingVisible = false
+          this.chatListArray = Array.from(this.chatList.values())
 
         }
 
-      }, 200)
+        if(data.chatMessages) {
 
-    }, Math.round(Math.random() * 2000))
+          // console.log("----- @MessageList: " , data.chatMessages)
+
+          const list = data.chatMessages
+
+          list.forEach((chat, index) => {
+
+            if(chat.length < 1) return
+
+            // console.log("扫描: " + index, "成员列表: ", chat, "Key: " + chat[0])
+
+            this.chatMessageMap.set(chat[0], chat[1])
+
+          })
+
+        }
+
+        this.dialogLoadingVisible = false
+
+      }
+
+    }, 200)
 
   },
 
@@ -633,7 +631,7 @@ export default {
 
   position: relative;
 
-  //margin-top: -11px;
+  z-index: 100000;
 
   max-width: 80%;
   width: auto;
@@ -641,6 +639,8 @@ export default {
   min-height: 150px;
   height: 150px;
   max-height: 150px;
+
+  transform: translateX(5px);
 
 }
 
@@ -732,6 +732,8 @@ export default {
 
   position: absolute;
 
+  z-index: 10000;
+
   left: 0;
   bottom: 0;
   padding: 2px 0;
@@ -741,8 +743,6 @@ export default {
   min-height: 30px;
   height: 30px;
   max-height: 25px;
-
-  z-index: 10000;
 
   background-color: var(--hoverColor)
 

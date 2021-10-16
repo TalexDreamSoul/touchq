@@ -73,15 +73,17 @@ export default {
 
   0% {
 
-    border-left: 2px solid rgba(27, 124, 185, 0);
+    border-left: 0 solid rgba(27, 124, 185, 0);
     width: 0;
+    opacity: 0;
 
   }
 
-  30%, 35% {
+  40%, 55% {
 
-    border-left: 2px solid rgba(27, 124, 185, 1);
+    border-left: 3px solid rgba(27, 124, 185, 1);
     width: 0;
+    opacity: 1;
 
   }
 
@@ -99,8 +101,10 @@ export default {
   width: 100%;
 
   background-color: var(--hoverColor);
-  border-left: 2px solid #1b7cb9;
+  border-left: 3px solid #1b7cb9;
 
+  white-space: nowrap;
+  text-overflow: ellipsis;
   text-align: left;
   padding: 5px 0 5px 5px;
 

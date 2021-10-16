@@ -10,7 +10,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
 [![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
-[![GitHub release](https://img.shields.io/badge/release-1.0.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
+[![GitHub release](https://img.shields.io/badge/release-1.1.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
 
 </div>
 
@@ -26,6 +26,8 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 ## 使用协议
 
 因为依赖框架原因, 本项目使用 [AGPL-3.0](./LICENSE) 协议开源
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq?ref=badge_large)
 
 ## 食用方式
 
@@ -70,7 +72,7 @@ npm run build
 
 ## 贡献指南
 
-[这里](.github/contribute/readme.md)
+[这里](.github/contribute/README.md)
 
 ## 联系方式
 
