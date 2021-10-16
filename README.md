@@ -12,6 +12,7 @@
 [![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/badge/release-1.0.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
 [![GitHub pages](https://img.shields.io/badge/page-doc-ffcd42?style=flat-square)](https://talexdreamsoul.github.io/touchq/)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq?ref=badge_shield)
   
 </div>
 
@@ -78,3 +79,7 @@ npm run build
 您可以通过邮箱 (TalexDreamSoul@gmail) 联系我, 也可在本项目发送 Issue 提供您的问题
 
 Copyright © 2021 TalexDreamSoul
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq?ref=badge_large)
