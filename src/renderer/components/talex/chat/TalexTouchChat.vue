@@ -14,9 +14,9 @@
 
             <div class="extra_information" v-if="msg.type === 'left'">
 
-              <span style="background-color: red;color: #fff0ff" class="bubble_prefix" v-if="msg.target.prefix.admin">管理员</span>
-              <span style="background-color: #ffbe0a" class="bubble_prefix" v-if="msg.target.prefix.owner">拥有者</span>
-              <span class="bubble_prefix vip" v-if="msg.target.vip"><span>VIP</span></span>
+              <span style="background-color: red;color: #fff0ff" class="bubble_prefix" v-if="msg.target?.prefix?.admin">管理员</span>
+              <span style="background-color: #ffbe0a" class="bubble_prefix" v-if="msg.target?.prefix?.owner">拥有者</span>
+              <span class="bubble_prefix vip" v-if="msg.target?.vip"><span>VIP</span></span>
 
               <span class="bubble_title">{{ msg.target.name }}</span>
 
@@ -275,11 +275,13 @@ export default {
 
     setTheme(mode) {
 
-      setTimeout(() => {
+      this.$nextTick(() => {
 
         const el = this.$refs.TalexTouchChat.$el;
 
-        // 开启了暗黑模式
+        console.log("@SetTheme: ", el)
+
+        // 开启 暗黑模式
         if(mode) {
 
           el.style.setProperty('--containerBg', '#1C1C1C');
@@ -287,12 +289,6 @@ export default {
           el.style.setProperty('--bubble_system', '#0b0a09');
           el.style.setProperty('--bubble_left', '#262626');
           el.style.setProperty('--bubble_right', '#2b5278');
-
-          //--containerBg: #1C1C1C;
-          //--textColor: #fff;
-          //--bubble_left: #262626;
-          //--bubble_right: #2b5278;
-          //--bubble_system: #0b0a09;
 
         } else {
 
@@ -304,7 +300,7 @@ export default {
 
         }
 
-      }, 10)
+      })
 
     },
 

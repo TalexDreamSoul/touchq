@@ -2,7 +2,7 @@
 
   <img width="160" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" alt="logo">
 
-  <h1><a href="https://talexdreamsoul.github.io/touchq/">TouchQ</a></h1>
+  <h1>TouchQ</h1>
 
 设计参考 TDesignS
 
@@ -10,9 +10,8 @@
 [![GitHub stars](https://img.shields.io/github/stars/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
 [![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
-[![GitHub release](https://img.shields.io/badge/release-1.0.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
-[![GitHub pages](https://img.shields.io/badge/page-doc-ffcd42?style=flat-square)](https://talexdreamsoul.github.io/touchq/)
-  
+[![GitHub release](https://img.shields.io/badge/release-1.1.0--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
+
 </div>
 
 TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) 制作的适合于Linux的 [QQ](https://im.qq.com/) 客户端, 目的皆在使用户获得更完美的UI体验
@@ -27,6 +26,8 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 ## 使用协议
 
 因为依赖框架原因, 本项目使用 [AGPL-3.0](./LICENSE) 协议开源
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq?ref=badge_large)
 
 ## 食用方式
 
@@ -71,7 +72,33 @@ npm run build
 
 ## 贡献指南
 
-[这里](.github/contribute/readme.md)
+[这里](.github/contribute/README.md)
+
+## 联系方式
+
+您可以通过邮箱 (TalexDreamSoul@gmail) 联系我, 也可在本项目发送 Issue 提供您的问题
+
+Copyright © 2021 TalexDreamSoul
+
+![image](https://user-images.githubusercontent.com/59305952/136044683-e59428a3-dd28-4803-a4c3-bccc9fbd89e8.png)
+![image](https://user-images.githubusercontent.com/59305952/136044716-2eb8a9fb-b961-42c3-a31c-4dc1fc7c1520.png)
+
+> 动画动效
+![image](https://user-images.githubusercontent.com/59305952/136044813-355105a2-d367-42bb-b1b4-f07706cae116.png)
+
+> 主体展示
+![image](https://user-images.githubusercontent.com/59305952/136044912-03b428ca-47b6-4b45-b4bf-5664ed006a7b.png)
+![image](https://user-images.githubusercontent.com/59305952/136045304-bf52e1ae-d8c1-44ae-af48-29e11300a93b.png)
+
+## Issue
+
+> 请注意, 任何不符合模板要求的 Issue 均会被直接关闭
+
+请记住，开发者并没有义务解决您的 Issue 就连这个项目以及开源和维护均是建立在开发者的空闲时间之上
+
+## 贡献指南
+
+[这里](.github/contribute/README.md)
 
 ## 联系方式
 

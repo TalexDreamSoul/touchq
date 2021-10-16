@@ -10,7 +10,7 @@
 
         TalexTouchChat
 
-        <span class="beta">Beta 1.0.0</span>
+        <span class="beta">Beta 1.1.0</span>
 
       </span>
 
@@ -113,7 +113,7 @@ import { ipcRenderer } from 'electron'
 
   transform: scale(0.9);
 
-  border-radius: 2px;
+  border-radius: 3px;
 
   background-color: rgba(255, 0, 0, 0.7);
 
@@ -165,7 +165,7 @@ button {
 
   z-index: 9999999;
 
-  transition: all .25s;
+  transition: all .35s;
 
   -webkit-app-region: no-drag；
 
@@ -192,7 +192,7 @@ button {
   border-radius: 5px 5px 0 0;
   background-color: var(--hoverColor);
 
-  transition: all .25s;
+  transition: all .35s;
 
   overflow: hidden;
   cursor: move;

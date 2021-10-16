@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 
 import TouchQ from './plugins/TouchQ.js'
 
-Vue.prototype.$touchq = TouchQ
+Vue.prototype["$touchq"] = TouchQ
 
 TouchQ.innerVue(this)
 
