@@ -15,8 +15,6 @@ import TouchQ from './plugins/TouchQ.js'
 
 Vue.prototype["$touchq"] = TouchQ
 
-TouchQ.innerVue(this)
-
 /* eslint-disable no-new */
 new Vue({
   components: { App },

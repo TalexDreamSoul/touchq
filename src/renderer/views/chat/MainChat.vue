@@ -58,6 +58,14 @@
         </div>
       </el-tooltip>
 
+      <el-tooltip content="设备信息">
+        <div style="left: 62px" class="statusButton">
+
+          <TIcon icon="el-icon-monitor"></TIcon>
+
+        </div>
+      </el-tooltip>
+
     </div>
 
   </div>
@@ -71,10 +79,12 @@ import TalexImgViewer from '../../components/talex/dialog/TalexImgViewer'
 import TalexLightChat from '../../components/talex/chat/TalexLightChat'
 import ChatList from '../../components/talex/chat/list/ChatList'
 import ChatInputer from '../../components/talex/chat/ChatInputer'
+import FloatDialog from '../../components/talex/dialog/FloatDialog'
 
 import QuitLoading from '../../components/talex/chat/icon/QuitLoading'
 import ThemeChange from '../../components/talex/chat/icon/ThemeChange'
 import Loading from '../../components/talex/chat/icon/Loading'
+import TIcon from '../../components/talex/chat/icon/TIcon'
 
 export default {
 
@@ -82,15 +92,13 @@ export default {
 
   components: {
 
-    Loading, TalexDialog, TalexImgViewer,
+    Loading, TalexDialog, TalexImgViewer, TIcon, FloatDialog,
 
     ChatList, QuitLoading, ThemeChange, TalexLightChat, ChatInputer
 
   },
 
   created() {
-
-    if(this.destroy) return
 
     try {
 
@@ -110,11 +118,13 @@ export default {
 
     } catch (e) {
 
-      console.log(e)
+      this.destroy = true
 
       this.$router.push('/login')
 
     }
+
+    if(this.destroy) return
 
     //加载用户缓存数据
     const interval = setInterval(() => {
@@ -631,7 +641,7 @@ export default {
 
   position: relative;
 
-  z-index: 100000;
+  z-index: 500;
 
   max-width: 80%;
   width: auto;
@@ -732,7 +742,7 @@ export default {
 
   position: absolute;
 
-  z-index: 10000;
+  z-index: 310;
 
   left: 0;
   bottom: 0;

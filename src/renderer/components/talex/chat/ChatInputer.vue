@@ -2,39 +2,69 @@
 
   <div class="ChatInputer-Page" ref="ChatInputer" @keydown.prevent.enter="sendMessage">
 
-    <div class="_input__toolbox">
+    <keep-alive>
 
-      <div class="toolbox_icon">
+      <div class="_input__toolbox">
 
-        <icon class="el-icon-eleme"></icon>
+        <FloatDialog>
+
+          <template v-slot:display>
+
+            <div class="toolbox_icon">
+
+              <el-icon class="el-icon-eleme"></el-icon>
+
+            </div>
+
+          </template>
+
+          <template v-slot:dialog>
+
+            <div class="qq_face_dialog">
+
+              <div class="qq_face_line" v-for="(array, index) in qq_face.array">
+
+                <span class="qq_face" v-for="item in array">
+
+                  <img @mouseenter="qq_face_order = item.order" @mouseleave="qq_face_order = -1" class="qq_face_slot" alt="" :src="qq_face_order === item.order ? item.gif : item.png" />
+
+                </span>
+
+              </div>
+
+            </div>
+
+          </template>
+
+        </FloatDialog>
+
+        <div class="toolbox_icon">
+
+          <el-icon class="el-icon-scissors"></el-icon>
+
+        </div>
+
+        <div class="toolbox_icon">
+
+          <el-icon class="el-icon-picture-outline"></el-icon>
+
+        </div>
+
+        <div class="toolbox_icon">
+
+          <el-icon class="el-icon-folder"></el-icon>
+
+        </div>
+
+        <div class="toolbox_icon">
+
+          <el-icon class="el-icon"></el-icon>
+
+        </div>
 
       </div>
 
-      <div class="toolbox_icon">
-
-        <icon class="el-icon-scissors"></icon>
-
-      </div>
-
-      <div class="toolbox_icon">
-
-        <icon class="el-icon-picture-outline"></icon>
-
-      </div>
-
-      <div class="toolbox_icon">
-
-        <icon class="el-icon-folder"></icon>
-
-      </div>
-
-      <div class="toolbox_icon">
-
-        <icon class="el-icon"></icon>
-
-      </div>
-
-    </div>
+    </keep-alive>
 
     <VueTribute ref="atTribute" class="tribute" :options="atOptions">
 
@@ -57,6 +87,8 @@
 </template>
 
 <script>
+
+import FloatDialog from '../dialog/FloatDialog'
 
 import VueTribute from '../cmd/VueTribute'
 import Global from '../cmd/Global'
@@ -311,7 +343,7 @@ export default {
 
   components: {
 
-    VueTribute, Loading,
+    VueTribute, Loading, FloatDialog
 
   },
 
@@ -370,6 +402,9 @@ export default {
       canSendData: false,
       sending: false,
       textColor: "#000",
+
+      qq_face: Global.qqFacer(),
+      qq_face_order: -1,
 
     }
 
@@ -520,6 +555,63 @@ body {
 
 ._input__toolbox {
 
+  .qq_face_dialog {
+
+    width: auto;
+    height: auto;
+
+    max-width: 130px;
+    max-height: 100px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+  }
+
+  .qq_face_slot {
+
+    margin-right: 2px;
+
+    border-radius: 2px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0);
+
+    max-width: 24px;
+
+    transition: all .25s;
+
+  }
+
+  .qq_face_slot:hover {
+
+    border-bottom: 2px solid #1b7cb9;
+
+    background-color: rgba(128, 128, 128, 0.15);
+
+    transform: translateY(-2px);
+
+    cursor: pointer
+
+  }
+
+  .qq_face {
+
+    position: relative;
+    display: inline-block;
+
+    max-width: 24px;
+
+  }
+
+  .qq_face_line {
+
+    padding: 2px;
+
+    height: 24px;
+
+    width: auto;
+
+  }
+
   .toolbox_icon {
 
     display: inline-block;
@@ -527,19 +619,19 @@ body {
     margin-right: 15px;
     padding-bottom: -5px;
 
-    transform: scale(1.5);
+    transform: scale(1.25);
     border-radius: 50%;
 
     transition: all .35s;
 
-    icon {
+    i {
 
       position: relative;
 
       top: 1px;
 
       color: var(--textColor) !important;
-      transform: scale(0.65) !important;
+      transform: scale(0.75) !important;
 
     }
 
@@ -554,7 +646,7 @@ body {
 
   position: relative;
 
-  padding: 0 5px;
+  padding: 2px 5px;
   margin-bottom: 2px;
 
   left: 0;
@@ -646,7 +738,7 @@ body {
 
   padding-left: 2px;
 
-  z-index: 10000;
+  z-index: 450;
 
   top: 0;
   left: 0;
@@ -656,7 +748,7 @@ body {
   min-height: 100%;
   max-height: 100%;
 
-  overflow: hidden;
+  //overflow: hidden;
 
 }
 

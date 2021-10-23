@@ -381,7 +381,7 @@ export default {
 
   border-bottom: 2px solid var(--selectedBg);
 
-  z-index: 10000;
+  z-index: 310;
 
 }
 
@@ -447,7 +447,7 @@ export default {
 
   border-right: 2px solid var(--selectedBg);
 
-  z-index: 10000;
+  z-index: 310;
 
   overflow-x: hidden;
   //overflow-y: auto;

@@ -10,7 +10,7 @@
 
         TalexTouchChat
 
-        <span class="beta">Beta 1.1.0</span>
+        <span class="beta">Beta 1.2.0</span>
 
       </span>
 
@@ -163,7 +163,7 @@ button {
 
   background-color: var(--hoverColor);
 
-  z-index: 9999999;
+  z-index: 330;
 
   transition: all .35s;
 
@@ -197,7 +197,7 @@ button {
   overflow: hidden;
   cursor: move;
 
-  z-index: 9999999;
+  z-index: 330;
   -webkit-app-region: drag
 
 }

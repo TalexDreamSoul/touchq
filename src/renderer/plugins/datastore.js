@@ -21,13 +21,6 @@ class DataStore {
 
             })
 
-            this.other = new Datastore({
-
-                autoload: true,
-                filename: path.join(appPath, '/talextouchqq/other.db')
-
-            })
-
             this.main = new Datastore({
 
                 autoload: true,

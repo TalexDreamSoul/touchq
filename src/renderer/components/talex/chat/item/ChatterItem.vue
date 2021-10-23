@@ -286,7 +286,7 @@ export default {
   top: 7px;
   left: 9px;
 
-  z-index: 10000;
+  z-index: 310;
 
   text-align: center;
 
