@@ -79,3 +79,29 @@ npm run build
 您可以通过邮箱 (TalexDreamSoul@gmail) 联系我, 也可在本项目发送 Issue 提供您的问题
 
 Copyright © 2021 TalexDreamSoul
+
+![image](https://user-images.githubusercontent.com/59305952/136044683-e59428a3-dd28-4803-a4c3-bccc9fbd89e8.png)
+![image](https://user-images.githubusercontent.com/59305952/136044716-2eb8a9fb-b961-42c3-a31c-4dc1fc7c1520.png)
+
+> 动画动效
+![image](https://user-images.githubusercontent.com/59305952/136044813-355105a2-d367-42bb-b1b4-f07706cae116.png)
+
+> 主体展示
+![image](https://user-images.githubusercontent.com/59305952/136044912-03b428ca-47b6-4b45-b4bf-5664ed006a7b.png)
+![image](https://user-images.githubusercontent.com/59305952/136045304-bf52e1ae-d8c1-44ae-af48-29e11300a93b.png)
+
+## Issue
+
+> 请注意, 任何不符合模板要求的 Issue 均会被直接关闭
+
+请记住，开发者并没有义务解决您的 Issue 就连这个项目以及开源和维护均是建立在开发者的空闲时间之上
+
+## 贡献指南
+
+[这里](.github/contribute/README.md)
+
+## 联系方式
+
+您可以通过邮箱 (TalexDreamSoul@gmail) 联系我, 也可在本项目发送 Issue 提供您的问题
+
+Copyright © 2021 TalexDreamSoul
