@@ -560,7 +560,7 @@ body {
     width: auto;
     height: auto;
 
-    max-width: 130px;
+    max-width: 150px;
     max-height: 100px;
 
     overflow-x: hidden;
@@ -570,10 +570,9 @@ body {
 
   .qq_face_slot {
 
-    margin-right: 2px;
+    padding: 2px;
 
     border-radius: 2px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0);
 
     max-width: 24px;
 
@@ -583,8 +582,6 @@ body {
 
   .qq_face_slot:hover {
 
-    border-bottom: 2px solid #1b7cb9;
-
     background-color: rgba(128, 128, 128, 0.15);
 
     transform: translateY(-2px);
@@ -593,11 +590,38 @@ body {
 
   }
 
+  .qq_face:hover::after {
+
+    left: 0;
+    width: 24px;
+    height: 2px;
+
+  }
+
+  .qq_face::after {
+
+    content: "";
+
+    position: relative;
+
+    left: 12px;
+    top: -5px;
+    display: block;
+
+    width: 0;
+    height: 0;
+
+    transition: all .25s;
+    background-color: #1b7cb9;
+
+  }
+
   .qq_face {
 
     position: relative;
     display: inline-block;
 
+    margin-right: 4px;
     max-width: 24px;
 
   }
