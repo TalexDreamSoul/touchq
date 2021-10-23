@@ -81,7 +81,6 @@ class TouchQ {
 
         this.$vue = this.__proto__.$vue
         this.$db = this.__proto__.$db
-        this.$axios = this.__proto__.$axios
 
         this.installSystem();
         this.installUser()
@@ -90,8 +89,6 @@ class TouchQ {
         this.session = undefined
 
         this.setTheme = (dark) => {
-
-            console.log("@SetTheme: ", dark, this)
 
             const otherDb = this.$db.other
             const instance = this
@@ -117,73 +114,6 @@ class TouchQ {
 
         }
 
-        this.isDarkMode = (func) => {
-
-            const otherDb = this.$db.other
-            const instance = this
-
-            if(this.firstInner) {
-
-                const defaultObj = { dark: false }
-                otherDb.insert(defaultObj, (err, docs) => {
-
-                    instance.theme = docs[0]
-
-                })
-
-                func (false)
-
-                return
-
-            }
-
-            otherDb.find({  } , function(err, docs) {
-
-                if(docs.length === 0) {
-
-                    const defaultObj = { dark: false }
-                    otherDb.insert(defaultObj, (err, docs) => {
-
-                        instance.theme = docs[0]
-
-                    })
-
-                    func (false)
-
-                    return
-
-                }
-
-                instance.theme = docs[0]
-
-                if(docs.length > 1) {
-
-                    const first = docs[0]
-
-                    docs.forEach(function(doc, index) {
-
-                        otherDb.remove(doc)
-
-                    })
-
-                    otherDb.insert(first)
-
-                    instance.theme = docs[0]
-
-                }
-
-                func(docs[0].dark)
-
-            })
-
-        }
-
-        this.innerVue = (vue) => {
-
-            this.vue = vue
-
-        }
-
         this.connect = (qq, msg) => {
 
             try {
@@ -202,17 +132,12 @@ class TouchQ {
                         path: '/touchq'
 
                     },
-                    // axiosConfig: {
-                    //
-                    //     httpAgent: new SocksProxyAgent()
-                    //
-                    // }
 
                 })
 
                 this.$app.plugin(require('koishi-plugin-common'))
 
-                this.$app.start().then(() => {
+                this.$app.start().then(async () => {
 
                     //登录成功后存储用户的QQ
 
@@ -225,7 +150,9 @@ class TouchQ {
 
                     this.$userData = new UserData(this, qq)
 
-                    this.$bot = new Proxy(this.$app._bots[0], {})
+                    this.$bot = this.$app._bots[0]
+
+                    this.$bot.version_info = await this.$bot.$getVersionInfo()
 
                     msg ( {
 

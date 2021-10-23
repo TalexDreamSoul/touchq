@@ -511,7 +511,7 @@ export default {
   padding: 0 10px 0 10px;
   margin-bottom: -15px;
 
-  z-index: 1000;
+  z-index: 300;
 
 }
 
@@ -767,7 +767,7 @@ export default {
 
     max-height: 100%;
 
-    z-index: 1000;
+    z-index: 300;
 
     div {
 
@@ -946,7 +946,7 @@ export default {
 
     right: 10px;
 
-    z-index: 1000;
+    z-index: 300;
 
     color: var(--textColor);
     filter: invert(30%);
@@ -977,7 +977,7 @@ export default {
 
     left: 40px;
 
-    z-index: 1000;
+    z-index: 300;
 
     color: var(--textColor);
     filter: invert(30%);

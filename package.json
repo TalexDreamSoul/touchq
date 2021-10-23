@@ -71,6 +71,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cors": "^2.8.5",
+    "electron-json-storage": "^4.5.0",
     "element-ui": "^2.15.6",
     "jsqr": "^1.4.0",
     "koa": "^2.13.3",

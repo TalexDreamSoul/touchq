@@ -24,6 +24,47 @@ function hexToRgba(hex, opacity) {
 
 }
 
+function qqFacer() {
+
+    const exclude = [
+
+        17, 40, 44, 45, 47, 48, 50, 51, 52, 58, 65, 68, 70, 71,
+        73, 80, 81, 82, 83, 84, 87, 88, 92, 93, 94, 95, 135, 195,
+        196, 209, 213
+
+    ]
+
+    const array = []
+
+    let average = 221 / 5
+
+    for(let i = 0;i < average;++i) {
+
+        const subArray = []
+
+        for(let j = 0;j < 5;++j) {
+
+            const order = i * 5 + j
+
+            if(exclude.includes(order) || order > 221) continue
+
+            subArray.push({ gif: require(`./../../../assets/qq_face/${order}/qq-face.gif`),
+                png: require(`./../../../assets/qq_face/${order}/qq-face_static.png`), order })
+
+        }
+
+        array.push(subArray)
+
+    }
+
+    return {
+
+        array, average
+
+    }
+
+}
+
 module.exports = {
-    hexToRgba
+    hexToRgba, qqFacer
 }

@@ -309,7 +309,7 @@ export default {
   background-color: var(--hoverColor);
   opacity: 0.65;
 
-  z-index: 100000;
+  z-index: 320;
   text-align: center;
 
 }
@@ -361,7 +361,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  z-index: 100000;
+  z-index: 320;
 
 }
 

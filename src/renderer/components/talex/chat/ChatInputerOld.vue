@@ -715,7 +715,7 @@ export default {
   --containerBg: #f5f6f7;
   --textColor: #e0dfdf;
 
-  z-index: 10000;
+  z-index: 310;
   border-top: 1px solid var(--textColor);
 
 }
