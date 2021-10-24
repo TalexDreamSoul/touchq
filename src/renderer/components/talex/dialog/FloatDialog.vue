@@ -108,7 +108,7 @@ export default {
 
   padding: 3px 2px;
 
-  left: 3px;
+  left: 2px;
   top: 0;
 
   width: auto;

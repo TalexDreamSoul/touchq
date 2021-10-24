@@ -20,6 +20,8 @@
 
           <template v-slot:dialog>
 
+            <p class="qq_face_title">经典表情</p>
+
             <div class="qq_face_dialog">
 
               <div class="qq_face_line" v-for="(array, index) in qq_face.array">
@@ -555,60 +557,104 @@ body {
 
 ._input__toolbox {
 
+  .qq_face_title {
+
+    position: relative;
+
+    left: 3px;
+
+    margin: 0;
+    padding: 0;
+
+    font-size: 14px;
+
+  }
+
   .qq_face_dialog {
+
+    padding: 4px;
 
     width: auto;
     height: auto;
 
-    max-width: 130px;
+    max-width: 180px;
     max-height: 100px;
 
     overflow-x: hidden;
     overflow-y: auto;
 
-  }
+    .qq_face_slot {
 
-  .qq_face_slot {
+      padding: 4px;
 
-    margin-right: 2px;
+      border-radius: 2px;
 
-    border-radius: 2px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0);
+      max-width: 24px;
 
-    max-width: 24px;
+      background-color: rgba(128, 128, 128, 0.05);
 
-    transition: all .25s;
+      transition: all .25s;
 
-  }
+    }
 
-  .qq_face_slot:hover {
+    .qq_face_slot:hover {
 
-    border-bottom: 2px solid #1b7cb9;
+      background-color: rgba(128, 128, 128, 0.15);
 
-    background-color: rgba(128, 128, 128, 0.15);
+      transform: translateY(-2px);
 
-    transform: translateY(-2px);
+      cursor: pointer
 
-    cursor: pointer
+    }
 
-  }
+    .qq_face:hover::after {
 
-  .qq_face {
+      left: 0;
+      width: 32px;
+      height: 2px;
 
-    position: relative;
-    display: inline-block;
+    }
 
-    max-width: 24px;
+    .qq_face::after {
 
-  }
+      content: "";
 
-  .qq_face_line {
+      position: relative;
 
-    padding: 2px;
+      left: 14px;
+      top: -6px;
+      display: block;
 
-    height: 24px;
+      width: 0;
+      height: 0;
 
-    width: auto;
+      border-radius: 30px;
+      transition: all .25s;
+      background-color: #1b7cb9;
+      box-shadow: 0 -5px 10px #1b7cb9;
+
+    }
+
+    .qq_face {
+
+      position: relative;
+      display: inline-block;
+
+      margin-right: 6px;
+      max-width: 28px;
+
+    }
+
+    .qq_face_line {
+
+      margin-bottom: 4px;
+      padding: 2px;
+
+      height: 26px;
+
+      width: auto;
+
+    }
 
   }
 

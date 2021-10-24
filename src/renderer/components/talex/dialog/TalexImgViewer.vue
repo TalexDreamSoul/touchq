@@ -65,6 +65,12 @@ export default {
 
         setTimeout(() => {
 
+          this.scale = 1
+          this.rotate = 0
+          this.play = false
+
+          this.$refs.img.style.transform = 'translate(-50%, -60%) scale(' + this.scale + ') rotate(' + this.rotate + 'deg)'
+
           this.dialogVisible = latest
 
         }, 450)
@@ -98,12 +104,6 @@ export default {
       this.scale += 0.05 * ((e.deltaY > 0 ) ? -1 : 1);
 
       this.$refs.img.style.transform = 'translate(-50%, -60%) scale(' + this.scale + ') rotate(' + this.rotate + 'deg)'
-
-    },
-
-    handleMouseDown(e) {
-
-
 
     }
 
@@ -186,7 +186,7 @@ export default {
 
 .el-icon-refresh {
 
-  transform: translate(-130px, -50%);
+  transform: translate(-135px, -50%);
 
 }
 
@@ -200,13 +200,13 @@ export default {
 
   from {
 
-    transform: translate(-130px, -50%);
+    transform: translate(-135px, -50%);
 
   }
 
   to {
 
-    transform: translate(-130px, -50%) rotate(360deg);
+    transform: translate(-135px, -50%) rotate(360deg);
 
   }
 
@@ -214,7 +214,7 @@ export default {
 
 .imgViewPlay {
 
-  animation: ThreeDView 5s linear infinite;
+  animation: ThreeDView 5s linear infinite !important;
 
 }
 
@@ -244,7 +244,7 @@ export default {
 
 .el-icon-refresh-right {
 
-  transform: translate(40px, -50%);
+  transform: translate(45px, -50%);
 
 }
 
@@ -254,7 +254,7 @@ export default {
 
   top: 50%;
 
-  transform: translate(-82px, -50%);
+  transform: translate(-87px, -50%);
 
   font-size: 25px;
 
@@ -309,7 +309,7 @@ export default {
   background-color: var(--hoverColor);
   opacity: 0.65;
 
-  z-index: 320;
+  z-index: 500;
   text-align: center;
 
 }
@@ -361,7 +361,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  z-index: 320;
+  z-index: 500;
 
 }
 
