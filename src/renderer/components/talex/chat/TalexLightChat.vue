@@ -405,6 +405,20 @@ export default {
 
       }
 
+      if( type.toLowerCase() === 'face') {
+
+        // face,id=277]
+        const index2 = code.indexOf('id=')
+        const index3 = code.indexOf(',', index2)
+
+        const order = code.substring(index2 + 3, index3 - 1)
+
+        const img = require(`./../../../assets/qq_face/${order}/qq-face.gif`)
+
+        return `<img class='qq-face' referrerPolicy='no-referrer' alt='错误表情:${order}' src='${img}'/>`
+
+      }
+
       if( type.toLowerCase() === 'reply') {
 
         const index2 = code.indexOf("]", index1)
@@ -834,6 +848,12 @@ export default {
   box-sizing: content-box;
 
   border-bottom: 2px solid #1b7cb9;
+
+}
+
+.qq-face {
+
+  max-width: 28px;
 
 }
 

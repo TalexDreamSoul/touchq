@@ -30,11 +30,29 @@
 
     </div>
 
+<!--    加载数据 Dialog-->
     <TalexDialog class="loadingDataDialog" :visible="dialogLoadingVisible" header-content="请稍等">
 
       <Loading class="loading" :color="textColor"></Loading>
 
       正在加载数据
+
+    </TalexDialog>
+
+<!--    设备信息 Dialog-->
+    <TalexDialog class="deviceDialog" :visible="deviceDialogVisible" header-content="设备信息">
+
+      <PadCard>
+
+
+
+      </PadCard>
+
+<!--      <el-carousel :interval="4000" type="card" height="200px">-->
+<!--        <el-carousel-item v-for="item in 6" :key="item">-->
+<!--          <h3 class="medium">{{ item }}</h3>-->
+<!--        </el-carousel-item>-->
+<!--      </el-carousel>-->
 
     </TalexDialog>
 
@@ -61,7 +79,7 @@
       <el-tooltip content="设备信息">
         <div style="left: 62px" class="statusButton">
 
-          <TIcon icon="el-icon-monitor"></TIcon>
+          <TIcon icon="el-icon-monitor" @clicker="deviceDialogVisible = true"></TIcon>
 
         </div>
       </el-tooltip>
@@ -86,13 +104,15 @@ import ThemeChange from '../../components/talex/chat/icon/ThemeChange'
 import Loading from '../../components/talex/chat/icon/Loading'
 import TIcon from '../../components/talex/chat/icon/TIcon'
 
+import PadCard from '../../components/talex/card/device/DeviceCardPad'
+
 export default {
 
   name: "MainChat",
 
   components: {
 
-    Loading, TalexDialog, TalexImgViewer, TIcon, FloatDialog,
+    Loading, TalexDialog, TalexImgViewer, TIcon, FloatDialog, PadCard,
 
     ChatList, QuitLoading, ThemeChange, TalexLightChat, ChatInputer
 
@@ -212,7 +232,9 @@ export default {
         groupMessage: null,
         friendMessage: null,
 
-      }
+      },
+
+      deviceDialogVisible: false
 
     }
 

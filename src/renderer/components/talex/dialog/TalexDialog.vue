@@ -129,7 +129,7 @@ export default {
   height: 50px;
 
   background-color: var(--mainColor);
-  border-radius: 5px 5px 0 0 !important;
+  border-radius: 3px 3px 0 0 !important;
 
   span {
 
@@ -176,6 +176,7 @@ export default {
   opacity: 0.45;
   background-color: #000;
 
+  filter: blur(15px);
   transition: all .45s;
 
 }
@@ -187,7 +188,7 @@ export default {
   left: 50%;
   top: 20%;
 
-  min-width: 20%;
+  min-width: 30%;
   width: auto;
   max-width: 60%;
 
@@ -199,10 +200,10 @@ export default {
   background-color: var(--hoverColor);
   color: var(--textColor);
 
-  filter: drop-shadow(0 0 5px var(--hoverColor));
+  filter: drop-shadow(0 0 2px var(--hoverColor));
 
   text-align: center;
-  border-radius: 5px !important;
+  border-radius: 2px !important;
 
   transition: all .45s;
 
@@ -251,7 +252,7 @@ export default {
 
   0% {
 
-    transform: translate(-50%, 0) scaleY(0);
+    transform: translate(-50%, 0) scale3D(0, 0, 0);
 
     opacity: 0;
 
@@ -266,7 +267,7 @@ export default {
 
   80% {
 
-    transform: translate(-50%, 0) scaleY(1);
+    transform: translate(-50%, 0) scale3D(1, 1, 1);
     filter: drop-shadow(0 0 10px var(--hoverColor));
 
   }
@@ -298,7 +299,7 @@ export default {
 
   0% {
 
-    transform: translate(-50%, 0) scaleY(1);
+    transform: translate(-50%, 0) scale3D(1, 1, 1);
     filter: drop-shadow(0 0 10px var(--hoverColor));
 
     opacity: 1;
@@ -313,7 +314,7 @@ export default {
 
   80% {
 
-    transform: translate(-50%, 0) scaleY(0);
+    transform: translate(-50%, 0) scale3D(0, 0, 0);
     filter: drop-shadow(0 0 5px var(--textColor));
 
   }

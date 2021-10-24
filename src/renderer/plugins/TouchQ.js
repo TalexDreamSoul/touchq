@@ -87,6 +87,7 @@ class TouchQ {
 
         this.touchq_loaded = true
         this.session = undefined
+        this.axios = axios
 
         this.setTheme = (dark) => {
 
@@ -152,6 +153,8 @@ class TouchQ {
 
                     this.$bot = this.$app._bots[0]
 
+                    this.axios.defaults.baseURL = this.systemConfig.baseUrl
+
                     this.$bot.version_info = await this.$bot.$getVersionInfo()
 
                     msg ( {
@@ -189,6 +192,14 @@ class TouchQ {
         }
 
         console.log(this)
+
+    }
+
+    async getClients() {
+
+        const data = await this.axios.post("/get_online_clients")
+
+        return data.data.data
 
     }
 
