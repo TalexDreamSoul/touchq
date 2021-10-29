@@ -1,6 +1,6 @@
 <template>
 
-  <div class="Login-Page" v-loading="loadingData">
+  <div class="Login-Page" ref="LoginPage" v-loading="loadingData">
 
     <div v-show="isLogin">
 
@@ -14,7 +14,7 @@
 
     <div :class="isLogin ? 'Login-Main-Frame' : ''" class="Login-Main" @keydown.enter="isLogin" v-loading="isLogin">
 
-      <img :class="isLogin ? 'Login-Main-Avatar-Frame' : ''" alt="" :src='"http://q1.qlogo.cn/g?b=qq&nk=" + loginForm.user + "&s=100"' />
+      <img :class="isLogin ? 'Login-Main-Avatar-Frame' : ''" alt="" :src='loginAvatar' />
 
       <div class="loginForm">
 
@@ -35,12 +35,12 @@
 
       <div class="systemConfigForm">
 
-        <el-input placeholder="远程服务器地址" v-model="systemConfig.baseUrl"></el-input>
-        <el-input placeholder="远程服务器密钥" type="password" v-model="systemConfig.keyCode"></el-input>
+        <TAsideInput placeholder="远程服务器地址" v-model="systemConfig.baseUrl"></TAsideInput>
+        <TAsideInput placeholder="远程服务器密钥" type="password" v-model="systemConfig.keyCode"></TAsideInput>
 
         <br />
 
-        <el-button class="verifyButton" @click="verifySystemConfig">验证</el-button>
+        <TBubbleButton class="verifyButton" @clicker="verifySystemConfig">验证</TBubbleButton>
 
       </div>
 
@@ -65,24 +65,16 @@
 
 <script>
 
-import TalexDialog from '../components/talex/dialog/TalexDialog'
-import TipMentioner from '../components/talex/mention/TipMentioner'
-
-import ThemeChange from '../components/talex/chat/icon/ThemeChange'
-
 export default {
+
   name: "Login",
-
-  components: {
-
-    TalexDialog, TipMentioner, ThemeChange
-
-  },
 
   data() {
 
     return {
 
+      avatarTimeOut: null,
+      loginAvatar: "http://q1.qlogo.cn/g?b=qq&nk=10000&s=100",
       loginForm: {
 
         user: "1000",
@@ -111,16 +103,6 @@ export default {
 
   mounted() {
 
-    setTimeout(() => {
-
-      this.$touchq.isDarkMode((mode) => {
-
-        this.darkMode = mode;
-
-      })
-
-    }, 500)
-
     let interval = setInterval(() => {
 
       if(this.$touchq.touchq_loaded) {
@@ -148,18 +130,32 @@ export default {
 
   watch: {
 
+    loginForm: {
+
+      deep: true,
+      handler(latest, old) {
+
+        //节流
+        if(this.avatarTimeOut) {
+
+          clearTimeout(this.avatarTimeOut)
+
+        }
+
+        this.avatarTimeOut = setTimeout(() => {
+
+          this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${latest.user}&s=100`
+
+        }, 1000)
+
+      }
+
+    },
+
     darkMode: {
 
       immediate: true,
       handler(latest, old) {
-
-        // --ThemeColor: #fff;
-        //
-        // --mainColor: #f5f6f7;
-        // --hoverColor: #e0dfdf;
-        //
-        // --textColor: #0d0d0d;
-        // --subTextColor: grey;
 
         if(latest) {
 
@@ -249,7 +245,17 @@ export default {
 
         } else {
 
-          this.$router.push("/chat")
+          const el = this.$refs.LoginPage
+
+          el.style.transition = 'all .45s'
+          el.style.transform = 'translateY(300px)'
+          el.style.opacity = '0'
+
+          setTimeout(() => {
+
+            this.$router.push("/chat")
+
+          }, 450)
 
         }
 
@@ -259,7 +265,7 @@ export default {
 
         this.$touchq.connect(this.loginForm.user, msgFunc)
 
-      }, Math.round(Math.random() * 2500))
+      }, Math.round(Math.random() * 1500))
 
     }
 
@@ -312,44 +318,18 @@ export default {
 
   position: relative;
 
-  margin-top: 30px;
+  margin-top: 20px;
 
-  .el-input {
-
-    input {
-
-      border: 0;
-      background-color: var(--hoverColor);
-
-      filter: drop-shadow(0 0 5px var(--mainColor));
-      transition: all .25s;
-
-      border-left: 3px solid var(--hoverColor);
-
-      color: var(--textColor)
-
-    }
-
-    input:hover {
-
-      border-left: 3px solid rgba(27, 124, 185, 0.5);
-      background-color: var(--mainColor)
-
-    }
-
-    input:focus {
-
-      border-left: 3px solid #1b7cb9;
-      background-color: var(--mainColor)
-
-    }
+  .TAsideInput-Page {
 
     position: relative;
 
-    max-width: 90%;
-    max-height: 38px;
+    margin-bottom: 20px;
 
-    margin-bottom: 30px;
+    left: 2.5%;
+
+    max-width: 95%;
+    max-height: 38px;
 
   }
 
@@ -456,28 +436,7 @@ export default {
 
   position: relative;
 
-  width: 90%;
-
-  transition: all .35s;
-
-  background-color: var(--mainColor) !important;
-  border: 1px solid var(--ThemeColor);
-
-}
-
-.verifyButton:hover {
-
-  border: 1px solid rgba(27, 124, 185, 0.5);
-
-  background-color: var(--mainColor) !important;
-
-}
-
-.verifyButton:focus {
-
-  border: 1px solid #1b7cb9 !important;
-
-  background-color: var(--mainColor) !important;
+  width: 95%;
 
 }
 

@@ -5,7 +5,7 @@
   "description": "A third qq client",
   "homepage": "https://github.com/TalexDreamSoul/touchq",
   "license": "GNU Affero General Public License v3.0",
-  "main": "./dist/electron/main.js",
+  "main": "./src/main/index.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
@@ -29,6 +29,10 @@
     "files": [
       "dist/electron/**/*"
     ],
+    "extraResources":  {
+      "from": "src",
+      "to": "dist/electron/src"
+    },
     "dmg": {
       "contents": [
         {
@@ -76,6 +80,7 @@
     "jsqr": "^1.4.0",
     "koa": "^2.13.3",
     "koa-bodyparser": "^4.3.0",
+    "lodash": "^4.17.21",
     "log4js": "^6.3.0",
     "nedb": "^1.8.0",
     "pngjs": "^6.0.0",

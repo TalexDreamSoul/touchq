@@ -313,7 +313,7 @@ export default {
         background-color: var(--hoverBg);
 
         filter: drop-shadow(0 0 5px var(--hoverBg));
-        transition: all .25s;
+        transition: all .05s;
 
         border-bottom: 2px solid rgba(0,0,0,0);
 
@@ -394,7 +394,7 @@ export default {
   height: auto;
   min-width: 100%;
 
-  animation: chatLoader 1.45s;
+  animation: chatLoader .75s;
 
 }
 
@@ -402,12 +402,14 @@ export default {
 
   0% {
 
+    opacity: 0;
     transform: translateX(-100%);
 
   }
 
   50% {
 
+    opacity: 1;
     transform: translateX(0);
 
   }
@@ -442,7 +444,6 @@ export default {
 
   box-sizing: content-box;
 
-  //background-color: #f5f6f7;
   background-color: var(--defaultBg);
 
   border-right: 2px solid var(--selectedBg);
@@ -450,7 +451,6 @@ export default {
   z-index: 310;
 
   overflow-x: hidden;
-  //overflow-y: auto;
 
 }
 

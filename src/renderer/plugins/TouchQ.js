@@ -89,7 +89,12 @@ class TouchQ {
         this.session = undefined
         this.axios = axios
 
+        this.userConfig = { user: '10000' }
+        this.systemConfig = { baseUrl: "", keyCode: "" }
+
         this.setTheme = (dark) => {
+
+            instance.theme = dark
 
             const otherDb = this.$db.other
             const instance = this
@@ -235,9 +240,9 @@ class TouchQ {
 
             }
 
-            instance.systemConfig = docs[0]
+            if(docs[0]) instance.systemConfig = docs[0]
 
-            instance.$axios.defaults.baseURL = docs[0].baseUrl
+            instance.$axios.defaults.baseURL = instance.systemConfig.baseUrl
 
         })
 
@@ -249,10 +254,6 @@ class TouchQ {
 
         if(this.firstInner) {
 
-            const defaultObj = { user: "10000" }
-            systemDb.insert(defaultObj)
-            this.userConfig = defaultObj
-
             return
 
         }
@@ -262,10 +263,6 @@ class TouchQ {
         systemDb.find({  } , function(err, docs) {
 
             if(docs.length === 0) {
-
-                const defaultObj = { user: "10000" }
-                systemDb.insert(defaultObj)
-                this.userConfig = defaultObj
 
                 return
 
@@ -287,48 +284,13 @@ class TouchQ {
 
             if(docs[0].user === undefined) {
 
-                docs[0].user = '10000'
+                return
 
             }
 
             instance.userConfig = docs[0]
 
         })
-
-    }
-
-    async sendCommand(command, args) {
-
-        return await this.$Bot.sendCommand({
-
-            baseUrl: this.systemConfig.baseUrl,
-            verifyKey: this.systemConfig.keyCode,
-            command,
-            args
-
-        });
-
-    }
-
-    /**
-     *
-     * 保存用户的聊天列表 请确保在登录后操作
-     *
-     */
-    set saveChatListList(list) {
-
-        this.$store.set(this.userConfig.user + '.chat_list', list)
-
-    }
-
-    /**
-     *
-     * 获取用户的聊天列表 请确保在登录后操作
-     *
-     */
-    get getChatListList() {
-
-        return this.$store.get(this.userConfig.user + '.chat_list')
 
     }
 
