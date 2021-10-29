@@ -352,7 +352,7 @@ export default {
 
   position: absolute;
 
-  left: 65px;
+  left: 70px;
   top: 35px;
 
   max-width: 50%;
@@ -372,7 +372,7 @@ export default {
 
   position: absolute;
 
-  left: 65px;
+  left: 70px;
   top: 10px;
 
   height: 20px;
@@ -416,15 +416,13 @@ export default {
   width: 100%;
   height: 60px;
 
-  padding: 8px 5px 8px 5px;
+  padding: 8px 5px 8px 10px;
 
   //overflow: hidden;
   cursor: pointer;
   box-sizing: border-box;
 
-  transition: all .25s;
-
-  border-left: 3px solid rgba(0, 0, 0, 0);
+  transition: all .005s;
 
   background-color: var(--defaultBg);
 
@@ -441,9 +439,36 @@ export default {
 
 }
 
-.ChatterItem-Selected {
+.ChatterItem-Selected::before {
 
-  border-left: 3px solid #1b7cb9;
+  position: absolute;
+  content: "";
+
+  left: 0;
+  top: 0;
+
+  width: 3px;
+  height: 100%;
+
+  background-color: #1b7cb9;
+  border-radius: 0 5px 5px 0;
+  box-shadow: 3px 0 6px #1b7cb9;
+
+  animation: selected .25s;
+
+}
+
+@keyframes selected {
+
+  from {
+
+    transform: translateX(5px) scaleY(0);
+
+  }
+
+}
+
+.ChatterItem-Selected {
 
   background-color: var(--selectedBg) !important;
 

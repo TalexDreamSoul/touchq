@@ -1,6 +1,6 @@
 <template>
 
-  <div class="MainChat-Page">
+  <div class="MainChat-Page" ref="MainChatRef">
 
     <div class="aside-list">
 
@@ -42,11 +42,17 @@
 <!--    设备信息 Dialog-->
     <TalexDialog class="deviceDialog" :visible="deviceDialogVisible" header-content="设备信息">
 
-      <PadCard>
+      <DeviceCardPad>
 
 
 
-      </PadCard>
+      </DeviceCardPad>
+
+      <div class="deviceInfo">
+
+
+
+      </div>
 
 <!--      <el-carousel :interval="4000" type="card" height="200px">-->
 <!--        <el-carousel-item v-for="item in 6" :key="item">-->
@@ -92,31 +98,9 @@
 
 <script>
 
-import TalexDialog from '../../components/talex/dialog/TalexDialog'
-import TalexImgViewer from '../../components/talex/dialog/TalexImgViewer'
-import TalexLightChat from '../../components/talex/chat/TalexLightChat'
-import ChatList from '../../components/talex/chat/list/ChatList'
-import ChatInputer from '../../components/talex/chat/ChatInputer'
-import FloatDialog from '../../components/talex/dialog/FloatDialog'
-
-import QuitLoading from '../../components/talex/chat/icon/QuitLoading'
-import ThemeChange from '../../components/talex/chat/icon/ThemeChange'
-import Loading from '../../components/talex/chat/icon/Loading'
-import TIcon from '../../components/talex/chat/icon/TIcon'
-
-import PadCard from '../../components/talex/card/device/DeviceCardPad'
-
 export default {
 
   name: "MainChat",
-
-  components: {
-
-    Loading, TalexDialog, TalexImgViewer, TIcon, FloatDialog, PadCard,
-
-    ChatList, QuitLoading, ThemeChange, TalexLightChat, ChatInputer
-
-  },
 
   created() {
 
@@ -462,7 +446,17 @@ export default {
 
     quitLogin() {
 
-      this.$router.push("/login")
+      const el = this.$refs.MainChatRef
+
+      el.style.transition = 'all .45s'
+      el.style.transform = 'translateY(300px)'
+      el.style.opacity = '0'
+
+      setTimeout(() => {
+
+        this.$router.push("/login")
+
+      }, 450)
 
     },
 
@@ -623,6 +617,26 @@ export default {
 .MainChat-Page {
 
   margin-top: 25px;
+
+  animation: pageLoad .75s;
+  transition: all .25s;
+
+}
+
+@keyframes pageLoad {
+
+  from {
+
+    margin-top: 300px;
+    opacity: 0;
+
+  }
+
+  to {
+
+    margin-top: 25px;
+
+  }
 
 }
 

@@ -10,7 +10,7 @@
 
           <div class="bubble_container" v-if="msg.type !== 'system'">
 
-            <div @click="clickAvatar(msg)"><el-avatar class="user_avatar" size="large" :src="msg.target.image"></el-avatar></div>
+            <div @click="clickAvatar(msg)"><el-avatar class="user_avatar" size="medium" :src="msg.target.image"></el-avatar></div>
 
           </div>
 
@@ -522,7 +522,7 @@ export default {
 
   box-sizing: border-box;
 
-  padding: 0 10px 0 10px;
+  padding: 10px 10px 0 10px;
   margin-bottom: -15px;
 
   z-index: 300;
@@ -563,7 +563,7 @@ export default {
     right: 60px;
 
     background-color: var(--bubble_right);
-    padding: 14px 11px 30px 11px;
+    padding: 25px 11px 25px 11px;
 
     border-radius: 9px 0 5px 9px;
 
@@ -575,10 +575,11 @@ export default {
 
       position: absolute;
 
-      right: 9px;
-      bottom: 5px;
+      left: 9px;
+      top: 5px;
 
-      font-size: 12px;
+      opacity: 0.8;
+      font-size: 13px;
 
     }
 
@@ -586,10 +587,11 @@ export default {
 
       position: absolute;
 
-      left: 9px;
+      right: 9px;
       bottom: 5px;
 
-      font-size: 12px;
+      opacity: 0.8;
+      font-size: 11px;
 
     }
 
@@ -655,7 +657,7 @@ export default {
     left: 60px;
 
     background-color: var(--bubble_left);
-    padding: 14px 11px 30px 11px;
+    padding: 25px 11px 20px 11px;
 
     border-radius: 0 9px 9px 5px;
 
@@ -672,9 +674,10 @@ export default {
       max-width: 60%;
 
       left: 9px;
-      bottom: 5px;
+      top: 5px;
 
-      font-size: 12px;
+      opacity: 0.8;
+      font-size: 13px;
 
     }
 
@@ -688,7 +691,8 @@ export default {
       right: 9px;
       bottom: 5px;
 
-      font-size: 12px;
+      opacity: 0.8;
+      font-size: 10px;
 
     }
 

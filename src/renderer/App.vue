@@ -8,9 +8,10 @@
 
       <span class="title">
 
-        TalexTouchChat
+        TalexTouchChat&nbsp;
 
-        <span class="beta">Beta 1.2.0</span>
+        <span class="beta">Beta 1.2.1</span>
+        <span class="github" @click="openGitHub">GitHub&nbsp;</span>
 
       </span>
 
@@ -31,9 +32,12 @@
 
 <script>
 
+const { shell } = require('electron');
+
 import { ipcRenderer } from 'electron'
 
   export default {
+
     name: 'talextouchqq',
 
     data() {
@@ -79,6 +83,12 @@ import { ipcRenderer } from 'electron'
 
         }, 1000)
 
+      },
+
+      openGitHub() {
+
+        shell.openExternal('https://github.com/TalexDreamSoul/touchq')
+
       }
 
     }
@@ -96,7 +106,7 @@ import { ipcRenderer } from 'electron'
 
 @keyframes appQuit {
 
-  100% {
+  to {
 
     opacity: 0;
     transform: scaleY(0)
@@ -107,15 +117,28 @@ import { ipcRenderer } from 'electron'
 
 .beta {
 
-  padding: 1px 3px;
+  padding: 2px 3px 1px 3px;
 
   left: 2px;
-
-  transform: scale(0.9);
 
   border-radius: 3px;
 
   background-color: rgba(255, 0, 0, 0.7);
+
+}
+
+.github {
+
+  padding: 2px 3px 1px 18px;
+
+  left: 2px;
+
+  border-radius: 3px;
+
+  background: url("https://github.githubassets.com/favicons/favicon.png") 3px/12px no-repeat rgba(9, 115, 198, 1);
+
+  -webkit-app-region: no-drag;
+  cursor: pointer
 
 }
 
@@ -165,7 +188,7 @@ button {
 
   z-index: 330;
 
-  transition: all .35s;
+  transition: all .25s;
 
   -webkit-app-region: no-drag；
 
@@ -192,7 +215,7 @@ button {
   border-radius: 5px 5px 0 0;
   background-color: var(--hoverColor);
 
-  transition: all .35s;
+  transition: all .25s;
 
   overflow: hidden;
   cursor: move;
