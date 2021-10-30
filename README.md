@@ -1,29 +1,82 @@
-# touchq
+<div align="center">
 
-## Project setup
-```
-yarn install
+  <img width="160" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" alt="logo">
+
+  <h1>TouchQ</h1>
+
+设计参考 TDesignS
+
+[![GitHub forks](https://img.shields.io/github/forks/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/network)
+[![GitHub stars](https://img.shields.io/github/stars/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
+[![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/badge/release-2.0.0--Alpha-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
+
+</div>
+
+TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) 制作的适合于Linux的前端 IM 聊天框架, 目前已适配 [QQ](https://im.qq.com/) 客户端, 目的皆在使用户获得更完美的UI体验
+
+除此之外, TouchQ 还使用了部分其他的优秀框架 [Vue3](https://v3.vuejs.org/) <s><a href="https://cn.vuejs.org/">(Vue2)</a></s> [KoiShi](https://koishi.js.org/) [ElementUI-Plus](https://element-plus.gitee.io/zh-CN/) <s><a href="https://element.eleme.io/#/zh-CN">(ElementUI)</a></s> [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) (排名不分先后, 其余更多详见项目内)
+
+<div align="center">
+</div>
+
+> 全新 2.0.0 版本来袭，开发更迭更迅速，故BUG较多。 请等待稳定版发布。
+
+## 使用协议
+
+因为依赖框架原因, 本项目使用 [AGPL-3.0](./LICENSE) 协议开源
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq?ref=badge_large)
+
+## 食用方式
+
+#### 安装环境
+
+``` bash
+
+# 进入目录后安装依赖
+npm install
+
+# 打开测试环境 (localhost:9080)
+npm run dev
+
+# 打包生成
+npm run build
+
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+#### 后端环境
+##### 除此之外, 当前版本中并没有整合配套的后端, 请自己提供
 
-### Compiles and minifies for production
-```
-yarn build
-```
+在 [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 这里找到安装方式, 然后启动默认会填写信息
 
-### Run your unit tests
-```
-yarn test:unit
-```
+## 图片展示
 
-### Lints and fixes files
-```
-yarn lint
-```
+> 内置 亮/暗 两种模式
+![image](https://user-images.githubusercontent.com/59305952/136044683-e59428a3-dd28-4803-a4c3-bccc9fbd89e8.png)
+![image](https://user-images.githubusercontent.com/59305952/136044716-2eb8a9fb-b961-42c3-a31c-4dc1fc7c1520.png)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+> 动画动效
+![image](https://user-images.githubusercontent.com/59305952/136044813-355105a2-d367-42bb-b1b4-f07706cae116.png)
+
+> 主体展示
+![image](https://user-images.githubusercontent.com/59305952/136044912-03b428ca-47b6-4b45-b4bf-5664ed006a7b.png)
+![image](https://user-images.githubusercontent.com/59305952/136045304-bf52e1ae-d8c1-44ae-af48-29e11300a93b.png)
+![image](https://user-images.githubusercontent.com/59305952/138559993-7dfb6a99-b135-4268-a4b9-2641db46b718.png)
+
+## Issue
+
+> 请注意, 任何不符合模板要求的 Issue 均会被直接关闭
+
+请记住，开发者并没有义务解决您的 Issue 就连这个项目以及开源和维护均是建立在开发者的空闲时间之上
+
+## 贡献指南
+
+[这里](.github/contribute/README.md)
+
+## 联系方式
+
+您可以通过邮箱 (TalexDreamSoul@gmail) 联系我, 也可在本项目发送 Issue 提供您的问题
+
+Copyright © 2021 TalexDreamSoul
