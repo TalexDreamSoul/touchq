@@ -68,6 +68,23 @@ export default {
 }
 </script>
 
+<style lang="scss">
+
+.BubbleButton {
+
+  background: var(--mainColor) !important;
+  border-color: var(--hoverColor);
+
+}
+
+.BubbleButton:hover {
+
+  border-color: var(--ThemeColor);
+
+}
+
+</style>
+
 <style lang="scss" scoped>
 
 .BubbleButton::before {

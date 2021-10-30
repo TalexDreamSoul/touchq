@@ -4,31 +4,11 @@
 
     <div class="aside-list">
 
-      <ChatList :dark-mode="darkMode" @selectChat="selectChat" ref="chatList" :list="chatListArray"></ChatList>
+      <ChatList :dark-mode="darkMode" @selectChat="selectChat" ref="chatList" :list="[]"></ChatList>
 
     </div>
 
-    <div class="main-container" v-show="chat !== undefined && chat !== null">
-
-      <div class="main-container__header">
-
-        <span class="main-container__header__innerContent">{{ (chat && chat.title) || '' }}</span>
-
-      </div>
-
-      <div class="main-container__chat">
-
-        <TalexLightChat @onClickBubble="onClickBubble" @onViewImg="viewImg" ref="LightChat" :messages="nowChatMessages" :dark-mode="darkMode"></TalexLightChat>
-
-      </div>
-
-      <div class="main-container__input">
-
-        <ChatInputer @sendMessage="sendMessage" :dark-mode="darkMode"></ChatInputer>
-
-      </div>
-
-    </div>
+    <router-view></router-view>
 
 <!--    加载数据 Dialog-->
     <TalexDialog class="loadingDataDialog" :visible="dialogLoadingVisible" header-content="请稍等">
@@ -43,7 +23,6 @@
     <TalexDialog class="deviceDialog" :visible="deviceDialogVisible" header-content="设备信息">
 
       <DeviceCardPad>
-
 
 
       </DeviceCardPad>
@@ -61,8 +40,6 @@
 <!--      </el-carousel>-->
 
     </TalexDialog>
-
-    <TalexImgViewer @close="imgLookerVisible = false" :visible="imgLookerVisible" :src="imgLookerSrc"></TalexImgViewer>
 
     <div class="statusBar">
 
@@ -104,32 +81,6 @@ export default {
 
   created() {
 
-    try {
-
-      this.listener.friendMessage = this.$touchq.$app.on('message/private', data => {
-
-        console.log("@Friend: ", data)
-        this.receiveFriendMessage(data, 'left')
-
-      });
-
-      this.listener.groupMessage = this.$touchq.$app.on('message/group', data => {
-
-        console.log("@Group: ", data)
-        this.receiveGroupMessage(data, 'left')
-
-      });
-
-    } catch (e) {
-
-      this.destroy = true
-
-      this.$router.push('/login')
-
-    }
-
-    if(this.destroy) return
-
     //加载用户缓存数据
     const interval = setInterval(() => {
 
@@ -141,53 +92,17 @@ export default {
 
       }
 
-      const data = this.$touchq.$userData.data
-
-      if(data !== undefined && data !== null) {
+      if(this.$touchq.$userData) {
 
         clearInterval(interval)
 
-        this.darkMode = (this.$touchq.theme && this.$touchq.theme.dark) || false
-
-        if(data.chatList) {
-
-          // console.log("----- @DataList: " , data.chatList)
-
-          const list = data.chatList
-
-          list.forEach((chat, index) => {
-
-            this.chatList.set(chat.key, chat)
-
-          })
-
-          this.chatListArray = Array.from(this.chatList.values())
-
-        }
-
-        if(data.chatMessages) {
-
-          // console.log("----- @MessageList: " , data.chatMessages)
-
-          const list = data.chatMessages
-
-          list.forEach((chat, index) => {
-
-            if(chat.length < 1) return
-
-            // console.log("扫描: " + index, "成员列表: ", chat, "Key: " + chat[0])
-
-            this.chatMessageMap.set(chat[0], chat[1])
-
-          })
-
-        }
+        this.darkMode = this.$touchq.getDarkMode()
 
         this.dialogLoadingVisible = false
 
       }
 
-    }, 200)
+    }, 500)
 
   },
 
@@ -195,28 +110,10 @@ export default {
 
     return {
 
-      chatList: new Map(),
-      chatListArray: [],
       darkMode: false,
       textColor: '#0d0d0d',
 
-      chat: null,
-
       dialogLoadingVisible: true,
-      destroy: false,
-
-      chatMessageMap: new Map(),
-      nowChatMessages: [],
-
-      imgLookerVisible: false,
-      imgLookerSrc: "",
-
-      listener: {
-
-        groupMessage: null,
-        friendMessage: null,
-
-      },
 
       deviceDialogVisible: false
 
@@ -271,150 +168,7 @@ export default {
 
   },
 
-  beforeDestroy() {
-
-    this.destroy = true
-
-    if(this.listener.friendMessage) {
-
-      this.$touchq.$app.off('FriendMessage', this.listener.friendMessage)
-
-    }
-
-    if(this.listener.groupMessage) {
-
-      this.$touchq.$app.off('GroupMessage', this.listener.friendMessage)
-
-    }
-
-    let data = (this.$touchq.$userData && this.$touchq.$userData.data)
-
-    if(typeof data !== 'object') {
-
-      data = {}
-
-    }
-
-    data.chatList = this.chatListArray
-    data.chatMessages = Array.from(this.chatMessageMap)
-
-    this.$touchq.$userData.saveData()
-
-  },
-
   methods: {
-
-    async sendMessage(html, func) {
-
-      if(!this.chat) return
-
-      try {
-
-        const bot = this.$touchq.$bot
-
-        console.log("@SendMessage: ", this.chat)
-
-        let result
-
-        if(this.chat.type === 'group') {
-
-          result = await this.$touchq.$bot.sendMessage(this.chat.id, html);
-
-          await this.receiveGroupMessage({
-
-            author: {
-
-              avatar: bot.avatar,
-              userId: bot.selfId,
-              username: bot.username,
-
-            },
-
-            sender: {
-
-              nickname: bot.username,
-              userId: bot.selfId,
-
-            },
-
-            channelId: this.chat.id,
-            content: html,
-            groupId: this.chat.id,
-            message: html,
-            messageId: result,
-            time: Date.now()
-
-          }, 'right')
-
-        } else {
-
-          result = await this.$touchq.$bot.sendPrivateMessage(this.chat.id, html);
-
-          await this.receiveFriendMessage({
-
-            author: {
-
-              avatar: bot.avatar,
-              userId: bot.selfId,
-              username: bot.username,
-
-            },
-
-            sender: {
-
-              nickname: bot.username,
-              userId: bot.selfId,
-
-            },
-
-            channelId: this.chat.id,
-            content: html,
-            groupId: this.chat.id,
-            message: html,
-            messageId: result,
-            time: Date.now()
-
-          }, 'right')
-
-        }
-
-        // this.
-
-        func(null)
-
-      } catch (e) {
-
-        console.log(e)
-
-      }
-
-    },
-
-    viewImg(img) {
-
-      this.imgLookerSrc = img.src
-
-      // this.$viewerApi({
-      //   images: [img.src]
-      // })
-
-      // this.imgLookerSrc = img.src
-      //
-      this.imgLookerVisible = true
-      //
-      // const el = this.$refs.viewer
-      //
-      // console.log(el)
-      //
-      //     el.$vuer.show()
-
-    },
-
-    onClickBubble(e) {
-
-
-
-    },
 
     updateTheme(theme) {
 
@@ -430,11 +184,11 @@ export default {
 
     selectChat(chat) {
 
-      this.chat = chat
+      if(this.chat.type === 'friend') {
 
-      const map = this.chatMessageMap
+        this.$router.push("/friendChat/" + this.chat.id)
 
-      this.nowChatMessages = map.get(chat.key)
+      } else this.$router.push("/groupChat/" + this.chat.id)
 
     },
 
@@ -457,153 +211,6 @@ export default {
         this.$router.push("/login")
 
       }, 450)
-
-    },
-
-    async processMessageChain(chain, contact) {
-
-      let content = ""
-      let talexContent = ""
-
-      for (const msg of chain) {
-
-        switch( msg.type ) {
-
-          case 'Plain': {
-
-            content += msg.text
-            talexContent += msg.text
-            break;
-
-          }
-
-          case 'Image': {
-
-            content += '[图片]'
-
-            break;
-
-          }
-
-          case 'At': {
-
-            content += '@'
-
-          }
-
-        }
-
-      }
-
-      return content
-
-    },
-
-    async receiveGroupMessage(data, type) {
-
-      const sender = data.sender
-      const groupId = data.groupId
-
-      this.chatList.set(groupId + 'g', {
-
-        type: 'group', //判断类型
-        id: groupId, //标注群
-        key: groupId + 'g',
-        img: "https://p.qlogo.cn/gh/" + groupId + "/" + groupId + "/100",
-        title() {
-
-          return this.groupName || groupId
-
-        },
-        latestContent: sender.nickname + ": " + await this.processMessageChain(data.content),
-        time: sender.time,
-
-      })
-
-      // refreshList
-      this.chatListArray = Array.from(this.chatList.values())
-
-      const obj = {
-
-        id: groupId,
-        key: groupId + 'g',
-        type,
-        target: {
-
-          name: sender.nickname,
-          image: data.author.avatar,
-
-          author: data.author,
-
-        },
-        content: data.content,
-        time: sender.time,
-        msgId: data.messageId,
-        messageSeq: data.messageSeq
-
-      }
-
-      const map = this.chatMessageMap
-
-      let value = map.get(groupId + 'g')
-
-      if(!value) value = []
-
-      value.push(obj)
-
-      map.set(groupId + 'g', value)
-
-    },
-
-    async receiveFriendMessage(data, type) {
-
-      const author = data.author
-      const friendQQ = author.userId
-
-      //存储列表的消息
-      this.chatList.set(friendQQ + 'f', {
-
-        id: friendQQ,
-        key: friendQQ + 'f',
-        img: author.avatar,
-        title: author.username,
-        latestContent: await this.processMessageChain(data.content),
-        time: data.time,
-        type: 'friend',
-
-      })
-
-      // refreshList
-      this.chatListArray = Array.from(this.chatList.values())
-
-      //存储实际聊天的消息
-      const obj = {
-
-        id: friendQQ,
-        key: friendQQ + 'f',
-        type,
-        target: {
-
-          name: author.username,
-          image: author.avatar,
-
-        },
-        content: data.content,
-        time: data.time,
-        msgId: data.messageId,
-        messageSeq: data.messageSeq,
-
-      }
-
-      const map = this.chatMessageMap
-
-      let value = map.get(friendQQ + 'f')
-
-      if(!value) value = []
-
-      value.push(obj)
-
-      map.set(friendQQ + 'f', value)
 
     },
 

@@ -376,7 +376,7 @@ export default {
 
     },
 
-    getSpecialCodeHtml(code, i) {
+     getSpecialCodeHtml(code, i) {
 
       code = code.replace("[CQ:", "");
 
@@ -386,11 +386,49 @@ export default {
 
       if( type.toLowerCase() === 'at') {
 
-        const index2 = code.indexOf(";", index1);
+        const index2 = code.indexOf("id=", index1);
 
-        const content = code.substring(index1 + 1, index2);
+        const qq =  code.substring(index2 + 3, code.length - 1)
 
-        return "<span style='color: #6f86fb;opacity: 0.95;margin: 0 5px 0 3px'>@" + content + " </span>";
+        let content = qq;
+
+        if(+qq === this.$touchq.$userData.$nowUser) {
+
+          this.$touchq.$bot.getSelf().then(result => {
+
+            content = result.username
+
+          })
+
+        }
+
+        let msg = this.msgs[i];
+
+        let res, atId = `at-${msg.msgId}-${Date.now()}-${msg.messageSeq}`
+
+        this.$touchq.axios.post("/get_group_member_info", { group_id: msg.group_id, user_id: qq}).then(result => {
+
+          res = result.data
+
+          if(res.msg === 'MEMBER_NOT_FOUND' || res.msg === "GROUP_NOT_FOUND") {
+
+            this.$touchq.axios.post("/get_stranger_info", { user_id: qq }).then(result => {
+
+              res = result.data
+
+              document.getElementById(atId).innerText = "@" + res.data.nickname
+
+            })
+
+          } else {
+
+            document.getElementById(atId).innerText = "@" + res.data.nickname
+
+          }
+
+        })
+
+        return `<span style='color: #6f86fb;opacity: 0.95;margin: 0 5px 0 3px' id='${atId}'>@` + content.content + " </span>";
 
       }
 
@@ -419,29 +457,29 @@ export default {
 
       }
 
-      if( type.toLowerCase() === 'reply') {
-
-        const index2 = code.indexOf("]", index1)
-
-        const order = code.substring(index1 + 1, index2)
-
-        if(order == i) {
-
-          return "<div class='chat_reply'><div class='reply_user'>Error</div><div class='contenter'><span style='color: #fff176'>错误: 回复消息异常</span></div></div>"
-
-        }
-
-        if(this.msgs.length + 1 < order) {
-
-          return "<div class='chat_reply'><div class='reply_user'>Unknown</div><div class='contenter'><span style='color: red'>无法定位到回复消息</span></div></div>"
-
-        }
-
-        const obj = this.msgs[order]
-
-        return "<div class='chat_reply'><div class='reply_user'>" + obj.target.name + "</div><div class='contenter'>" + this.processContent(obj, i) + "</div></div>"
-
-      }
+      // if( type.toLowerCase() === 'reply') {
+      //
+      //   const index2 = code.indexOf("]", index1)
+      //
+      //   const order = code.substring(index1 + 1, index2)
+      //
+      //   if(order == i) {
+      //
+      //     return "<div class='chat_reply'><div class='reply_user'>Error</div><div class='contenter'><span style='color: #fff176'>错误: 回复消息异常</span></div></div>"
+      //
+      //   }
+      //
+      //   if(this.msgs.length + 1 < order) {
+      //
+      //     return "<div class='chat_reply'><div class='reply_user'>Unknown</div><div class='contenter'><span style='color: red'>无法定位到回复消息</span></div></div>"
+      //
+      //   }
+      //
+      //   const obj = this.msgs[order]
+      //
+      //   return "<div class='chat_reply'><div class='reply_user'>" + obj.target.name + "</div><div class='contenter'>" + this.processContent(obj, i) + "</div></div>"
+      //
+      // }
 
       return code;
 
@@ -575,7 +613,7 @@ export default {
 
       position: absolute;
 
-      left: 9px;
+      left: 5px;
       top: 5px;
 
       opacity: 0.8;
@@ -673,7 +711,7 @@ export default {
       width: -moz-fit-content;
       max-width: 60%;
 
-      left: 9px;
+      left: 5px;
       top: 5px;
 
       opacity: 0.8;

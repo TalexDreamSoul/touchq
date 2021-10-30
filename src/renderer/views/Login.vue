@@ -111,7 +111,8 @@ export default {
 
         this.systemConfigDialogVisible = this.$touchq.firstInner
 
-        this.systemConfig = this.$touchq.systemConfig
+        this.darkMode = this.$touchq.getDarkMode()
+        this.systemConfig = new Proxy(this.$touchq.systemConfig, {})
         this.loginForm = this.$touchq.userConfig
 
         if( this.$touchq.$app ) {
@@ -146,7 +147,7 @@ export default {
 
           this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${latest.user}&s=100`
 
-        }, 1000)
+        }, 500)
 
       }
 
@@ -158,6 +159,8 @@ export default {
       handler(latest, old) {
 
         if(latest) {
+
+          this.$touchq.setDarkMode(latest)
 
           this.updateTheme({
 
@@ -185,7 +188,7 @@ export default {
 
       }
 
-    }
+    },
 
   },
 
@@ -207,26 +210,10 @@ export default {
 
       this.systemConfigLoading = true
 
-      const systemDb = this.$touchq.$db.system
+      this.$touchq.systemConfig = this.systemConfig
 
-      const instance = this
-
-      systemDb.update({"_id": this.systemConfig._id},
-          { $set: { baseUrl: this.systemConfig.baseUrl, keyCode: this.systemConfig.keyCode } }, function(err, doc) {
-
-        instance.systemConfigLoading = false
-
-        if(err !== undefined && err !== null) {
-
-          return instance.$alert('保存失败, 请检查应用是否拥有读写权限', '遇到了一些问题', {
-            confirmButtonText: '了解',
-          });
-
-        }
-
-        instance.systemConfigDialogVisible = false
-
-      })
+      this.systemConfigLoading = false
+      this.systemConfigDialogVisible = false
 
     },
 
@@ -268,6 +255,12 @@ export default {
       }, Math.round(Math.random() * 1500))
 
     }
+
+  },
+
+  beforeDestroy() {
+
+    this.$touchq.saveGlobalData()
 
   }
 

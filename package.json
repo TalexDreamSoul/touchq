@@ -29,7 +29,7 @@
     "files": [
       "dist/electron/**/*"
     ],
-    "extraResources":  {
+    "extraResources": {
       "from": "src",
       "to": "dist/electron/src"
     },
@@ -76,6 +76,8 @@
     "axios": "^0.18.0",
     "cors": "^2.8.5",
     "electron-json-storage": "^4.5.0",
+    "electron-localstorage": "^1.0.5",
+    "electron-store": "^8.0.1",
     "element-ui": "^2.15.6",
     "jsqr": "^1.4.0",
     "koa": "^2.13.3",

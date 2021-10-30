@@ -355,7 +355,7 @@ export default {
   left: 70px;
   top: 35px;
 
-  max-width: 50%;
+  max-width: 45%;
   height: 15px;
 
   overflow: hidden;
