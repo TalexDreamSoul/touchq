@@ -1,192 +1,79 @@
 
 import Vue from 'vue'
 
-import TouchStorage from './storage/TouchStorage.ts'
-import UserData from './classes/UserData'
 import DataStore from './datastore'
 import axios from 'axios'
 
-import { App } from 'koishi'
+import { App, Bot } from 'koishi'
 
 import 'koishi-adapter-onebot'
 
-// async processMessageChain(content, contact) {
-//
-//     const messageChain = segment.parse(content)
-//
-//     let finalContent = ''
-//
-//     for (const msg of messageChain) {
-//
-//         switch( msg.type ) {
-//
-//             case 'text': {
-//
-//                 finalContent += msg.data.content
-//                 break;
-//
-//             }
-//
-//             case 'image': {
-//
-//                 finalContent += '[图片]'
-//
-//                 break;
-//
-//             }
-//
-//             case 'at': {
-//
-//                 let qq = msg.capture[2]
-//
-//                 qq = qq.substring(4, qq.length - 1)
-//
-//                 if(+qq === this.$touchq.$userData.$nowUser) {
-//
-//                     return (await this.$touchq.$bot.getSelf()).username
-//
-//                 }
-//
-//                 let {data: res} = await this.$touchq.axios.post("/get_group_member_info", { group_id: contact, user_id: qq})
-//
-//                 if(res.msg === 'MEMBER_NOT_FOUND' || res.msg === "GROUP_NOT_FOUND") {
-//
-//                     res = await this.$touchq.axios.post("/get_stranger_info", { user_id: qq })
-//
-//                 }
-//
-//                 finalContent += '@' + res.nickname
-//
-//                 break;
-//
-//             }
-//
-//         }
-//
-//     }
-//
-//     return finalContent
-//
-// },
-//
-// async receiveGroupMessage(data, type) {
-//
-//     const sender = data.sender
-//     const groupId = data.groupId
-//
-//     const o = new Proxy({
-//
-//         type: 'group', //判断类型
-//         id: groupId, //标注群
-//         key: groupId + 'g',
-//         img: "https://p.qlogo.cn/gh/" + groupId + "/" + groupId + "/100",
-//         title: groupId,
-//         latestContent: sender.nickname + ": ",
-//         time: data.time,
-//
-//     }, {})
-//
-//     const info = this.$touchq.getGroupInfo(groupId).then(result => {
-//
-//         o.title = result.data.data.group_name
-//
-//     })
-//
-//     this.processMessageChain(data.content, groupId).then(result => {
-//
-//         o.latestContent = sender.nickname + ": " + result
-//
-//     })
-//
-//     this.chatList.set(groupId + 'g', o)
-//
-//     // refreshList
-//     this.chatListArray = Array.from(this.chatList.values())
-//
-//     const obj = {
-//
-//         id: groupId,
-//         key: groupId + 'g',
-//         type,
-//         target: {
-//
-//             name: sender.nickname,
-//             image: data.author.avatar,
-//
-//             author: data.author,
-//
-//         },
-//         content: data.content,
-//         time: data.time,
-//         msgId: data.messageId,
-//         messageSeq: data.messageSeq,
-//         async groupInfo() { return await info.data }
-//
-//     }
-//
-//     const map = this.chatMessageMap
-//
-//     let value = map.get(groupId + 'g')
-//
-//     if(!value) value = []
-//
-//     value.push(obj)
-//
-//     map.set(groupId + 'g', value)
-//
-// },
-//
-// async receiveFriendMessage(data, type) {
-//
-//     const author = data.author
-//     const friendQQ = author.userId
-//
-//     //存储列表的消息
-//     this.chatList.set(friendQQ + 'f', {
-//
-//         id: friendQQ,
-//         key: friendQQ + 'f',
-//         img: author.avatar,
-//         title: author.username,
-//         latestContent: await this.processMessageChain(data.content),
-//         time: data.time,
-//         type: 'friend',
-//
-//     })
-//
-//     // refreshList
-//     this.chatListArray = Array.from(this.chatList.values())
-//
-//     //存储实际聊天的消息
-//     const obj = {
-//
-//         id: friendQQ,
-//         key: friendQQ + 'f',
-//         type,
-//         target: {
-//
-//             name: author.username,
-//             image: author.avatar,
-//
-//         },
-//         content: data.content,
-//         time: data.time,
-//         msgId: data.messageId,
-//         messageSeq: data.messageSeq,
-//
-//     }
-//
-//     const map = this.chatMessageMap
-//
-//     let value = map.get(friendQQ + 'f')
-//
-//     if(!value) value = []
-//
-//     value.push(obj)
-//
-//     map.set(friendQQ + 'f', value)
-//
-// },
+class UserData {
+
+    constructor(touchq, qq) {
+
+        this.$touchq = touchq
+        this.$nowUser = qq
+
+        const mainDb = this.$mainDb = touchq.$db.main
+
+        const instance = this
+
+        mainDb.find({ qq } , function(err, docs) {
+
+            if(docs.length === 0) {
+
+                mainDb.insert( { qq } , function(err, doc) {
+
+                    console.log("@Insert: ", doc)
+
+                  instance.data = doc
+
+                })
+
+                return
+
+            }
+
+            if(docs.length > 1) {
+
+                docs.forEach(function(doc, index) {
+
+                    if( index === 0 ) return
+
+                    mainDb.remove(doc)
+
+                })
+
+            }
+
+            instance.data = docs[0]
+
+        })
+
+    }
+
+    saveData() {
+
+        const instance = this
+
+        if(!(this.data && this.data._id)) {
+
+            this.$mainDb.insert( { qq: this.$nowUser, data: this.data }, function(err, doc) {
+
+            })
+
+        } else {
+
+            this.$mainDb.update( { _id: this.data._id }, { $set: this.data }, function(err, doc) {
+
+            })
+
+        }
+
+    }
+
+}
 
 class TouchQ {
 
@@ -195,35 +82,43 @@ class TouchQ {
         this.$vue = this.__proto__.$vue
         this.$db = this.__proto__.$db
 
+        this.installSystem();
+        this.installUser()
+
         this.touchq_loaded = true
+        this.session = undefined
         this.axios = axios
-        this.globalStorage = DataStore.globalStorage()
-        this.session = DataStore.sessionStorage()
 
-        this.globalData = this.globalStorage.get("globalData")
+        this.userConfig = { user: '10000' }
+        this.systemConfig = { baseUrl: "", keyCode: "" }
 
-        if(!this.globalData) {
+        this.setTheme = (dark) => {
 
-            this.globalData = {
+            instance.theme = dark
 
-                userConfig: { user: '10000' },
-                systemConfig: { baseUrl: "", keyCode: "" }
+            const otherDb = this.$db.other
+            const instance = this
 
-            }
+            otherDb.update( {"_id": this.theme._id},
+                { $set: this.theme } , function(err, docs) {
+
+                    instance.theme = docs[0]
+
+                    if(docs.length > 1) {
+
+                        docs.forEach(function(doc, index) {
+
+                            otherDb.remove(doc)
+
+                        })
+
+                        otherDb.insert(instance.theme)
+
+                    }
+
+            })
 
         }
-
-        this.userConfig = new Proxy(this.globalData.userConfig, {})
-
-        this.systemConfig = new Proxy(this.globalData.systemConfig, {})
-
-        if( !this.systemConfig.baseUrl ) {
-
-            this.firstInner = true
-
-        }
-
-        this.$touchStorage = new TouchStorage()
 
         this.connect = (qq, msg) => {
 
@@ -251,20 +146,21 @@ class TouchQ {
                 this.$app.start().then(async () => {
 
                     //登录成功后存储用户的QQ
-                    this.userConfig.user = qq
 
-                    //初始化QQ数据
+                    const userDb = this.$db.user
+
+                    userDb.update({"_id": this.userConfig._id},
+                        { $set: { user: qq } }, function(err, doc) {
+
+                        })
+
                     this.$userData = new UserData(this, qq)
 
                     this.$bot = this.$app._bots[0]
 
-                    this.$touchStorage.connect(this)
-
                     this.axios.defaults.baseURL = this.systemConfig.baseUrl
 
                     this.$bot.version_info = await this.$bot.$getVersionInfo()
-
-                    this.firstInner = false
 
                     msg ( {
 
@@ -304,18 +200,6 @@ class TouchQ {
 
     }
 
-    getDarkMode() {
-
-        return (this.globalData && this.globalData.darkMode) || false
-
-    }
-
-    setDarkMode(mode) {
-
-        return this.globalData.darkMode = mode
-
-    }
-
     async getClients() {
 
         const data = await this.axios.post("/get_online_clients")
@@ -324,70 +208,89 @@ class TouchQ {
 
     }
 
-    saveGlobalData() {
+    installSystem() {
 
-        this.globalStorage.set("globalData", this.globalData)
+        const instance = this
+
+        const systemDb = this.$db.system
+
+        systemDb.find({ } , function(err, docs) {
+
+            if(docs.length === 0) {
+
+                systemDb.insert({ baseUrl: "", keyCode: "" })
+
+                instance.firstInner = true
+
+                return
+
+            }
+
+            if(docs.length > 1) {
+
+                const first = docs[0]
+
+                docs.forEach(function(doc, index) {
+
+                    systemDb.remove(doc)
+
+                })
+
+                systemDb.insert(first)
+
+            }
+
+            if(docs[0]) instance.systemConfig = docs[0]
+
+            instance.$axios.defaults.baseURL = instance.systemConfig.baseUrl
+
+        })
 
     }
 
-    disconnect(chatListArray, chatMessageMap) {
+    installUser() {
 
-        let data = (this.$userData && this.$userData.data)
+        const systemDb = this.$db.user
 
-        if(typeof data !== 'object') {
+        if(this.firstInner) {
 
-            data = {}
+            return
 
         }
 
-        data.chatList = chatListArray
-        data.chatMessages = Array.from(chatMessageMap)
+        const instance = this
 
-        this.$userData.data = data
+        systemDb.find({  } , function(err, docs) {
 
-        this.$userData.saveData()
+            if(docs.length === 0) {
 
-        this.$app && this.$app.stop() && this.saveGlobalData()
+                return
 
-    }
+            }
 
-    async getGroupInfo(group) {
+            if(docs.length > 1) {
 
-        return this.axios.post("/get_group_info", { group_id: group });
+                const first = docs[0]
 
-        // const groupSession = this.session.group
-        //
-        // let groupInfos = groupSession.get("groupInfos")
-        //
-        // let groupInfo
-        //
-        // if(groupInfos) {
-        //
-        //     groupInfo = groupInfos[group]
-        //
-        //     if(groupInfo) {
-        //
-        //         const groupTitleSession = GroupTitleSession.fromObj(groupInfo.session && groupInfo.session.title)
-        //
-        //         if(groupTitleSession && groupTitleSession.checkValid()) return groupTitleSession.title
-        //
-        //     }
-        //
-        // } else {
-        //
-        //     groupInfos = []
-        //
-        // }
-        //
-        // groupInfo = await this.axios.post("/get_group_info")
-        //
-        // groupInfos[group] = groupInfo
-        //
-        // groupSession.set("groupInfos", groupInfos)
-        //
-        // console.log(groupInfo)
-        //
-        // return groupInfo.
+                docs.forEach(function(doc, index) {
+
+                    systemDb.remove(doc)
+
+                })
+
+                systemDb.insert(first)
+
+            }
+
+            if(docs[0].user === undefined) {
+
+                return
+
+            }
+
+            instance.userConfig = docs[0]
+
+        })
 
     }
 

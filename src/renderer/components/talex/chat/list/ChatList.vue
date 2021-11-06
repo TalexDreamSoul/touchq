@@ -178,11 +178,7 @@ export default {
       deep: true,
       handler(latest, old) {
 
-        this.$nextTick(() => {
-
-          this.updateTheme(latest)
-
-        })
+        this.updateTheme(latest)
 
       }
 
