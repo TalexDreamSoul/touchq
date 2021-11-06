@@ -8,11 +8,11 @@
 
     <div class="TalexDialog-ToolBar">
 
-      <el-icon @click.native="play = !play" :class="play ? 'el-icon-selected' : ''" class="el-icon el-icon-refresh"></el-icon>
-      <el-icon class="el-icon el-icon-refresh-left" @click.native="rotate -= 90"></el-icon>
+      <el-icon @click="play = !play" :class="play ? 'el-icon-selected' : ''" class="el-icon el-icon-refresh"></el-icon>
+      <el-icon class="el-icon el-icon-refresh-left" @click="rotate -= 90"></el-icon>
       <span class="content">{{ (scale * 100).toFixed(0) }}%</span>
-      <el-icon class="el-icon el-icon-refresh-right" @click.native="rotate += 90"></el-icon>
-      <el-icon class="el-icon el-icon-close" @click.native="handleClose"></el-icon>
+      <el-icon class="el-icon el-icon-refresh-right" @click="rotate += 90"></el-icon>
+      <el-icon class="el-icon el-icon-close" @click="handleClose"></el-icon>
 
     </div>
 
@@ -61,7 +61,7 @@ export default {
     visible: {
 
       immediate: true,
-      handler(latest, old) {
+      handler(latest) {
 
         setTimeout(() => {
 

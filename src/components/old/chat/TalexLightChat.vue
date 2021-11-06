@@ -4,7 +4,7 @@
 
     <el-main class="ContainerHolder" ref="bubbleContainer" @scroll="userScroll">
 
-      <div class="BubbleMessageContainer" @click="handleClickBubble" v-for="(msg, index) in msgs" :ref="'ref_' + index">
+      <div class="BubbleMessageContainer" @click="handleClickBubble" v-for="(msg, index) in msgs" :key="msg.msgId" :ref="'ref_' + index">
 
         <div :class="{ bubble_system: msg.type === 'system', bubble_left: msg.type === 'left', bubble_right: msg.type === 'right'}">
 
@@ -44,7 +44,22 @@
 
 import Global from '../cmd/Global'
 
+import { ref } from 'vue'
+
 export default {
+
+  setup() {
+
+    const TalexLightChat = ref(null)
+
+    return {
+
+      TalexLightChat
+
+    }
+
+  },
+
   name: "TalexLightChat",
 
   props: {
@@ -487,7 +502,7 @@ export default {
 
     clickAvatar(msg) {
 
-      this.$emit("clickAvatar", msg);
+      // this.$emit("clickAvatar", msg);
 
     },
 

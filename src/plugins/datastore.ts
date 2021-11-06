@@ -8,7 +8,7 @@ export class TEStorage {
     private localConfig = {
 
         config: <null|Map<string, any>>null,
-        configUrl: path.join(__dirname, './localConfig.json'),
+        configUrl: path.join('.', './localConfig.json'),
 
     }
 

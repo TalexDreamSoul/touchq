@@ -2,87 +2,79 @@
 
   <div class="ChatInputer-Page" ref="ChatInputer" @keydown.prevent.enter="sendMessage">
 
-    <keep-alive>
+    <div class="_input__toolbox">
 
-      <div class="_input__toolbox">
+      <FloatDialog>
 
-        <FloatDialog>
+        <template v-slot:display>
 
-          <template v-slot:display>
+          <div class="toolbox_icon">
 
-            <div class="toolbox_icon">
+            <el-icon class="el-icon-eleme"></el-icon>
 
-              <el-icon class="el-icon-eleme"></el-icon>
+          </div>
 
-            </div>
+        </template>
 
-          </template>
+        <template v-slot:dialog>
 
-          <template v-slot:dialog>
+          <p class="qq_face_title">经典表情</p>
 
-            <p class="qq_face_title">经典表情</p>
+          <div class="qq_face_dialog">
 
-            <div class="qq_face_dialog">
+            <div class="qq_face_line" :key="index" v-for="(array, index) in qq_face.array">
 
-              <div class="qq_face_line" v-for="(array, index) in qq_face.array">
-
-                <span class="qq_face" v-for="item in array">
+                <span class="qq_face" :key="item.order" v-for="item in array">
 
                   <img @mouseenter="qq_face_order = item.order" @mouseleave="qq_face_order = -1" class="qq_face_slot" alt="" :src="qq_face_order === item.order ? item.gif : item.png" />
 
                 </span>
 
-              </div>
-
             </div>
 
-          </template>
+          </div>
 
-        </FloatDialog>
+        </template>
 
-        <div class="toolbox_icon">
+      </FloatDialog>
 
-          <el-icon class="el-icon-scissors"></el-icon>
+      <div class="toolbox_icon">
 
-        </div>
-
-        <div class="toolbox_icon">
-
-          <el-icon class="el-icon-picture-outline"></el-icon>
-
-        </div>
-
-        <div class="toolbox_icon">
-
-          <el-icon class="el-icon-folder"></el-icon>
-
-        </div>
-
-        <div class="toolbox_icon">
-
-          <el-icon class="el-icon"></el-icon>
-
-        </div>
+        <el-icon class="el-icon-scissors"></el-icon>
 
       </div>
 
-    </keep-alive>
+      <div class="toolbox_icon">
 
-    <VueTribute ref="atTribute" class="tribute" :options="atOptions">
-
-      <div @paste.prevent="pasteData" @input="handleInput" @keydown="handleInput" ref="UserInputer" class="inputer" :contenteditable="!sending">
+        <el-icon class="el-icon-picture-outline"></el-icon>
 
       </div>
 
-      <div ref="sendButtonRef" class="sendButton" @click="sendMessage">
+      <div class="toolbox_icon">
 
-        <span v-show="!sending" class="content">发送</span>
-
-        <Loading v-show="sending" :color="textColor" class="loading"></Loading>
+        <el-icon class="el-icon-folder"></el-icon>
 
       </div>
 
-    </VueTribute>
+      <div class="toolbox_icon">
+
+        <el-icon class="el-icon"></el-icon>
+
+      </div>
+
+    </div>
+
+    <div @paste.prevent="pasteData" @input="handleInput" @keydown="handleInput" ref="UserInputer" class="inputer" :contenteditable="!sending">
+
+    </div>
+
+    <div ref="sendButtonRef" class="sendButton" @click="sendMessage">
+
+      <span v-show="!sending" class="content">发送</span>
+
+      <Loading v-show="sending" :color="textColor" class="loading"></Loading>
+
+    </div>
 
   </div>
 
@@ -92,7 +84,6 @@
 
 import FloatDialog from '../dialog/FloatDialog'
 
-import VueTribute from '../cmd/VueTribute.js'
 import Global from '../cmd/Global'
 import Loading from '../chat/icon/CircleLoading'
 
@@ -345,7 +336,7 @@ export default {
 
   components: {
 
-    VueTribute, Loading, FloatDialog
+    Loading, FloatDialog
 
   },
 

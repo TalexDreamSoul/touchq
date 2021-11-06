@@ -4,14 +4,14 @@
 
     <div class="searchBar" v-show="searchBar.allow">
 
-      <el-input clearable @keydown.native.enter="handleSearch" v-model="searchBarContent" placeholder="搜索"></el-input>
+      <el-input clearable @keydown.enter="handleSearch" v-model="searchBarContent" placeholder="搜索"></el-input>
 
     </div>
 
     <div class="ChatList-Items">
 
       <ChatterItem v-show="canShowChatterItem(item)" :badge="item.badge" :loading="item.loading" :album="item.album" :dark-mode="darkMode" :theme="theme"
-                   @click.native="selectChatIndex = index" class="ChatList-Item" v-for="(item, index) in chatList" :selected="selectChatIndex === index" :chat="item" />
+                   @click="selectChatIndex = index" class="ChatList-Item" v-for="(item, index) in chatList" :key="item.key" :selected="selectChatIndex === index" :chat="item" />
 
       <p class="ended_text" v-show="!searchBarContent">{{ chatList.length > 0 ? '我也是有底线的~' : '暂无数据' }}</p>
 

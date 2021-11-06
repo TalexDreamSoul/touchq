@@ -374,4 +374,6 @@ export class TouchQ {
 
 }
 
-export default new TouchQ()
+const $touchq = new TouchQ()
+
+export default $touchq

@@ -4,7 +4,7 @@
 
     <div :class="focus ? 'AsideFocus' : (hover ? 'AsideHover' : '')" class="TAsideInput-Aside"></div>
 
-    <el-input @focus="focus = true" @blur="focus = false" :class="focus ? 'InputFocus' : (hover ? 'InputHover' : '')" v-bind="$attrs" v-on="$listeners" :type="type" :placeholder="placeholder" :prefix-icon="prefix_icon" :suffix-icon="suffix_icon">
+    <el-input @focus="focus = true" @blur="focus = false" :class="focus ? 'InputFocus' : (hover ? 'InputHover' : '')" v-bind="$attrs" :type="type" :placeholder="placeholder" :prefix-icon="prefix_icon" :suffix-icon="suffix_icon">
 
       <template v-slot:prepend>
 

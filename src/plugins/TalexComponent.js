@@ -1,32 +1,39 @@
 // 自动注册组件
-import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 
-const requireComponents = require.context(
+export default {
 
-    './../components/talex',
+    install(app) {
 
-    true,
+        const requireComponents = require.context(
 
-    /[A-Z]\w+\.(vue)$/
+            './../components/talex',
 
-)
+            true,
 
-requireComponents.keys().forEach(fileName => {
+            /[A-Z]\w+\.(vue)$/
 
-    const componentConfig = requireComponents(fileName)
+        )
 
-    const componentName = upperFirst(camelCase(fileName.split('/').pop().replace(/\.\w+$/, '')))
+        requireComponents.keys().forEach(fileName => {
 
-    Vue.component(
+            const componentConfig = requireComponents(fileName)
 
-        componentName,
+            const componentName = upperFirst(camelCase(fileName.split('/').pop().replace(/\.\w+$/, '')))
 
-        componentConfig.default || componentConfig
+            app.components(
 
-    )
+                componentName,
 
-    // console.log("已注册: " + fileName + " @" + componentName)
+                componentConfig.default || componentConfig
 
-})
+            )
+
+            // console.log("已注册: " + fileName + " @" + componentName)
+
+        })
+
+    }
+
+}

@@ -2,7 +2,7 @@
 
   <div ref="AlbumContainer" class="AlbumContainer">
 
-    <div v-for="item in 5"></div>
+    <div v-for="item in 5" :key="item"></div>
 
   </div>
 
