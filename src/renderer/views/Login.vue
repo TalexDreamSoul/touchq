@@ -2,60 +2,46 @@
 
   <div class="Login-Page" ref="LoginPage" v-loading="loadingData">
 
-    <div v-show="isLogin">
+    <div class="LeftAside">
 
-      <div class="Login-bgContainer"></div>
-      <div class="Login-bgContainer"></div>
-      <div class="Login-bgContainer"></div>
-      <div class="Login-bgContainer"></div>
-      <div class="Login-bgContainer"></div>
+      <LiteImage></LiteImage>
 
     </div>
 
-    <div :class="isLogin ? 'Login-Main-Frame' : ''" class="Login-Main" @keydown.enter="isLogin" v-loading="isLogin">
+    <div class="RightAside">
 
-      <img :class="isLogin ? 'Login-Main-Avatar-Frame' : ''" alt="" :src='loginAvatar' />
+      <div v-show="isLogin">
 
-      <div class="loginForm">
-
-        <el-input placeholder="账号" v-model="loginForm.user"></el-input>
-
-        <el-button class="LoginButton" @click="login">登录</el-button>
-
-      </div>
-
-      <TipMentioner ref="mentioner" class="mentioner" content="测试提示"></TipMentioner>
-
-    </div>
-
-    <!--    配置系统默认项目的Dialog-->
-    <TalexDialog :visible="systemConfigDialogVisible" header-content="需要完成一些设置" :loading="systemConfigLoading">
-
-      <el-alert description="请先绑定远程服务器后登录" :closable="false" type="warning" show-icon></el-alert>
-
-      <div class="systemConfigForm">
-
-        <TAsideInput placeholder="远程服务器地址" v-model="systemConfig.baseUrl"></TAsideInput>
-        <TAsideInput placeholder="远程服务器密钥" type="password" v-model="systemConfig.keyCode"></TAsideInput>
-
-        <br />
-
-        <TBubbleButton class="verifyButton" @clicker="verifySystemConfig">验证</TBubbleButton>
+        <div class="Login-bgContainer"></div>
+        <div class="Login-bgContainer"></div>
+        <div class="Login-bgContainer"></div>
+        <div class="Login-bgContainer"></div>
+        <div class="Login-bgContainer"></div>
 
       </div>
 
+      <div :class="isLogin ? 'Login-Main-Frame' : ''" class="Login-Main" @keydown.enter="isLogin" v-loading="isLogin">
 
-    </TalexDialog>
+        <img :class="isLogin ? 'Login-Main-Avatar-Frame' : ''" alt="" :src='loginAvatar' />
 
-    <el-tooltip content="远程服务器设置">
+        <div class="loginForm">
 
-      <el-button class="ui_btn setting_btn" icon="el-icon-s-tools" circle plain @click="systemConfigDialogVisible = true"></el-button>
+          <el-input placeholder="远程服务器地址" v-model="systemConfig.baseUrl"></el-input>
+          <el-input placeholder="账号" v-model="loginForm.user"></el-input>
 
-    </el-tooltip>
+          <TBubbleButton class="LoginButton" @clicker="login">登录</TBubbleButton>
 
-    <div class="themeBtn">
+        </div>
 
-      <ThemeChange :default-mode="darkMode" :color="textColor" @modeChange="darkMode = !darkMode"></ThemeChange>
+        <TipMentioner ref="mentioner" class="mentioner" content="测试提示"></TipMentioner>
+
+      </div>
+
+      <div class="themeBtn">
+
+        <ThemeChange :default-mode="darkMode" :color="textColor" @modeChange="darkMode = !darkMode"></ThemeChange>
+
+      </div>
 
     </div>
 
@@ -83,9 +69,6 @@ export default {
 
       isLogin: false,
 
-      systemConfigDialogVisible: false,
-      systemConfigLoading: false,
-
       systemConfig: {
 
         baseUrl: "",
@@ -108,8 +91,6 @@ export default {
       if(this.$touchq.touchq_loaded) {
 
         clearInterval(interval)
-
-        this.systemConfigDialogVisible = this.$touchq.firstInner
 
         this.systemConfig = this.$touchq.systemConfig
         this.loginForm = this.$touchq.userConfig
@@ -203,34 +184,27 @@ export default {
 
     },
 
-    verifySystemConfig() {
-
-      this.systemConfigLoading = true
+    login() {
 
       const systemDb = this.$touchq.$db.system
 
       const instance = this
 
       systemDb.update({"_id": this.systemConfig._id},
+
           { $set: { baseUrl: this.systemConfig.baseUrl, keyCode: this.systemConfig.keyCode } }, function(err, doc) {
 
-        instance.systemConfigLoading = false
+            instance.systemConfigLoading = false
 
-        if(err !== undefined && err !== null) {
+            if(err !== undefined && err !== null) {
 
-          return instance.$alert('保存失败, 请检查应用是否拥有读写权限', '遇到了一些问题', {
-            confirmButtonText: '了解',
-          });
+              return instance.$alert('保存失败, 请检查应用是否拥有读写权限', '遇到了一些问题', {
+                confirmButtonText: '了解',
+              });
 
-        }
-
-        instance.systemConfigDialogVisible = false
+            }
 
       })
-
-    },
-
-    login() {
 
       this.$refs.mentioner.showTip('', 0)
       this.isLogin = true
@@ -276,6 +250,38 @@ export default {
 
 <style lang="scss">
 
+.LeftAside {
+
+  z-index: 1;
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 60%;
+  height: 100%;
+  //overflow: hidden;
+
+  box-shadow: 5px 0 10px rgba(128, 0, 128, 0.8);
+  background-color: rgba(128, 0, 128, 0.8);
+
+}
+
+.RightAside {
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 40%;
+  height: 100%;
+  overflow: hidden;
+
+  //background-color: rgba(203, 202, 202, 1);
+
+}
+
 .Login-Main-Avatar-Frame {
 
   transform: rotate(0);
@@ -305,33 +311,6 @@ export default {
 .Login-Main-Frame {
 
   transform: translate(-50%, -50%) translateY(-3%) scale(0.85) !important;
-
-}
-
-.el-alert--warning.is-light {
-
-  background-color: var(--mainColor) !important;
-
-}
-
-.systemConfigForm {
-
-  position: relative;
-
-  margin-top: 20px;
-
-  .TAsideInput-Page {
-
-    position: relative;
-
-    margin-bottom: 20px;
-
-    left: 2.5%;
-
-    max-width: 95%;
-    max-height: 38px;
-
-  }
 
 }
 
@@ -375,7 +354,7 @@ export default {
 
     transform: translate(-50%, -50%);
 
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 
   }
 
@@ -392,51 +371,7 @@ export default {
   margin: 0 5px 3px 3px;
 
   bottom: 15px;
-  left: 30px;
-
-}
-
-.setting_btn {
-
-  transform: rotate(-360deg);
-
-  transition: all 1.45s;
-
-}
-
-.setting_btn:hover {
-
-  transform: rotate(360deg);
-
-}
-
-.ui_btn, .ui_btn:focus {
-
-  position: absolute;
-
-  left: 0;
-  bottom: 0;
-
-  color: var(--textColor) !important;
-  margin: 0 5px 3px 3px;
-
-  background-color: rgba(0,0,0,0);
-  border: 0;
-
-}
-
-.ui_btn:hover {
-
-  color: var(--textColor) !important;
-  background-color: rgba(27, 124, 185, 0.4) !important;
-
-}
-
-.verifyButton {
-
-  position: relative;
-
-  width: 95%;
+  left: 5px;
 
 }
 
@@ -444,7 +379,7 @@ export default {
 
   position: absolute;
 
-  margin: 135px 0 0 -30px;
+  margin: 95px 0 0 -30px;
 
 }
 
@@ -455,8 +390,8 @@ export default {
   left: 50%;
   top: 50%;
 
-  height: 480px;
-  width: 520px;
+  height: 440px;
+  width: 420px;
 
   transform: translate(-50%, -50%) translateY(-2%);
 
@@ -474,7 +409,7 @@ export default {
 
     position: relative;
 
-    margin-top: 10px;
+    top: -10px;
     left: 5%;
 
     width: 90%;
@@ -519,8 +454,8 @@ export default {
   left: 50%;
   top: 50%;
 
-  height: 350px;
-  width: 380px;
+  height: 340px;
+  width: 360px;
 
   background-color: var(--hoverColor) !important;
   padding: 30px;
