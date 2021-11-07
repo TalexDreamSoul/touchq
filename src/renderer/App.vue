@@ -98,6 +98,13 @@ export default {
 
 <style lang="scss">
 
+::selection {
+
+  color: #fff;
+  background: #4593c4;
+
+}
+
 .appQuit {
 
   animation: appQuit .25s

@@ -256,7 +256,7 @@ export default {
 
         this.$touchq.connect(this.loginForm.user, msgFunc)
 
-      }, Math.round(Math.random() * 1500))
+      }, Math.round(Math.random() * 500))
 
     }
 
@@ -589,6 +589,8 @@ export default {
   .el-input {
 
     input {
+
+      padding: 10px 15px 10px 30px;
 
       border: 0;
       background-color: var(--mainColor);

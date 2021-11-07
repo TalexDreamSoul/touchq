@@ -63,11 +63,49 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .mentioner_loader {
 
   animation: mentioner_loader_frame 1.75s ease-in-out;
+
+}
+
+@keyframes barJoin {
+
+  0% {
+
+    color: rgba(0,0,0,0) !important;
+    border-radius: 0;
+    box-shadow: 0 0 5px rgba(0,0,0,0);
+    opacity: 0;
+    transform: scaleY(0);
+
+  }
+
+  60% {
+
+    color: rgba(0,0,0,0) !important;
+    border-radius: 0;
+    box-shadow: 5px 0 5px #1b7cb9;
+    width: 3px;
+    opacity: 1;
+    transform: scaleY(1) translateX(15px);
+
+  }
+
+  90% {
+
+    box-shadow: 5px 0 5px #1b7cb9;
+    transform: scaleY(1) translateX(0);
+
+  }
+
+  100% {
+
+    box-shadow: 5px 0 5px #1b7cb9;
+
+  }
 
 }
 
@@ -88,42 +126,6 @@ export default {
   100% {
 
     width: calc(100% - 20px);
-
-  }
-
-}
-
-@keyframes barJoin {
-
-  0% {
-
-    border-radius: 0;
-    box-shadow: 0 0 5px rgba(0,0,0,0);
-    opacity: 0;
-    transform: scaleY(0);
-
-  }
-
-  60% {
-
-    border-radius: 0;
-    box-shadow: 5px 0 5px #1b7cb9;
-    width: 3px;
-    opacity: 1;
-    transform: scaleY(1) translateX(15px);
-
-  }
-
-  90% {
-
-    box-shadow: 5px 0 5px #1b7cb9;
-    transform: scaleY(1) translateX(0);
-
-  }
-
-  100% {
-
-    box-shadow: 5px 0 5px #1b7cb9;
 
   }
 

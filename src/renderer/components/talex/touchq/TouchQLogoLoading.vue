@@ -86,26 +86,26 @@ export default {
   }
   @keyframes stroke {
     0% {
-      fill: var(--hoverColor);
-      stroke: var(--ThemeColor);
+      fill: #1b7cb9;
+      stroke: var(--hoverColor);
       stroke-dashoffset: 25%;
       stroke-dasharray: 0 50%;
       stroke-width: 0.2;
     }
     50% {
-      fill: var(--hoverColor);
-      stroke: var(--ThemeColor);
+      fill: #1b7cb9;
+      stroke: var(--hoverColor);
       stroke-width: 0.5;
     }
     70% {
-      fill: var(--hoverColor);
-      stroke: var(--ThemeColor);
+      fill: #1b7cb9;
+      stroke: var(--hoverColor);
       stroke-width: 1;
     }
     90%,
     100% {
       fill: var(--hoverColor);
-      stroke: var(--ThemeColor);
+      stroke: var(--hoverColor);
       stroke-dashoffset: -25%;
       stroke-dasharray: 50% 0;
       stroke-width: 0;
