@@ -36,7 +36,7 @@ const { shell } = require('electron');
 
 import { ipcRenderer } from 'electron'
 
-  export default {
+export default {
 
     name: 'talextouchqq',
 
@@ -176,7 +176,7 @@ import { ipcRenderer } from 'electron'
 
   border-radius: 3px;
 
-  background: url("https://github.githubassets.com/favicons/favicon.png") 3px/12px no-repeat rgba(9, 115, 198, 1);
+  background: url("https://github.githubassets.com/favicons/favicon.png") 3px/12px no-repeat #1d8fff;
 
   -webkit-app-region: no-drag;
   cursor: pointer
@@ -231,7 +231,7 @@ button {
 
   transition: all .25s;
 
-  -webkit-app-region: no-drag；
+  -webkit-app-region: no-drag
 
 }
 

@@ -77,7 +77,7 @@ export default {
     letter-spacing: 10px;
     font-size: 70px;
 
-    fill: rgba(72, 138, 204, 1);
+    fill: var(--hoverColor);
     stroke: rgba(54, 95, 160, 0);
     stroke-dashoffset: -25%;
     stroke-dasharray: 50% 0;
@@ -86,26 +86,26 @@ export default {
   }
   @keyframes stroke {
     0% {
-      fill: rgba(72, 138, 20, 0);
-      stroke: rgba(54, 95, 160, 1);
+      fill: var(--hoverColor);
+      stroke: var(--ThemeColor);
       stroke-dashoffset: 25%;
       stroke-dasharray: 0 50%;
       stroke-width: 0.2;
     }
     50% {
-      fill: rgba(72, 138, 20, 0);
-      stroke: rgba(54, 95, 160, 1);
+      fill: var(--hoverColor);
+      stroke: var(--ThemeColor);
       stroke-width: 0.5;
     }
     70% {
-      fill: rgba(72, 138, 20, 0);
-      stroke: rgba(54, 95, 160, 1);
+      fill: var(--hoverColor);
+      stroke: var(--ThemeColor);
       stroke-width: 1;
     }
     90%,
     100% {
-      fill: rgba(72, 138, 204, 1);
-      stroke: rgba(54, 95, 160, 0);
+      fill: var(--hoverColor);
+      stroke: var(--ThemeColor);
       stroke-dashoffset: -25%;
       stroke-dasharray: 50% 0;
       stroke-width: 0;
@@ -127,7 +127,7 @@ export default {
 
     overflow: visible;
 
-    transform: scale(0.5) translate(50%, 50%) translate(-14px, -25px)  scalex(.9);
+    transform: scalex(.9) scale(0.5) translate(50%, 50%) translate(-14px, -25px);
 
   }
 
@@ -141,8 +141,9 @@ export default {
   }
 
   .g-polygon-move {
+
     transform-origin: center center;
-    transform: scale(1.05);
+    transform: scale(1.05) translate(-4px, -4px);
     stroke: linear-gradinet(180deg, red, transprent);
     stroke-width:1.5;
     stroke-dasharray: 280, 700;

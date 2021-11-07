@@ -4,7 +4,17 @@
 
     <div class="LeftAside">
 
-      <LiteImage></LiteImage>
+      <ul class="bg-bubbles">
+        <li v-for="i in 10" :key="i"></li>
+      </ul>
+
+     <div class="AsideLiteImage">
+
+       <LiteImage></LiteImage>
+
+     </div>
+
+      <div class="Wave"></div>
 
     </div>
 
@@ -22,24 +32,22 @@
 
       <div :class="isLogin ? 'Login-Main-Frame' : ''" class="Login-Main" @keydown.enter="isLogin" v-loading="isLogin">
 
-        <img :class="isLogin ? 'Login-Main-Avatar-Frame' : ''" alt="" :src='loginAvatar' />
+        <div class="Login-AvatarContainer" :class="isLogin ? 'Login-Main-Avatar-Frame' : ''">
+
+          <img :class="{ avatarExpand: avatarExpand, avatarShrink: avatarShrink }" ref="loginAvatarRef" alt="" :src='loginAvatar' />
+
+        </div>
 
         <div class="loginForm">
 
-          <el-input placeholder="远程服务器地址" v-model="systemConfig.baseUrl"></el-input>
-          <el-input placeholder="账号" v-model="loginForm.user"></el-input>
+          <el-input prefix-icon="el-icon-s-platform" placeholder="远程服务器地址" v-model="systemConfig.baseUrl"></el-input>
+          <el-input prefix-icon="el-icon-s-custom" placeholder="账号" v-model="loginForm.user"></el-input>
 
           <TBubbleButton class="LoginButton" @clicker="login">登录</TBubbleButton>
 
         </div>
 
         <TipMentioner ref="mentioner" class="mentioner" content="测试提示"></TipMentioner>
-
-      </div>
-
-      <div class="themeBtn">
-
-        <ThemeChange :default-mode="darkMode" :color="textColor" @modeChange="darkMode = !darkMode"></ThemeChange>
 
       </div>
 
@@ -78,7 +86,10 @@ export default {
 
       loadingData: true,
       darkMode: false,
-      textColor: '#0d0d0d'
+      textColor: '#0d0d0d',
+
+      avatarShrink: false,
+      avatarExpand: false,
 
     }
 
@@ -123,9 +134,19 @@ export default {
 
         }
 
+        this.avatarExpand = false
+        this.avatarShrink = true
+
         this.avatarTimeOut = setTimeout(() => {
 
-          this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${latest.user}&s=100`
+          this.avatarShrink = false
+
+          setTimeout(() => {
+
+            this.avatarExpand = true
+            this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${latest.user}&s=100`
+
+          }, 450)
 
         }, 1000)
 
@@ -215,7 +236,7 @@ export default {
 
         if(!msg.access) {
 
-          this.$refs.mentioner.showTip(msg.msg, 2600)
+          this.$refs.mentioner.showTip(msg.msg, 2900)
 
         } else {
 
@@ -248,9 +269,172 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+
+.avatarShrink {
+
+  animation: avatarShrink .45s;
+
+}
+
+@keyframes avatarShrink {
+
+  0% {
+
+
+
+  }
+
+  5% {
+
+    transform: translate(-50%, -50%) scale(0.8);
+
+  }
+
+  100% {
+
+    transform: translate(-50%, -50%) translateY(-80px) scale(0.45);
+
+  }
+
+}
+
+.avatarExpand {
+
+  animation: avatarExpand .45s;
+
+}
+
+@keyframes avatarExpand {
+
+  0% {
+
+    transform: translate(-50%, -50%) translateY(200px) scale(0.45);
+
+  }
+
+  5% {
+
+    transform: translate(-50%, -50%) translateY(200px) scale(0.5);
+
+  }
+
+  100% {
+
+    transform: translate(-50%, -50%) translateY(0) scale(0.85);
+
+  }
+
+}
+
+</style>
+
 <style lang="scss">
 
 .LeftAside {
+
+  .bg-bubbles {
+    z-index: -1;
+    position: absolute;
+    // 使气泡背景充满整个屏幕；
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // 如果元素内容超出给定的宽度和高度，overflow 属性可以确定是否显示滚动条等行为；
+    overflow: hidden;
+    li {
+      position: absolute;
+      // bottom 的设置是为了营造出气泡从页面底部冒出的效果；
+      bottom: -160px;
+      // 默认的气泡大小；
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.15);
+      list-style: none;
+      // 使用自定义动画使气泡渐现、上升和翻滚；
+      animation: square 15s infinite;
+      transition-timing-function: linear;
+      // 分别设置每个气泡不同的位置、大小、透明度和速度，以显得有层次感；
+      &:nth-child(1) {
+        left: 10%;
+      }
+      &:nth-child(2) {
+        left: 20%;
+        width: 90px;
+        height: 90px;
+        animation-delay: 2s;
+        animation-duration: 7s;
+      }
+      &:nth-child(3) {
+        left: 25%;
+        animation-delay: 4s;
+      }
+      &:nth-child(4) {
+        left: 40%;
+        width: 60px;
+        height: 60px;
+        animation-duration: 8s;
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+      &:nth-child(5) {
+        left: 70%;
+      }
+      &:nth-child(6) {
+        left: 80%;
+        width: 120px;
+        height: 120px;
+        animation-delay: 3s;
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      &:nth-child(7) {
+        left: 32%;
+        width: 160px;
+        height: 160px;
+        animation-delay: 2s;
+      }
+      &:nth-child(8) {
+        left: 55%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 4s;
+        animation-duration: 15s;
+      }
+      &:nth-child(9) {
+        left: 25%;
+        width: 10px;
+        height: 10px;
+        animation-delay: 2s;
+        animation-duration: 12s;
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+      &:nth-child(10) {
+        left: 85%;
+        width: 160px;
+        height: 160px;
+        animation-delay: 5s;
+      }
+    }
+    // 自定义 square 动画；
+    @keyframes square {
+      0% {
+        opacity: 0.5;
+        transform: translateY(0px) rotate(45deg);
+      }
+      25% {
+        opacity: 0.75;
+        transform: translateY(-400px) rotate(90deg)
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-600px) rotate(135deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-1000px) rotate(180deg);
+      }
+    }
+  }
 
   z-index: 1;
   position: absolute;
@@ -258,17 +442,103 @@ export default {
   top: 0;
   left: 0;
 
-  width: 60%;
+  width: 70%;
   height: 100%;
   //overflow: hidden;
 
-  box-shadow: 5px 0 10px rgba(128, 0, 128, 0.8);
-  background-color: rgba(128, 0, 128, 0.8);
+  background-color: #1b7cb9;
 
+  .AsideLiteImage {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    height: 100%;
+    width: 100%;
+
+    transform: translate(-60%, -55%);
+
+  }
+
+  .Wave {
+
+    z-index: -1;
+    position: absolute;
+
+    top: 51%;
+    left: 76%;
+
+    height: 1200px;
+    width: 900px;
+
+    transform: translate(0%, -50%);
+
+    border-radius: 50%;
+    background-color: var(--mainColor);
+
+    //animation: rotate 5s infinite linear;
+
+    &:before {
+
+      content: "";
+      position: absolute;
+
+      top: -40px;
+      //left: 10%;
+
+      height: 1250px;
+      width: 1250px;
+
+      border-radius: 46%;
+      background-color: var(--mainColor);
+
+      opacity: 0.9;
+
+      animation: rotate 6s infinite ease-in-out;
+
+    }
+
+    &:after {
+
+      content: "";
+      position: absolute;
+
+      top: -50px;
+      //left: 10%;
+
+      height: 1250px;
+      width: 1200px;
+
+      border-radius: 44%;
+      background-color: var(--mainColor);
+
+      opacity: 0.3;
+
+      animation: rotate 8s infinite linear;
+
+    }
+
+  }
+
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, 0) rotateZ(0deg);
+  }
+  50% {
+    transform: translate(-50%, -2%) rotateZ(180deg);
+  }
+  100% {
+    transform: translate(-50%, 0%) rotateZ(360deg);
+  }
 }
 
 .RightAside {
 
+  z-index: 1;
   position: absolute;
 
   top: 0;
@@ -278,7 +548,7 @@ export default {
   height: 100%;
   overflow: hidden;
 
-  //background-color: rgba(203, 202, 202, 1);
+  background-color: var(--mainColor);
 
 }
 
@@ -294,15 +564,15 @@ export default {
 
   from {
 
-    transform: rotate(0);
-    filter: drop-shadow(0 0 5px var(--textColor));
+    transform: translate(-50%, 0) rotate(0);
+    box-shadow: 0 0 5px var(--textColor);
 
   }
 
   to {
 
-    transform: rotate(360deg);
-    filter: drop-shadow(0 0 30px var(--textColor));
+    transform: translate(-50%, 0) rotate(360deg);
+    box-shadow: 0 0 30px var(--textColor);
 
   }
 
@@ -340,6 +610,7 @@ export default {
 
       background-color: var(--mainColor) !important;
 
+      border-radius: 3px 3px 0 0;
       border-bottom: 1px solid #1b7cb9;
 
     }
@@ -364,22 +635,11 @@ export default {
 
 <style lang="scss" scoped>
 
-.themeBtn {
-
-  position: absolute;
-
-  margin: 0 5px 3px 3px;
-
-  bottom: 15px;
-  left: 5px;
-
-}
-
 .mentioner {
 
   position: absolute;
 
-  margin: 95px 0 0 -30px;
+  margin: 95px 0 0 -25px;
 
 }
 
@@ -437,15 +697,40 @@ export default {
 
   }
 
-  img {
+  .Login-AvatarContainer {
+
+    position: relative;
+
+    margin-bottom: -10px;
+
+    left: 50%;
+    top: -1%;
 
     min-width: 96px;
     min-height: 96px;
     max-width: 96px;
 
+    transform: translate(-50%, 0);
     border-radius: 50%;
 
-    filter: drop-shadow(0 0 3px var(--textColor));
+    background-color: rgba(128, 128, 128, 0.1);
+
+    overflow: hidden;
+
+    img {
+
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      width: 100%;
+
+      transform: translate(-50%, -50%) scale(0.85);
+
+      border-radius: 50%;
+
+    }
 
   }
 
