@@ -141,14 +141,10 @@ export default {
 
           this.avatarShrink = false
 
-          setTimeout(() => {
+          this.avatarExpand = true
+          this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${latest.user}&s=100`
 
-            this.avatarExpand = true
-            this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${latest.user}&s=100`
-
-          }, 450)
-
-        }, 1000)
+        }, 350)
 
       }
 
