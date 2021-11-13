@@ -11,9 +11,38 @@ export default new Router({
       component: require('@/views/Login').default
     },
     {
-      path: '/chat',
-      name: 'ChatPage',
-      component: require('@/views/chat/MainChat').default
+      path: '/chat_bar',
+      name: 'ChatBarPage',
+      component: require('@/views/chat/ChatBarRouter').default,
+
+      children: [
+
+        {
+          path: '/chat',
+          name: 'ChatPage',
+          component: require('@/views/chat/MainChat').default
+        },
+
+        {
+
+          path: '/contact/list',
+          name: 'ContactListPage',
+          component: require('@/views/list/ContactList').default,
+
+          children: [
+
+            {
+              path: '/contact/friend/:qq',
+              name: 'ContactFriendPage',
+              component: require('@/views/list/FriendContact').default
+            },
+
+          ]
+
+        }
+
+      ]
+
     },
     {
       path: '*',

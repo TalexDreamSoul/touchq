@@ -68,7 +68,50 @@ export default {
 }
 </script>
 
+<style lang="scss">
+
+.BubbleButton {
+
+  * {
+
+    color: var(--mainColor)
+
+  }
+
+}
+
+</style>
+
 <style lang="scss" scoped>
+
+.BubbleButton {
+
+  background-size: 400%;
+  background-image: linear-gradient(to right, #25a4f5, #1b7cb9, #25a4f5, #5198de);
+
+  &:hover {
+
+    animation: bubbleBgWaving 3.45s linear infinite;
+
+  }
+
+}
+
+@keyframes bubbleBgWaving {
+
+  0% {
+
+    background-position: 0;
+
+  }
+
+  100% {
+
+    background-position: -400%;
+
+  }
+
+}
 
 .BubbleButton::before {
 
@@ -81,7 +124,7 @@ export default {
   bottom: 0;
   right: 0;
 
-  border: 4px solid var(--mainColor);
+  border: 4px solid rgba(0,0,0,0);
   border-radius: 3px;
 
   transform: scale(1);

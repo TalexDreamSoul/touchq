@@ -1,10 +1,10 @@
 <template>
 
-  <div @mouseenter="hover = true" @mouseleave="hover = false" @focus="focus = true" @blur="focus = false" class="TAsideInput-Page">
+  <div @mouseenter="hover = true" @mouseleave="hover = false" @focus.native="doFocus = true" @blur.native="doFocus = false" class="TAsideInput-Page">
 
-    <div :class="focus ? 'AsideFocus' : (hover ? 'AsideHover' : '')" class="TAsideInput-Aside"></div>
+    <div :class="doFocus ? 'AsideFocus' : (hover ? 'AsideHover' : '')" class="TAsideInput-Aside"></div>
 
-    <el-input :class="focus ? 'InputFocus' : (hover ? 'InputHover' : '')" v-bind="$attrs" v-on="$listeners" :type="type" :placeholder="placeholder" :prefix-icon="prefix_icon" :suffix-icon="suffix_icon">
+    <el-input :class="doFocus ? 'InputFocus' : (hover ? 'InputHover' : '')" v-bind="$attrs" v-on="$listeners" :type="type" :placeholder="placeholder" :prefix-icon="prefix_icon" :suffix-icon="suffix_icon">
 
       <template v-slot:prepend>
 
@@ -80,7 +80,7 @@ export default {
     return {
 
       hover: false,
-      focus: false,
+      doFocus: false,
 
     }
 
@@ -93,26 +93,27 @@ export default {
 
 .TAsideInput-Page {
 
+  position: relative;
+
   .TAsideInput-Aside {
 
     position: absolute;
 
-    top: 0;
-    left: -1px;
+    top: 50%;
 
     width: 3px;
-    height: 100%;
+    height: 50%;
 
-    transform: scaleY(0);
+    transform: scaleY(0) translateY(-100%);
     transition: all .2s
 
   }
 
   .AsideHover {
 
-    transform: scaleY(1);
+    transform: scaleY(1) translateY(-50%);
 
-    border-radius: 0 3px 3px 0;
+    border-radius: 0 50% 50% 0;
     box-shadow: 2px 0 4px #1b7cb9;
 
     background-color: #1b7cb9;
@@ -125,9 +126,9 @@ export default {
 
     width: 5px;
 
-    transform: scaleY(1) translateX(1px);
+    transform: scaleY(1) translateY(-50%) translateX(1px);
 
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 50% 50% 0;
     box-shadow: 3px 0 6px #1b7cb9;
 
     background-color: #1b7cb9;
@@ -140,7 +141,7 @@ export default {
 
     position: relative;
 
-    border: 1px solid rgba(0,0,0,0);
+    border: 1px solid rgba(0,0,0,0.1);
     background-color: var(--mainColor);
 
     filter: drop-shadow(0 0 1px var(--mainColor));

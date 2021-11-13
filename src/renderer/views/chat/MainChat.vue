@@ -39,58 +39,7 @@
 
     </TalexDialog>
 
-<!--    设备信息 Dialog-->
-    <TalexDialog class="deviceDialog" :visible="deviceDialogVisible" header-content="设备信息">
-
-      <DeviceCardPad>
-
-
-
-      </DeviceCardPad>
-
-      <div class="deviceInfo">
-
-
-
-      </div>
-
-<!--      <el-carousel :interval="4000" type="card" height="200px">-->
-<!--        <el-carousel-item v-for="item in 6" :key="item">-->
-<!--          <h3 class="medium">{{ item }}</h3>-->
-<!--        </el-carousel-item>-->
-<!--      </el-carousel>-->
-
-    </TalexDialog>
-
     <TalexImgViewer @close="imgLookerVisible = false" :visible="imgLookerVisible" :src="imgLookerSrc"></TalexImgViewer>
-
-    <div class="statusBar">
-
-      <el-tooltip content="退出登录">
-        <div class="statusButton">
-
-          <QuitLoading :color="textColor" @clicker="quitLogin"></QuitLoading>
-
-        </div>
-      </el-tooltip>
-
-      <el-tooltip content="切换主题">
-        <div style="left: 30px" class="statusButton">
-
-          <ThemeChange :default-mode="darkMode" :color="textColor" @modeChange="modeChange"></ThemeChange>
-
-        </div>
-      </el-tooltip>
-
-      <el-tooltip content="设备信息">
-        <div style="left: 62px" class="statusButton">
-
-          <TIcon icon="el-icon-monitor" @clicker="deviceDialogVisible = true"></TIcon>
-
-        </div>
-      </el-tooltip>
-
-    </div>
 
   </div>
 
@@ -444,22 +393,6 @@ export default {
 
     },
 
-    quitLogin() {
-
-      const el = this.$refs.MainChatRef
-
-      el.style.transition = 'all .45s'
-      el.style.transform = 'translateY(300px)'
-      el.style.opacity = '0'
-
-      setTimeout(() => {
-
-        this.$router.push("/login")
-
-      }, 450)
-
-    },
-
     async processMessageChain(chain, contact) {
 
       let content = ""
@@ -747,21 +680,6 @@ export default {
 
 }
 
-.statusButton {
-
-  position: absolute;
-  display: inline-block;
-
-  left: -2px;
-  top: -2px;
-
-  width: 24px;
-  height: 24px;
-
-  margin-right: 8px;
-
-}
-
 .main-container {
 
   position: relative;
@@ -771,26 +689,6 @@ export default {
   min-height: 100%;
   height: 100%;
   max-height: 100%;
-
-}
-
-.statusBar {
-
-  position: absolute;
-
-  z-index: 310;
-
-  left: 0;
-  bottom: 0;
-  padding: 2px 0;
-
-  max-width: 20%;
-  width: 20%;
-  min-height: 30px;
-  height: 30px;
-  max-height: 25px;
-
-  background-color: var(--hoverColor)
 
 }
 

@@ -10,7 +10,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
 [![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
-[![GitHub release](https://img.shields.io/badge/release-1.2.1--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
+[![GitHub release](https://img.shields.io/badge/release-2.0.0-Lite--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
 
 </div>
 
@@ -20,6 +20,8 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 
 <div align="center">
 </div>
+
+> 目前正在研究 mirai 协议，较长一段时间内不会更新。
 
 > 介于目前开发未完成, 问题较多, 故请各位先耐心等待.
 

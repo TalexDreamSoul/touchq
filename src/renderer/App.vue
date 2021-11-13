@@ -10,7 +10,7 @@
 
         TalexTouchChat&nbsp;
 
-        <span class="beta">Beta 1.2.1</span>
+        <span class="beta"><span class="lite">2.0.0-Lite</span></span>
         <span class="github" @click="openGitHub">GitHub&nbsp;</span>
 
       </span>
@@ -36,7 +36,7 @@ const { shell } = require('electron');
 
 import { ipcRenderer } from 'electron'
 
-  export default {
+export default {
 
     name: 'talextouchqq',
 
@@ -98,6 +98,13 @@ import { ipcRenderer } from 'electron'
 
 <style lang="scss">
 
+::selection {
+
+  color: #fff;
+  background: #4593c4;
+
+}
+
 .appQuit {
 
   animation: appQuit .25s
@@ -123,7 +130,48 @@ import { ipcRenderer } from 'electron'
 
   border-radius: 3px;
 
-  background-color: rgba(255, 0, 0, 0.7);
+  background-color: rgba(255, 0, 0, 0.8);
+
+}
+
+.lite {
+
+  padding: 2px 3px 1px 3px;
+
+  left: 2px;
+
+  border-radius: 3px;
+
+  background: black linear-gradient(to bottom right, black, black, black, white, white) no-repeat 0 0;
+  background-size: 50% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  text-decoration: underline;
+
+  -webkit-animation: slideShine 1.25s linear infinite;animation: slideShine 1.25s linear infinite;
+
+}
+
+@-webkit-keyframes slideShine {
+
+  0% {
+
+    background-position: -100%;
+
+  }
+
+  35% {
+
+    background-position: 100%;
+
+  }
+
+  100% {
+
+    background-position: 300%;
+
+  }
 
 }
 
@@ -135,7 +183,7 @@ import { ipcRenderer } from 'electron'
 
   border-radius: 3px;
 
-  background: url("https://github.githubassets.com/favicons/favicon.png") 3px/12px no-repeat rgba(9, 115, 198, 1);
+  background: url("https://github.githubassets.com/favicons/favicon.png") 3px/12px no-repeat #1d8fff;
 
   -webkit-app-region: no-drag;
   cursor: pointer
@@ -190,7 +238,7 @@ button {
 
   transition: all .25s;
 
-  -webkit-app-region: no-drag；
+  -webkit-app-region: no-drag
 
 }
 
@@ -236,6 +284,7 @@ body {
 
   --textColor: #0d0d0d;
   --subTextColor: grey;
+  --ScrollColor: rgba(0, 0, 0, 0.3);
 
   * {
 
