@@ -39,29 +39,6 @@
 
     </TalexDialog>
 
-<!--    设备信息 Dialog-->
-    <TalexDialog class="deviceDialog" :visible="deviceDialogVisible" header-content="设备信息">
-
-      <DeviceCardPad>
-
-
-
-      </DeviceCardPad>
-
-      <div class="deviceInfo">
-
-
-
-      </div>
-
-<!--      <el-carousel :interval="4000" type="card" height="200px">-->
-<!--        <el-carousel-item v-for="item in 6" :key="item">-->
-<!--          <h3 class="medium">{{ item }}</h3>-->
-<!--        </el-carousel-item>-->
-<!--      </el-carousel>-->
-
-    </TalexDialog>
-
     <TalexImgViewer @close="imgLookerVisible = false" :visible="imgLookerVisible" :src="imgLookerSrc"></TalexImgViewer>
 
   </div>

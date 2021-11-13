@@ -6,8 +6,8 @@
 
       <ul class="AsideMenu">
 
-        <li @click="selectMenuIndex = 0"><MessageIcon :selected="selectMenuIndex === 0"></MessageIcon></li>
-        <li @click="selectMenuIndex = 1"><ListIcon :selected="selectMenuIndex === 1"></ListIcon></li>
+        <li @click="gotoChat()"><MessageIcon :selected="selectMenuIndex === 0"></MessageIcon></li>
+        <li @click="gotoList()"><ListIcon :selected="selectMenuIndex === 1"></ListIcon></li>
 
       </ul>
 
@@ -27,7 +27,11 @@
 
     <div class="ChatBarRouter-RightAside">
 
-      <router-view></router-view>
+      <keep-alive>
+
+        <router-view></router-view>
+
+      </keep-alive>
 
     </div>
 
@@ -52,6 +56,22 @@ export default {
   },
 
   methods: {
+
+    gotoChat() {
+
+      this.$router.push("/chat")
+
+      this.selectMenuIndex = 0
+
+    },
+
+    gotoList() {
+
+      this.$router.push("/contact/list")
+
+      this.selectMenuIndex = 1
+
+    },
 
     quitLogin() {
 
@@ -162,18 +182,15 @@ export default {
     z-index: 2;
     position: absolute;
 
+    padding-left: 5px;
+
     height: 100%;
-    width: 50px;
+    width: 55px;
 
     opacity: 0.8;
 
     background-color: var(--ThemeColor);
     box-shadow: 3px 0 5px var(--hoverColor);
-
-    //background-size: 500% 500%;
-    //background-image: linear-gradient(to bottom, #42acf1, #25a4f5, #6ebdf5, #38a7ee, #1b7cb9, #1b7cb9, #25a4f5, #1660a8, #25a4f5, #1660a8, #25a4f5, #1b7cb9, #25a4f5, #1b7cb9, #1b7cb9);
-
-    //animation: LeftAsideWaving 120s infinite linear;
 
   }
 
@@ -183,10 +200,10 @@ export default {
     position: absolute;
 
     top: 0;
-    left: 50px;
+    left: 60px;
 
     height: 100%;
-    width: calc(100% - 50px);
+    width: calc(100% - 60px);
 
     overflow: hidden;
 

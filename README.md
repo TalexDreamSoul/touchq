@@ -21,6 +21,8 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 <div align="center">
 </div>
 
+> 目前正在研究 mirai 协议，较长一段时间内不会更新。
+
 > 介于目前开发未完成, 问题较多, 故请各位先耐心等待.
 
 ## 使用协议

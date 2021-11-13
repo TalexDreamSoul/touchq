@@ -23,6 +23,24 @@ export default new Router({
           component: require('@/views/chat/MainChat').default
         },
 
+        {
+
+          path: '/contact/list',
+          name: 'ContactListPage',
+          component: require('@/views/list/ContactList').default,
+
+          children: [
+
+            {
+              path: '/contact/friend/:qq',
+              name: 'ContactFriendPage',
+              component: require('@/views/list/FriendContact').default
+            },
+
+          ]
+
+        }
+
       ]
 
     },

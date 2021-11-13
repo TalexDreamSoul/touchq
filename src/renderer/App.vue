@@ -284,6 +284,7 @@ body {
 
   --textColor: #0d0d0d;
   --subTextColor: grey;
+  --ScrollColor: rgba(0, 0, 0, 0.3);
 
   * {
 

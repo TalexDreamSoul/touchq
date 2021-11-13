@@ -58,7 +58,7 @@ export default {
 
       filter: contrast(10) hue-rotate(0);
 
-      animation: headRounding 1.05s infinite ease-in-out;
+      animation: headRounding 1.05s ease-in-out;
 
     }
 
@@ -68,7 +68,7 @@ export default {
 
       filter: contrast(10) hue-rotate(0);
 
-      animation: bodyMove 1.05s infinite ease-in-out;
+      animation: bodyMove 1.05s ease-in-out;
 
     }
 
