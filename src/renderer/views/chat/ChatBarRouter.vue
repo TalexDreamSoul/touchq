@@ -27,11 +27,7 @@
 
     <div class="ChatBarRouter-RightAside">
 
-      <keep-alive>
-
-        <router-view></router-view>
-
-      </keep-alive>
+      <router-view></router-view>
 
     </div>
 
@@ -44,6 +40,16 @@ export default {
 
   name: "ChatBarRouter",
 
+  created() {
+
+    if( !this.$touchq.$userData ) {
+
+      this.$router.push('/login')
+
+    }
+
+  },
+
   data() {
 
     return {
@@ -51,13 +57,30 @@ export default {
       selectMenuIndex: 0,
       nowUser: this.$touchq.$userData.$nowUser,
 
+      darkMode: false,
+      textColor: '#0d0d0d',
+
     }
 
   },
 
   methods: {
 
+    updateTheme(theme) {
+
+      document.body.style.setProperty('--ThemeColor', theme.themeColor)
+      document.body.style.setProperty('--mainColor', theme.mainColor)
+      document.body.style.setProperty('--hoverColor', theme.hoverColor)
+      document.body.style.setProperty('--textColor', theme.textColor)
+      document.body.style.setProperty('--subTextColor', theme.subTextColor)
+
+      this.textColor = theme.textColor
+
+    },
+
     gotoChat() {
+
+      if( this.selectMenuIndex === 0 ) return
 
       this.$router.push("/chat")
 
@@ -66,6 +89,8 @@ export default {
     },
 
     gotoList() {
+
+      if( this.selectMenuIndex === 1 ) return
 
       this.$router.push("/contact/list")
 

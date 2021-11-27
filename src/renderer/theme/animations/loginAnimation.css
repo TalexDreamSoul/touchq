@@ -1,0 +1,89 @@
+@keyframes rotate {
+    0% {
+        transform: translate(-50%, 0) rotateZ(0deg);
+    }
+    50% {
+        transform: translate(-50%, -2%) rotateZ(180deg);
+    }
+    100% {
+        transform: translate(-50%, 0%) rotateZ(360deg);
+    }
+}
+
+@keyframes avatarFrame {
+
+    from {
+
+        transform: translate(-50%, 0) rotate(0);
+        box-shadow: 0 0 5px var(--textColor);
+
+    }
+
+    to {
+
+        transform: translate(-50%, 0) rotate(360deg);
+        box-shadow: 0 0 30px var(--textColor);
+
+    }
+
+}
+
+@keyframes circling {
+
+    0%, 100% {
+
+        transform: translate(-50%, -50%) translateY(-2%) rotate(360deg) scale(1.1, 1.105);
+
+    }
+
+    50% {
+
+        transform: translate(-50%, -50%) translateY(-2%) rotate(0);
+
+    }
+
+}
+
+@keyframes avatarShrink {
+
+    0% {
+
+
+
+    }
+
+    5% {
+
+        transform: translate(-50%, -50%) scale(0.8);
+
+    }
+
+    100% {
+
+        transform: translate(-50%, -50%) translateY(-80px) scale(0.45);
+
+    }
+
+}
+
+@keyframes avatarExpand {
+
+    0% {
+
+        transform: translate(-50%, -50%) translateY(200px) scale(0.45);
+
+    }
+
+    5% {
+
+        transform: translate(-50%, -50%) translateY(200px) scale(0.5);
+
+    }
+
+    100% {
+
+        transform: translate(-50%, -50%) translateY(0) scale(0.85);
+
+    }
+
+}

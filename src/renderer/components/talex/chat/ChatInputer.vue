@@ -425,7 +425,7 @@ body {
   --scrollColor: rgba(0, 0, 0, 0.3);
   --buttonBg: #ebebeb;
   --hoverBg: #e0dfdf;
-  --textColor: #e0dfdf;
+  //--textColor: #e0dfdf;
 
 }
 

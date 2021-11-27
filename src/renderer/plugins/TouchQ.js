@@ -1,75 +1,239 @@
-
 import Vue from 'vue'
 
 import DataStore from './datastore'
 import axios from 'axios'
+import Moment from "moment";
 
-import { App, Bot } from 'koishi'
-
-import 'koishi-adapter-onebot'
+const { createClient } = require("oicq")
 
 class UserData {
 
-    constructor(touchq, qq) {
+    constructor(who, touchq) {
 
+        this.$nowUser = who
         this.$touchq = touchq
-        this.$nowUser = qq
 
-        const mainDb = this.$mainDb = touchq.$db.main
+        this.friendMap = new Map()
+        this.groupMap = new Map()
 
-        const instance = this
+        this.privateEventMessages()
+        this.groupEventMessages()
 
-        mainDb.find({ qq } , function(err, docs) {
+    }
 
-            if(docs.length === 0) {
+    async getFriendList() {
 
-                mainDb.insert( { qq } , function(err, doc) {
+        if( !this.friendListGotTime || new Date() - this.friendListGotTime > 300000 * 60 ) {
 
-                    console.log("@Insert: ", doc)
+            await this.$touchq.client.reloadFriendList()
 
-                  instance.data = doc
+        }
 
-                })
+        this.friendListGotTime = new Date()
 
-                return
+        return this.$touchq.client.getFriendList()
 
-            }
+    }
 
-            if(docs.length > 1) {
+    async getGroupList() {
 
-                docs.forEach(function(doc, index) {
+        if( !this.groupListGotTime || new Date() - this.groupListGotTime > 300000 * 60 ) {
 
-                    if( index === 0 ) return
+            await this.$touchq.client.reloadGroupList()
 
-                    mainDb.remove(doc)
+        }
 
-                })
+        this.groupListGotTime = new Date()
 
-            }
+        return this.$touchq.client.getGroupList()
 
-            instance.data = docs[0]
+    }
+
+    onChatListEvent(func) {
+
+        this.chatListEventFunc = func
+
+    }
+
+    selectChats() {
+
+
+
+    }
+
+    //Group
+
+    groupEventMessages() {
+
+        this.$touchq.client.on('message.discuss', (e) => {
+
+            this.processGroupDiscussMsg(e)
+
+        })
+
+        this.$touchq.client.on('message.group', (e) => {
+
+            this.processGroupsMsg(e)
+
+        })
+
+        this.$touchq.client.on('message.group.anonymous', (e) => {
+
+            this.processAnonymousGroupsMsg(e)
+
+        })
+
+        this.$touchq.client.on('message.group.normal', (e) => {
+
+            this.processNormalGroupMsg(e)
 
         })
 
     }
 
-    saveData() {
+    processGroupDiscussMsg(e) {
 
-        const instance = this
+        console.log("讨论组", e)
 
-        if(!(this.data && this.data._id)) {
+    }
 
-            this.$mainDb.insert( { qq: this.$nowUser, data: this.data }, function(err, doc) {
+    processGroupsMsg(e) {
 
-            })
 
-        } else {
 
-            this.$mainDb.update( { _id: this.data._id }, { $set: this.data }, function(err, doc) {
+    }
 
-            })
+    processAnonymousGroupsMsg(e) {
+
+
+
+    }
+
+    processNormalGroupMsg(e) {
+
+        const obj = {
+
+            type: e.message_type,
+            subType: e.sub_type,
+
+            msgId: e.message_id,
+            seq: e.seq,
+
+            message: e.message,
+            content: e.raw_message,
+
+            sender: e.sender,
+            group: {
+
+                type: 'normal',
+                groupId: e.group_id,
+                groupName: e.group_name,
+                block: e.block,
+                anonymous: e.anonymous,
+                '@me': e.atme,
+                '@all': e.atall,
+              ...e.group
+
+            },
+
+            time: e.time,
+            auto_reply: e.auto_reply
 
         }
+
+        this.friendMap.set(e.message_id, obj)
+
+        this.chatListEventFunc(obj)
+
+        console.log(e)
+
+    }
+
+    //Private
+
+    privateEventMessages() {
+
+        this.$touchq.client.on('message.private.friend', (e) => {
+
+            this.processPrivateFriendMsg(e)
+
+        })
+
+        this.$touchq.client.on('message.private.group', (e) => {
+
+            this.processPrivateGroupMsg(e)
+
+        })
+
+        this.$touchq.client.on('message.private.other', (e) => {
+
+            this.processPrivateOtherMsg(e)
+
+        })
+
+        this.$touchq.client.on('message.private.self', (e) => {
+
+            this.processPrivateSelfDeviceMsg(e)
+
+        })
+
+    }
+
+    processPrivateFriendMsg(e) {
+
+        const obj = {
+
+            msgId: e.message_id,
+            time: e.time,
+            seq: e.seq,
+            message: e.message,
+            content: e.raw_message,
+            type: e.message_type,
+            subType: e.sub_type,
+            sender: e.sender,
+            auto_reply: e.auto_reply
+
+        }
+
+        this.friendMap.set(e.message_id, obj)
+
+        this.chatListEventFunc(obj)
+
+    }
+
+    // 我的其他设备消息
+    processPrivateSelfDeviceMsg(e) {
+
+        const obj = {
+
+            msgId: e.message_id,
+            time: e.time,
+            seq: e.seq,
+            message: e.message,
+            content: e.raw_message,
+            type: e.message_type,
+            subType: e.sub_type,
+            sender: e.sender,
+            auto_reply: e.auto_reply
+
+        }
+
+        this.friendMap.set(e.message_id, obj)
+
+        this.chatListEventFunc(obj)
+
+    }
+
+    // 群临时会话消息
+    processPrivateGroupMsg(e) {
+
+        console.log("tempGroupPrivate", e)
+
+    }
+
+    processPrivateOtherMsg(e) {
+
+        console.log('privateOther', e)
 
     }
 
@@ -82,215 +246,137 @@ class TouchQ {
         this.$vue = this.__proto__.$vue
         this.$db = this.__proto__.$db
 
-        this.installSystem();
-        this.installUser()
-
-        this.touchq_loaded = true
-        this.session = undefined
         this.axios = axios
-
-        this.userConfig = { user: '10000' }
-        this.systemConfig = { baseUrl: "", keyCode: "" }
-
-        this.setTheme = (dark) => {
-
-            instance.theme = dark
-
-            const otherDb = this.$db.other
-            const instance = this
-
-            otherDb.update( {"_id": this.theme._id},
-                { $set: this.theme } , function(err, docs) {
-
-                    instance.theme = docs[0]
-
-                    if(docs.length > 1) {
-
-                        docs.forEach(function(doc, index) {
-
-                            otherDb.remove(doc)
-
-                        })
-
-                        otherDb.insert(instance.theme)
-
-                    }
-
-            })
-
-        }
-
-        this.connect = (qq, msg) => {
-
-            try {
-
-                this.$app = new App({
-
-                    server: this.systemConfig.baseUrl,
-                    // secret: this.systemConfig.keyCode,
-                    port: 6643,
-                    selfId: qq,
-                    type: 'onebot:http',
-                    nickname: 'tq',
-                    prefix: '/',
-                    onebot: {
-
-                        path: '/touchq'
-
-                    },
-
-                })
-
-                this.$app.plugin(require('koishi-plugin-common'))
-
-                this.$app.start().then(async () => {
-
-                    //登录成功后存储用户的QQ
-
-                    const userDb = this.$db.user
-
-                    userDb.update({"_id": this.userConfig._id},
-                        { $set: { user: qq } }, function(err, doc) {
-
-                        })
-
-                    this.$userData = new UserData(this, qq)
-
-                    this.$bot = this.$app._bots[0]
-
-                    this.axios.defaults.baseURL = this.systemConfig.baseUrl
-
-                    this.$bot.version_info = await this.$bot.$getVersionInfo()
-
-                    msg ( {
-
-                        access: true
-
-                    } )
-
-                }).catch(err => {
-
-                    console.error( err )
-
-                    msg ( {
-
-                        access: false,
-                        msg: err.message
-
-                    } )
-
-                })
-
-            } catch( err ) {
-
-                console.error( err )
-
-                msg( {
-
-                    access: false,
-                    msg: err.message
-
-                } )
-
-            }
-
-        }
 
         console.log(this)
 
     }
 
-    async getClients() {
+    loginSuccess() {
 
-        const data = await this.axios.post("/get_online_clients")
-
-        return data.data.data
+        this.$userData = new UserData(this.client.uin, this)
 
     }
 
-    installSystem() {
+    submitSlider() {
 
-        const instance = this
+        this.client.submitSlider()
 
-        const systemDb = this.$db.system
+    }
 
-        systemDb.find({ } , function(err, docs) {
+    loginProcess(msgFunc) {
 
-            if(docs.length === 0) {
+        this.client
 
-                systemDb.insert({ baseUrl: "", keyCode: "" })
+            .on("internal.online", (e) => {
 
-                instance.firstInner = true
+                this.loginSuccess()
 
-                return
+                msgFunc(true)
 
+            })
+
+            .on('internal.error.network', (code, msg) => console.warn(code, msg))
+
+            .on('system.login.error', (e) => {
+
+                if(e.code === 237)
+                    msgFunc(false, { type: 'error', message: e.message })
+
+                if(e.code === 1)
+                    msgFunc(false, { type: 'error', message: e.message })
+
+                console.warn(e)
+
+            })
+
+            .on('internal.error.qrcode', (code, msg) => {
+
+                if(code === 0) {
+
+                    msgFunc(false, { type: 'error', message: msg })
+
+                }
+
+                console.log("QRCODE-ERROR", code, msg)
+
+            })
+
+            .on('system.login.device', (e) => {
+
+                msgFunc(false, { type: 'device', e })
+
+            })
+
+            .on('system.login.slider', (e) => {
+
+                msgFunc(false, { type: 'slider', e })
+
+            })
+
+            // .on('internal.verbose', (e) => console.log(e))
+
+    }
+
+    async submitQrCodeLogin() {
+
+        await this.client.qrcodeLogin()
+
+    }
+
+    loginWithCode(number, qrCodeReturn, msgFunc) {
+
+        this.client = createClient(number, this.getLoginConfig())
+            .on("system.login.qrcode", function (e) {
+
+            function toBase64(arr) {
+                //arr = new Uint8Array(arr) if it's an ArrayBuffer
+                return btoa(
+                    arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
             }
 
-            if(docs.length > 1) {
-
-                const first = docs[0]
-
-                docs.forEach(function(doc, index) {
-
-                    systemDb.remove(doc)
-
-                })
-
-                systemDb.insert(first)
-
-            }
-
-            if(docs[0]) instance.systemConfig = docs[0]
-
-            instance.$axios.defaults.baseURL = instance.systemConfig.baseUrl
+            qrCodeReturn(`data:image/png;base64,${toBase64( e.image)}`)
 
         })
 
+        this.loginProcess(msgFunc)
+
+        this.client.login()
+
     }
 
-    installUser() {
+    async login(account, password, msgFunc) {
 
-        const systemDb = this.$db.user
+        const client = createClient(account, this.getLoginConfig())
 
-        if(this.firstInner) {
+        this.client = client
 
-            return
+        this.loginProcess(msgFunc)
+
+        client.login(password)
+
+    }
+
+    sendSmsVerifyCode(phoneNumber) {
+
+        const client = createClient(phoneNumber)
+
+        this.client = client
+
+        client.sendSmsCode()
+
+    }
+
+    getLoginConfig() {
+
+        return {
+
+            platform: 5,
+            /** 群聊过滤自己的消息(默认true) */
+            ignore_self: false,
 
         }
-
-        const instance = this
-
-        systemDb.find({  } , function(err, docs) {
-
-            if(docs.length === 0) {
-
-                return
-
-            }
-
-            if(docs.length > 1) {
-
-                const first = docs[0]
-
-                docs.forEach(function(doc, index) {
-
-                    systemDb.remove(doc)
-
-                })
-
-                systemDb.insert(first)
-
-            }
-
-            if(docs[0].user === undefined) {
-
-                return
-
-            }
-
-            instance.userConfig = docs[0]
-
-        })
 
     }
 

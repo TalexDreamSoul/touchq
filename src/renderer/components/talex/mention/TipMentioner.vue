@@ -32,7 +32,7 @@ export default {
 
       this.closeTip()
 
-      this.$nextTick(() => {
+      setTimeout(() => {
 
         this.content = content
         this.divVisible = true
@@ -47,7 +47,7 @@ export default {
 
         }
 
-      })
+      }, 200)
 
     },
 
@@ -113,18 +113,23 @@ export default {
 
   0% {
 
+    padding: 0;
     width: 0;
+    color: rgba(0,0,0,0);
 
   }
 
   60% {
 
+    padding: 0;
     width: 0;
+    color: rgba(0,0,0,0);
 
   }
 
   100% {
 
+    padding: 5px 0 5px 15px;
     width: calc(100% - 20px);
 
   }
@@ -136,17 +141,19 @@ export default {
   height: 20px;
   width: calc(100% - 20px);
 
-  background-color: var(--hoverColor);
+  padding: 5px 0 5px 15px;
+
+
 
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: left;
 
-  padding: 5px 0 5px 15px;
+  background-color: var(--themeOpacityColor);
+  border-radius: 0 5px 5px 0;
 
   color: var(--textColor);
-
-  //overflow: hidden;
+  backdrop-filter: blur(30px);
 
   &:before {
 
@@ -160,7 +167,7 @@ export default {
     height: 100%;
 
     border-radius: 0 5px 5px 0;
-    box-shadow: 5px 0 5px #1b7cb9;
+    box-shadow: 3px 0 5px #1b7cb9;
     background-color: #1b7cb9;
 
     animation: barJoin 1.75s ease-in-out;

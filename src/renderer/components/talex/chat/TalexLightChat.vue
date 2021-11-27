@@ -827,7 +827,6 @@ export default {
 .TalexLightChat-Page_container {
 
   --containerBg: #e0dddd;
-  --textColor: black;
   --bubble_left: #ffffff;
   --bubble_right: #74be96;
   --bubble_system: grey;

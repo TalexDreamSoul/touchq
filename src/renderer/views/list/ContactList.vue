@@ -37,12 +37,47 @@
 
         <ul :class="selectTab === 0 ? '' : 'ListLeft'" class="friend">
 
-          <li v-for="(contact, index) in friend.tree" :key="contact.userId" @click="handleClickContact(contact, index)">
+          <a-tree blockNode :tree-data="friend.classes" show-icon>
 
-            <img :src="contact.avatar" alt="" />
-            <div><TMarquee class="marquee" :text="contact.username"></TMarquee></div>
+            <template slot="avatar" slot-scope="node">
 
-          </li>
+              <a-avatar :src="`https://q1.qlogo.cn/g?b=qq&s=640&nk=${node.dataRef.user_id}`"></a-avatar>
+
+            </template>
+
+            <template #title="{ key: treeKey, title, dataRef }">
+
+              <a-dropdown :trigger="['contextmenu']">
+
+                <span>{{ title }}</span>
+
+                <template #overlay>
+
+                  <a-menu>
+
+                    <template v-if="dataRef.children">
+
+                      <a-menu-item key="1" @click="changeClassName(dataRef)">修改组名</a-menu-item>
+                      <a-menu-item key="2" @click="deleteClass(dataRef)"><span style="color: red">删除分组</span></a-menu-item>
+
+                    </template>
+
+                    <template v-else>
+
+<!--                      <a-menu-item key="3">发送消息</a-menu-item>-->
+                      <a-menu-item key="4" @click="deleteFriend(dataRef)"><span style="color: red">删除好友</span></a-menu-item>
+
+                    </template>
+
+                  </a-menu>
+
+                </template>
+
+              </a-dropdown>
+
+            </template>
+
+          </a-tree>
 
         </ul>
 
@@ -83,6 +118,7 @@ export default {
 
       friend: {
 
+        classes: [],
         tree: [],
         select: -1,
 
@@ -95,24 +131,134 @@ export default {
 
       },
 
-
-
     }
 
   },
 
-  mounted() {
+  created() {
 
     this.$nextTick(async () => {
 
-      this.friend.tree = await this.$touchq.$bot.getFriendList()
-      this.group.tree = await this.$touchq.$bot.getGroupList()
+      const cls = Array.from(this.$touchq.client.classes.values())
+
+      this.friend.classes = []
+      cls.forEach((item, index) => {
+
+        this.friend.classes.push({ title: item, children: []})
+
+      })
+
+      this.friend.tree = await this.$touchq.$userData.getFriendList()
+
+      Array.from(this.friend.tree.values()).forEach((item, index) => {
+
+        this.friend.classes[item.class_id].children.push({
+
+          class_id: item.class_id, key: item.class_id + '-' + index,  title: item.nickname, remark: item.remark, sex: item.sex, user_id: item.user_id,
+          scopedSlots: { icon: 'avatar' }
+
+        })
+
+      })
+
+      this.group.tree = await this.$touchq.$userData.getGroupList()
+
+      console.log(this.friend, this.group)
 
     })
 
   },
 
   methods: {
+
+    changeClassName(dataRef) {
+
+      console.log(dataRef)
+
+    },
+
+    deleteClass(dataRef) {
+
+      console.log(dataRef)
+
+    },
+
+    deleteFriend(dataRef) {
+
+      const userId = dataRef.user_id;
+      this.$confirm('你确定要删除好友 <strong>' + dataRef.title + '(' + userId + ')</strong> 吗?<br /><br /><span style="color: red">删除后将失去关于他的一切信息</span>', '删除确认',
+
+          {
+
+        dangerouslyUseHTMLString: true,
+            distinguishCancelAndClose: true,
+            confirmButtonText: '删除',
+            cancelButtonText: '放弃'
+
+      }).then(async () => {
+
+        const res = await this.$touchq.client.deleteFriend(userId)
+
+        if( res ) {
+
+          const key = `delete-${dataRef.key}-${new Date()}`
+
+          this.$notify({
+
+            title: '删除成功',
+            dangerouslyUseHTMLString: true,
+            message: '你已删除好友 ' + dataRef.title + '(' + userId + ')<br /><br /><br /><el-button>加回</el-button>'
+
+          });
+
+          // this.$notification.open({
+          //
+          //   key,
+          //   message: '删除成功',
+          //   description:
+          //       '你已删除好友 ' + dataRef.title + '(' + userId + ')',
+          //   icon: <a-icon type="smile" style="color: #108ee9" />,
+          //   btn: h => {
+          //     return h(
+          //         'a-button',
+          //         {
+          //           props: {
+          //             type: 'primary',
+          //             size: 'small',
+          //           },
+          //           on: {
+          //             click: () => {
+          //
+          //               setTimeout(async() => {
+          //
+          //                 const res = await this.$touchq.client.addFriend(0, userId, '删除加回')
+          //
+          //                 this.$message.info('已发送加回请求!')
+          //
+          //                 // const res = await this.$touchq.client.pickFriend(userId)
+          //
+          //                 // console.log(res)
+          //
+          //                 this.$notification.close(key)
+          //
+          //               }, 200)
+          //
+          //             },
+          //           },
+          //         },
+          //         '加回',
+          //     );
+          //   }
+          //
+          // });
+
+        }
+
+      });
+
+      console.log(dataRef)
+
+    },
 
     handleClickContact(contact, index) {
 
@@ -137,6 +283,92 @@ export default {
 }
 </script>
 
+<style lang="scss">
+
+.contactList {
+
+  .ant-tree {
+
+    * {
+
+      animation: all .2s
+
+    }
+
+    .ant-tree-child-tree {
+
+      li {
+
+        .ant-avatar {
+
+          //position: relative;
+
+          left: -25px;
+          //top: 50%;
+
+          //transform: translateY(-50%);
+
+        }
+
+        .ant-tree-title {
+
+          position: relative;
+
+          top: 5px;
+          left: -5px;
+
+          &:hover {
+
+            background-color: var(--hoverColor);
+
+          }
+
+        }
+
+        padding: 10px;
+
+        .ant-tree-node-content-wrapper:hover, &:hover {
+
+          background-color: var(--hoverColor);
+
+        }
+
+      }
+
+      .ant-tree-treenode-selected {
+
+        background-color: var(--hoverColor);
+
+      }
+
+      .ant-tree-node-content-wrapper.ant-tree-node-selected {
+
+        background-color: var(--hoverColor) !important;
+
+      }
+
+    }
+
+    .ant-tree-node-content-wrapper.ant-tree-node-selected {
+
+      margin-bottom: 10px;
+
+      background-color: var(--mainColor);
+
+    }
+
+    .ant-tree-node-content-wrapper:hover {
+
+      background-color: var(--mainColor);
+
+    }
+
+  }
+
+}
+
+</style>
+
 <style lang="scss" scoped>
 
 .ListLeft {
@@ -159,9 +391,9 @@ export default {
 
     position: relative;
 
-    left: 212px;
+    left: calc(20% + 2px);
 
-    width: calc(100% - 212px);
+    width: calc(80% - 2px);
     height: 100%;
 
   }
@@ -175,13 +407,13 @@ export default {
       position: absolute;
       z-index: 0;
 
-      width: 210px;
+      width: 100%;
 
       padding: 0;
 
-      top: 80px;
+      top: 50px;
 
-      height: 100%;
+      height: calc(100% - 62px);
 
       background-color: var(--ThemeColor);
 
@@ -310,7 +542,7 @@ export default {
 
       .selected {
 
-        transform: translateY(5px);
+        transform: translateY(8px);
 
         .icon, span {
 
@@ -320,7 +552,7 @@ export default {
 
         &:hover {
 
-          transform: translateY(5px) scale(0.95);
+          transform: translateY(8px) scale(0.95);
 
           cursor: not-allowed;
 
@@ -365,7 +597,7 @@ export default {
 
           position: absolute;
 
-          left: 11px;
+          left: 13px;
           top: 5px;
 
         }
@@ -375,7 +607,7 @@ export default {
           position: absolute;
 
           left: 10px;
-          bottom: 5px;
+          bottom: -1px;
 
           font-size: 11px;
 
@@ -390,8 +622,9 @@ export default {
         width: 42px;
         height: 42px;
 
-        background-color: var(--ThemeColor);
+        background-color: var(--mainColor);
         border-radius: 50%;
+        //filter: drop-shadow(0 2px 3px var(--hoverColor));
 
         list-style-type: none;
         cursor: pointer;
@@ -400,6 +633,7 @@ export default {
 
       }
 
+      box-shadow: 0 3px 9px var(--hoverColor);
       filter: drop-shadow(0 2px 3px var(--hoverColor));
 
     }

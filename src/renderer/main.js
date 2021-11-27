@@ -4,6 +4,9 @@ import axios from 'axios'
 import App from './App'
 import router from './router'
 
+// import './plugins/Vuetify'
+import './plugins/AntDesign'
+
 import './plugins/element.js'
 //基于 ElementUI 先引入 ElementUI
 import './plugins/TalexComponent.js'
