@@ -319,7 +319,7 @@ export default {
 
         }
 
-        this.$refs.mentioner.showTip(msg, 2900)
+        this.$refs.mentioner.showTip(msg, -1)
 
       } else {
 
@@ -477,66 +477,6 @@ export default {
 
   }
 
-  .Wave {
-
-    z-index: -1;
-    position: absolute;
-
-    top: 51%;
-    left: 76%;
-
-    height: 1200px;
-    width: 900px;
-
-    transform: translate(0%, -50%);
-
-    border-radius: 50%;
-    background-color: var(--mainColor);
-
-    //animation: rotate 5s infinite linear;
-
-    &:before {
-
-      content: "";
-      position: absolute;
-
-      top: -40px;
-      //left: 10%;
-
-      height: 1250px;
-      width: 1250px;
-
-      border-radius: 46%;
-      background-color: var(--mainColor);
-
-      opacity: 0.9;
-
-      animation: rotate 6s infinite ease-in-out;
-
-    }
-
-    &:after {
-
-      content: "";
-      position: absolute;
-
-      top: -50px;
-      //left: 10%;
-
-      height: 1250px;
-      width: 1200px;
-
-      border-radius: 44%;
-      background-color: var(--mainColor);
-
-      opacity: 0.3;
-
-      animation: rotate 8s infinite linear;
-
-    }
-
-  }
-
 }
 
 .RightAside {
@@ -554,7 +494,7 @@ export default {
   backdrop-filter: blur(5px);
   background-color: rgba(255, 255, 255,.4);
 
-  border-radius: 15px;
+  border-radius: 5px;
 
 }
 
@@ -756,7 +696,7 @@ export default {
 
   padding: 30px;
 
-  border-radius: 10px;
+  border-radius: 3px;
   transform: translate(-50%, -50%) translateY(-5%);
 
   backdrop-filter: blur(5px);

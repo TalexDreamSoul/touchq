@@ -143,14 +143,12 @@ export default {
 
   padding: 5px 0 5px 15px;
 
-
-
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: left;
 
   background-color: var(--themeOpacityColor);
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 3px 3px 0;
 
   color: var(--textColor);
   backdrop-filter: blur(30px);
