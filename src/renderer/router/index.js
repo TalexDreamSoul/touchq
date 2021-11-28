@@ -37,6 +37,12 @@ export default new Router({
               component: require('@/views/list/FriendContact').default
             },
 
+            {
+              path: '/contact/group/:groupId',
+              name: 'ContactGroupPage',
+              component: require('@/views/list/GroupContact').default
+            },
+
           ]
 
         }

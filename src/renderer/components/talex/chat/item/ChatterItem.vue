@@ -1,17 +1,17 @@
 <template>
 
-  <div :class="{ 'ChatterItem-Page': true, 'ChatterItem-Selected': selected }" ref="ChatterItemContainerRef">
+  <div @mouseenter="hover = true" @mouseleave="hover = false" :class="{ 'ChatterItem-Page': true, 'ChatterItem-Selected': selected }" ref="ChatterItemContainerRef">
 
     <div class="badge" v-show="!badge.hidden"><span>{{ badge.content }}</span></div>
-    <img class="chat_icon" alt="无法加载图片" :src="chat.img" />
+    <el-avatar class="chat_icon" alt="无法加载图片" :src="chat.url"></el-avatar>
 
-    <span class="title">{{ chat.title }}</span>
+    <div class="title"><TMarquee :allow="hover" :speed=3 :text="chat.name"></TMarquee></div>
 
     <div class="content">
 
-      <Album class="album" v-show="album" :color="albumColor"></Album>
+<!--      <Album class="album" v-show="album" :color="albumColor"></Album>-->
 
-      {{ chat.latestContent }}
+      {{ chat.content }}
 
     </div>
 
@@ -24,13 +24,17 @@
 
 <script>
 
+import Moment from 'moment'
+
 import Album from '../icon/Album'
 import Loading from '../icon/Loading'
+import TMarquee from "../../others/TMarquee";
 
 export default {
   name: "ChatterItem",
 
   components: {
+    TMarquee,
 
     Album,
     Loading,
@@ -50,31 +54,6 @@ export default {
 
       type: [Boolean],
       default: false,
-
-    },
-
-    darkMode: {
-
-      type: [Boolean],
-      default: false,
-
-    },
-
-    theme: {
-
-      type: [Object],
-      default() {
-
-        return {
-
-          defaultBg: "#f5f6f7",
-          hoverBg: "#e0dfdf",
-          selectedBg: "#ebebeb",
-          textColor: "#000"
-
-        }
-
-      }
 
     },
 
@@ -114,53 +93,9 @@ export default {
 
     return {
 
-      albumColor: "#212121"
+      albumColor: "#212121",
 
-    }
-
-  },
-
-  watch: {
-
-    darkMode: {
-
-      immediate: true,
-      handler(newValue, old) {
-
-        if(newValue) {
-
-          this.changeTheme({
-
-            defaultBg: "#1c1c1c",
-            hoverBg: "#262626",
-            selectedBg: "#202020",
-            textColor: "#f5f5f5"
-
-          })
-
-        } else if(this.theme !== undefined) {
-
-          this.changeTheme(this.theme)
-
-        }
-
-      }
-
-    },
-
-    theme: {
-
-      immediate: true,
-      deep: true,
-      handler(newValue, old) {
-
-        if(!this.darkMode && newValue !== undefined) {
-
-          this.changeTheme(newValue);
-
-        }
-
-      }
+      hover: false,
 
     }
 
@@ -174,80 +109,11 @@ export default {
 
       val = parseInt(val) * 1000
 
-      const date = new Date(val)
-      const now = new Date()
+      Moment.locale("zh-cn")
 
-      const year = date.getFullYear();
-
-      if(now.getFullYear() > year) {
-
-        const month = (date.getMonth() + 1 + '').padStart(2, '0');
-        const d = (date.getDate() + 1 + '').padStart(2, '0');
-
-        return year + '-' + month + '-' + d
-
-      }
-
-      let period = now.getTime() - val
-
-      period += '0'
-
-      period += 0
-
-      if(period >= 7 * 24 * 3600000) {
-
-        const month = (date.getMonth() + 1 + '').padStart(2, '0');
-        const d = (date.getDate() + 1 + '').padStart(2, '0');
-
-        return month + '-' + d
-
-      }
-
-      if(period >= 24 * 3600000) {
-
-        period /= 24 * 3600000
-
-        const dayPrefix = (period === 1) ? '昨天' : period + '天前'
-
-        const hh = (date.getHours() + '').padStart(2, '0');
-        const mm = (date.getMinutes() + '').padStart(2, '0');
-
-        return dayPrefix + ' ' + hh + ':' + mm
-
-      }
-
-      const hh = (date.getHours() + '').padStart(2, '0');
-      const mm = (date.getMinutes() + '').padStart(2, '0');
-      const ss = (date.getSeconds() + '').padStart(2, '0');
-
-      return hh + ":" + mm + ":" + ss;
+      return Moment(val).fromNow()
 
     },
-
-      changeTheme(theme) {
-
-        const el = this.$refs.ChatterItemContainerRef;
-
-        if(!el) {
-
-          setTimeout(() => {
-
-            this.changeTheme(theme);
-
-          }, 500)
-
-          return
-
-        }
-
-        el.style.setProperty("--defaultBg", theme.defaultBg)
-        el.style.setProperty("--hoverBg", theme.hoverBg)
-        el.style.setProperty("--selectedBg", theme.selectedBg)
-        el.style.setProperty("--textColor", theme.textColor)
-
-        this.albumColor = theme.textColor
-
-      }
 
   }
 
@@ -351,41 +217,49 @@ export default {
 .content {
 
   position: absolute;
+  display: inline-block;
 
-  left: 70px;
+  left: 75px;
   top: 35px;
 
-  max-width: 50%;
+  width: 50%;
   height: 15px;
 
-  overflow: hidden;
-
-  font-size: 12px;
-
+  font-size: 11px;
   opacity: 0.75;
+  color: var(--textColor);
 
-  color: var(--textColor)
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
 }
 
 .title {
 
-  position: absolute;
+  position: relative;
+  display: inline-block;
 
-  left: 70px;
-  top: 10px;
+  left: 20px;
+  top: -18px;
+
+  margin-right: -90px;
 
   height: 20px;
-
-  max-width: 60%;
+  width: 60%;
 
   overflow: hidden;
 
   font-size: 15px;
 
-  //font-weight: bold;
+  color: var(--textColor);
 
-  color: var(--textColor)
+  div {
+
+    width: 100%;
+    height: 15px;
+
+  }
 
 }
 
@@ -394,15 +268,12 @@ export default {
   position: relative;
 
   width: 42px;
-  height: auto;
+  height: 42px;
 
   border-radius: 50%;
 
   top: 3px;
-  left: 5px;
-
-  //transform: translateY(-50%);
-  filter: drop-shadow(0 0 2px var(--textColor)) !important;
+  left: 10px;
 
 }
 
@@ -414,49 +285,39 @@ export default {
   left: 0;
 
   width: 100%;
+  min-height: 60px;
   height: 60px;
 
   padding: 8px 5px 8px 10px;
 
-  //overflow: hidden;
   cursor: pointer;
   box-sizing: border-box;
 
-  transition: all .005s;
+  transition: all .25s;
 
-  background-color: var(--defaultBg);
-
-  --defaultBg: #f5f6f7;
-  --hoverBg: #e0dfdf;
-  --selectedBg: #ebebeb;
-  --textColor: #000;
-
-  * {
-
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-
-  }
+  background-color: var(--mainOpacityColor);
+  backdrop-filter: blur(10px);
 
 }
 
-.ChatterItem-Selected::before {
-
-  position: absolute;
-  content: "";
-
-  left: 0;
-  top: 0;
-
-  width: 3px;
-  height: 100%;
-
-  background-color: #1b7cb9;
-  border-radius: 0 5px 5px 0;
-  box-shadow: 3px 0 6px #1b7cb9;
-
-  animation: selected .25s;
-
-}
+//.ChatterItem-Selected::before {
+//
+//  position: absolute;
+//  content: "";
+//
+//  left: 0;
+//  top: 0;
+//
+//  width: 3px;
+//  height: 100%;
+//
+//  //background-color: #1b7cb9;
+//  //border-radius: 0 5px 5px 0;
+//  //box-shadow: 3px 0 6px #1b7cb9;
+//
+//  animation: selected .25s;
+//
+//}
 
 @keyframes selected {
 
@@ -470,13 +331,13 @@ export default {
 
 .ChatterItem-Selected {
 
-  background-color: var(--selectedBg) !important;
+  filter: invert(10%);
 
 }
 
 .ChatterItem-Page:hover {
 
-  background-color: var(--hoverBg)
+  background-color: var(--hoverOpacityColor)
 
 }
 

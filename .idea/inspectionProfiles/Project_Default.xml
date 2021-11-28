@@ -1,0 +1,41 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="v-loading" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="17">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="tipmentioner" />
+            <item index="7" class="java.lang.String" itemvalue="tbubblebutton" />
+            <item index="8" class="java.lang.String" itemvalue="chatlist" />
+            <item index="9" class="java.lang.String" itemvalue="talexlightchat" />
+            <item index="10" class="java.lang.String" itemvalue="chatinputer" />
+            <item index="11" class="java.lang.String" itemvalue="talexdialog" />
+            <item index="12" class="java.lang.String" itemvalue="loading" />
+            <item index="13" class="java.lang.String" itemvalue="taleximgviewer" />
+            <item index="14" class="java.lang.String" itemvalue="ticon" />
+            <item index="15" class="java.lang.String" itemvalue="tmarquee" />
+            <item index="16" class="java.lang.String" itemvalue="a-menu-item" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+  </profile>
+</component>

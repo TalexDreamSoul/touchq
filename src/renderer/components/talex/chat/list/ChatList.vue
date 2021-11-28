@@ -10,7 +10,7 @@
 
     <div class="ChatList-Items">
 
-      <ChatterItem v-show="canShowChatterItem(item)" :badge="item.badge" :loading="item.loading" :album="item.album" :dark-mode="darkMode" :theme="theme"
+      <ChatterItem v-show="canShowChatterItem(item)" :badge="item.badge" :loading="item.loading" :album="item.album"
                    @click.native="selectChatIndex = index" class="ChatList-Item" v-for="(item, index) in chatList" :selected="selectChatIndex === index" :chat="item" />
 
       <p class="ended_text" v-show="!searchBarContent">{{ chatList.length > 0 ? '我也是有底线的~' : '暂无数据' }}</p>
@@ -43,31 +43,6 @@ export default {
       default() {
 
         return []
-
-      }
-
-    },
-
-    darkMode: {
-
-      type: [Boolean],
-      default: false,
-
-    },
-
-    theme: {
-
-      type: [Object],
-      default() {
-
-        return {
-
-          defaultBg: "#f5f6f7",
-          hoverBg: "#e0dfdf",
-          selectedBg: "#ebebeb",
-          textColor: "#000",
-
-        }
 
       }
 
@@ -141,15 +116,43 @@ export default {
 
         }
 
-      }
+      },
+
+      interval: null,
 
     }
+
+  },
+
+  beforeDestroy() {
+
+    clearInterval(this.interval);
 
   },
 
   created() {
 
     this.chatList = this.list
+
+    this.interval = setInterval(() => {
+
+        this.chatList.forEach((item, index) => {
+
+          this.chatList[index].time++
+
+        })
+
+      setTimeout(() => {
+
+        this.chatList.forEach((item, index) => {
+
+          this.chatList[index].time--
+
+        })
+
+      }, 1000)
+
+    }, 10000)
 
   },
 
@@ -168,48 +171,13 @@ export default {
 
     selectChatIndex(latest, old) {
 
+      if( this.chatList[old] ) this.chatList[old].loading = false
+
+      if(latest < 0) return
+
+      this.chatList[latest].loading = true
+
       this.$emit("selectChat", this.chatList[latest])
-
-    },
-
-    theme: {
-
-      immediate: true,
-      deep: true,
-      handler(latest, old) {
-
-        this.updateTheme(latest)
-
-      }
-
-    },
-
-    darkMode: {
-
-      handler(latest, old) {
-
-        if(latest) {
-
-          this.updateTheme(
-
-              {
-
-                defaultBg: "#1c1c1c",
-                hoverBg: "#262626",
-                selectedBg: "#202020",
-                textColor: "#f5f5f5"
-
-              }
-
-          )
-
-        } else {
-
-          this.updateTheme(this.theme)
-
-        }
-
-      }
 
     },
 
@@ -239,35 +207,6 @@ export default {
 
     },
 
-    updateTheme(theme) {
-
-      const el = this.$refs.ChatListRef;
-
-      if(!el) {
-
-        setTimeout(() => {
-
-          this.updateTheme(theme);
-
-        }, 500)
-
-        return
-
-      }
-
-      el.style.setProperty("--defaultBg", theme.defaultBg)
-      el.style.setProperty("--hoverBg", theme.hoverBg)
-      el.style.setProperty("--selectedBg", theme.selectedBg)
-      el.style.setProperty("--textColor", theme.textColor)
-
-      const color = Global.hexToRgba(theme.textColor, 0.3)
-
-      el.style.setProperty("--scrollColor", color)
-
-      this.ops.rail.background = color
-
-    }
-
   }
 
 }
@@ -295,7 +234,7 @@ export default {
 
   border-radius: 1px !important;
   width: 10px !important ;
-  background-color: var(--defaultBg) !important;
+  background-color: var(--mainColor) !important;
 
   transition: all .25s;
 
@@ -310,20 +249,21 @@ export default {
       input {
 
         border: 0;
-        background-color: var(--hoverBg);
+        background-color: var(--color2);
 
-        filter: drop-shadow(0 0 5px var(--hoverBg));
-        transition: all .05s;
+        transition: all .25s;
 
         border-bottom: 2px solid rgba(0,0,0,0);
 
-        color: var(--textColor)
+        color: var(--textnormalColor)
 
       }
 
       input:focus {
 
         border-bottom: 2px solid #1b7cb9;
+
+        border-radius: 5px 5px 0 0;
 
       }
 
@@ -364,7 +304,7 @@ export default {
   opacity: 0.65;
   text-align: center;
 
-  color: var(--textColor)
+  color: var(--textnormalColor)
 
 }
 
@@ -372,14 +312,14 @@ export default {
 
   position: relative;
 
-  top: -1px;
+  top: 5px;
 
   width: 100%;
   height: 52px;
 
-  background-color: var(--defaultBg);
+  background-color: var(--mainColor);
 
-  border-bottom: 2px solid var(--selectedBg);
+  border-bottom: 2px solid var(--hoverColor);
 
   z-index: 310;
 
@@ -403,38 +343,34 @@ export default {
   0% {
 
     opacity: 0;
-    transform: translateX(-100%);
+    transform: translateX(-100%) scale(0.5);
 
   }
 
   50% {
 
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(0.95);
 
   }
 
   60% {
 
-    background-color: var(--selectedBg);
+    background-color: var(--hoverColor);
+    filter: invert(-50%)
 
   }
 
   100% {
 
-    background-color: var(--defaultBg);
+    background-color: var(--mainColor);
+    filter: invert(-50%)
 
   }
 
 }
 
 .ChatList-Page {
-
-  --defaultBg: #f5f6f7;
-  --hoverBg: #ebebeb;
-  --textColor: rgba(245, 245, 245, 0.49);
-  --selectedBg: #ebebeb;
-  --scrollColor: rgba(0, 0, 0, 0.3);
 
   position: relative;
 
@@ -444,9 +380,9 @@ export default {
 
   box-sizing: content-box;
 
-  background-color: var(--defaultBg);
+  background-color: var(--mainColor);
 
-  border-right: 2px solid var(--selectedBg);
+  border-right: 2px solid var(--hoverColor);
 
   z-index: 310;
 

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="Login-Page" ref="LoginPage" v-loading="loadingData">
+  <div class="Login-Page" ref="LoginPageRef" v-loading="loadingData">
 
     <div class="LeftAside">
 
@@ -14,44 +14,56 @@
 
      </div>
 
-      <div class="Wave"></div>
-
     </div>
 
     <div class="RightAside">
 
-      <div v-show="isLogin">
-
-        <div class="Login-bgContainer"></div>
-        <div class="Login-bgContainer"></div>
-        <div class="Login-bgContainer"></div>
-        <div class="Login-bgContainer"></div>
-        <div class="Login-bgContainer"></div>
-
-      </div>
-
       <div :class="isLogin ? 'Login-Main-Frame' : ''" class="Login-Main" @keydown.enter="isLogin" v-loading="isLogin">
 
-        <div class="Login-AvatarContainer" :class="isLogin ? 'Login-Main-Avatar-Frame' : ''">
+<!--        头像区-->
+        <div v-show="!codeMode" class="Login-AvatarContainer" :class="isLogin ? 'Login-Main-Avatar-Frame' : ''">
 
           <img :class="{ avatarExpand: avatarExpand, avatarShrink: avatarShrink }" ref="loginAvatarRef" alt="" :src='loginAvatar' />
 
         </div>
 
+<!--        登录表单-->
         <div class="loginForm">
 
-          <el-input prefix-icon="el-icon-s-platform" placeholder="远程服务器地址" v-model="systemConfig.baseUrl"></el-input>
-          <el-input prefix-icon="el-icon-s-custom" placeholder="账号" v-model="loginForm.user"></el-input>
+          <span v-show="!codeMode">
 
-          <TBubbleButton class="LoginButton" @clicker="login">登录</TBubbleButton>
+            <el-input prefix-icon="el-icon-user" placeholder="账号" v-model="loginForm.user" clearable></el-input>
+            <el-input prefix-icon="el-icon-lock" placeholder="密码" v-model="loginForm.pass" clearable></el-input>
+
+            <TBubbleButton class="LoginButton" @clicker="login">登录</TBubbleButton>
+
+          </span>
+
+          <span @click="refreshLoginCode" v-show="codeMode">
+
+            <div class="codeImg" :style="`background-image: url(${codeSrc})`" ></div>
+
+          </span>
+
+          <el-button :style="codeMode ? 'width: 85%;left: 0' : ''" @click="codeMode = !codeMode" class="codeButton" :type="codeMode ? 'primary' : 'info'" round><TIcon class="codeIcon" :icon="codeMode ? 'touchq-yonghu1' : 'touchq-erweima'"></TIcon><span style="position: relative;top: -1px" v-show="codeMode">&nbsp;&nbsp;&nbsp;切换为账号密码登录</span></el-button>
 
         </div>
 
-        <TipMentioner ref="mentioner" class="mentioner" content="测试提示"></TipMentioner>
+        <TipMentioner ref="mentioner" class="mentioner" content=""></TipMentioner>
 
       </div>
 
     </div>
+
+    <TalexDialog header-content="验证码" :visible="sliderDialogVisible">
+
+      <iframe frameborder="0" class="sliderFrame" :src="sliderSrc"></iframe>
+
+      <br /><br />
+
+      <TBubbleButton @clicker="submitSlider">滑动完成</TBubbleButton>
+
+    </TalexDialog>
 
   </div>
 
@@ -59,10 +71,11 @@
 
 <script>
 
+import TalexDialog from "../components/talex/dialog/TalexDialog";
 export default {
 
   name: "Login",
-
+  components: {TalexDialog},
   data() {
 
     return {
@@ -71,22 +84,21 @@ export default {
       loginAvatar: "http://q1.qlogo.cn/g?b=qq&nk=10000&s=100",
       loginForm: {
 
-        user: "1000",
+        user: "2072897046",
+        pass: ""
 
       },
+
+      sliderDialogVisible: false,
+      sliderSrc: "",
+
+      codeMode: false,
+      codeSrc: "",
+      codeInterval: null,
 
       isLogin: false,
 
-      systemConfig: {
-
-        baseUrl: "",
-        keyCode: "",
-
-      },
-
-      loadingData: true,
-      darkMode: false,
-      textColor: '#0d0d0d',
+      loadingData: false,
 
       avatarShrink: false,
       avatarExpand: false,
@@ -97,32 +109,13 @@ export default {
 
   mounted() {
 
-    let interval = setInterval(() => {
-
-      if(this.$touchq.touchq_loaded) {
-
-        clearInterval(interval)
-
-        this.systemConfig = this.$touchq.systemConfig
-        this.loginForm = this.$touchq.userConfig
-
-        if( this.$touchq.$app ) {
-
-          this.$touchq.$app.stop()
-
-        }
-
-        this.loadingData = false
-
-      }
-
-    }, 1000)
+    this.$refs.mentioner.showTip('登录你的账号', -1)
 
   },
 
   watch: {
 
-    loginForm: {
+    'loginForm.user': {
 
       deep: true,
       handler(latest, old) {
@@ -142,7 +135,10 @@ export default {
           this.avatarShrink = false
 
           this.avatarExpand = true
-          this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${latest.user}&s=100`
+
+          const target = latest.user || 10000
+
+          this.loginAvatar = `http://q1.qlogo.cn/g?b=qq&nk=${target}&s=100`
 
         }, 350)
 
@@ -150,34 +146,20 @@ export default {
 
     },
 
-    darkMode: {
+    codeMode: {
 
-      immediate: true,
       handler(latest, old) {
 
         if(latest) {
 
-          this.updateTheme({
+          this.refreshLoginCode()
 
-            themeColor: '#000',
-            mainColor: '#1C1C1C',
-            hoverColor: '#262626',
-            textColor: '#f5f5f5',
-            subTextColor: '#e8e7ba'
-
-          })
+          this.$refs.mentioner.showTip('扫码登录QQ ' + this.loginForm.user, -1)
 
         } else {
 
-          this.updateTheme({
-
-            themeColor: '#fff',
-            mainColor: '#f5f6f7',
-            hoverColor: '#e0dfdf',
-            textColor: '#0d0d0d',
-            subTextColor: 'grey'
-
-          })
+          clearInterval(this.codeInterval)
+          this.$refs.mentioner.showTip('登录你的账号', -1)
 
         }
 
@@ -189,141 +171,178 @@ export default {
 
   methods: {
 
-    updateTheme(theme) {
-
-      document.body.style.setProperty('--ThemeColor', theme.themeColor)
-      document.body.style.setProperty('--mainColor', theme.mainColor)
-      document.body.style.setProperty('--hoverColor', theme.hoverColor)
-      document.body.style.setProperty('--textColor', theme.textColor)
-      document.body.style.setProperty('--subTextColor', theme.subTextColor)
-
-      this.textColor = theme.textColor
-
-    },
-
     login() {
 
-      const systemDb = this.$touchq.$db.system
+      const { user, pass } = this.loginForm
 
-      const instance = this
+      if( (!user || user.length < 5) /*|| (!pass || pass.length < 5)*/ ) {
 
-      systemDb.update({"_id": this.systemConfig._id},
+        this.$refs.mentioner.showTip('信息填写不符合规范', 3000)
+        return
 
-          { $set: { baseUrl: this.systemConfig.baseUrl, keyCode: this.systemConfig.keyCode } }, function(err, doc) {
+      }
 
-            instance.systemConfigLoading = false
+      if( user[0] === '+' ) {
 
-            if(err !== undefined && err !== null) {
+        if( user.length < 12 ) {
 
-              return instance.$alert('保存失败, 请检查应用是否拥有读写权限', '遇到了一些问题', {
-                confirmButtonText: '了解',
-              });
+          this.$refs.mentioner.showTip('未知的手机号', 3000)
+          return
 
-            }
+        }
 
-      })
+        this.$refs.mentioner.showTip('已发送手机短信验证码!', 10000)
+        return
+
+      }
 
       this.$refs.mentioner.showTip('', 0)
       this.isLogin = true
 
-      const msgFunc = (msg) => {
+      this.$touchq.login(user, pass + '', this.msgFunc)
 
-        this.isLogin = false
+    },
 
-        if(!msg.access) {
+    refreshLoginCode() {
 
-          this.$refs.mentioner.showTip(msg.msg, 2900)
+      this.$touchq.loginWithCode(this.loginForm.user, (src) => {
 
-        } else {
+        this.codeSrc = src
 
-          const el = this.$refs.LoginPage
+        let hasShow = false
 
-          el.style.transition = 'all .45s'
-          el.style.transform = 'translateY(300px)'
-          el.style.opacity = '0'
+        this.codeInterval = setInterval(async() => {
 
-          setTimeout(() => {
+          const res = await this.$touchq.client.queryQrcodeResult()
 
-            this.$router.push("/chat")
+          switch(res.retcode) {
 
-          }, 450)
+              //已扫码
+            case 53: {
+
+              if(hasShow) return
+
+              hasShow = true
+
+              this.$refs.mentioner.showTip('请确认登录!', -1)
+              break;
+
+            }
+
+            case 54: {
+
+              clearInterval(this.codeInterval)
+
+              this.$refs.mentioner.showTip('二维码已失效, 请点击图片刷新', -1)
+              break;
+
+            }
+
+            case 0: {
+
+              clearInterval(this.codeInterval)
+
+              this.loadingData = true
+
+              await this.$touchq.submitQrCodeLogin()
+
+              break;
+
+            }
+
+          }
+
+        }, 1000)
+
+      }, this.msgFunc)
+
+    },
+
+    submitSlider() {
+
+      this.sliderSrc = ""
+      this.sliderDialogVisible = false
+
+      this.$touchq.submitSlider()
+
+    },
+
+    msgFunc(access, msg) {
+
+      this.isLogin = false
+
+      if(!access) {
+
+        if(msg.type) {
+
+          switch(msg.type) {
+
+            case 'slider': {
+
+              this.isLogin = true
+
+              this.sliderSrc = msg.e.url
+              this.sliderDialogVisible = true
+
+              break;
+
+            }
+
+            case 'device': {
+
+              this.isLogin = true
+
+              this.$message.info("请完成设备验证")
+
+              setTimeout(() => {
+
+                const { shell } = require('electron');
+
+                shell.openExternal(msg.e.url)
+
+              }, 1200)
+
+              break;
+
+            }
+
+            case 'error': {
+
+              if(msg.message)
+                this.$message.error(msg.message)
+
+            }
+
+          }
+
+          return
 
         }
 
+        this.$refs.mentioner.showTip(msg, -1)
+
+      } else {
+
+        const el = this.$refs.LoginPageRef
+
+        el.style.transition = 'all .25s'
+        el.style.transform = 'translateY(200px)'
+        el.style.opacity = '0'
+
+        setTimeout(() => {
+
+          this.$router.push("/chat")
+
+        }, 450)
+
       }
-
-      setTimeout(() => {
-
-        this.$touchq.connect(this.loginForm.user, msgFunc)
-
-      }, Math.round(Math.random() * 500))
 
     }
 
-  }
+  },
 
 }
 </script>
-
-<style lang="scss" scoped>
-
-.avatarShrink {
-
-  animation: avatarShrink .45s;
-
-}
-
-@keyframes avatarShrink {
-
-  0% {
-
-
-
-  }
-
-  5% {
-
-    transform: translate(-50%, -50%) scale(0.8);
-
-  }
-
-  100% {
-
-    transform: translate(-50%, -50%) translateY(-80px) scale(0.45);
-
-  }
-
-}
-
-.avatarExpand {
-
-  animation: avatarExpand .45s;
-
-}
-
-@keyframes avatarExpand {
-
-  0% {
-
-    transform: translate(-50%, -50%) translateY(200px) scale(0.45);
-
-  }
-
-  5% {
-
-    transform: translate(-50%, -50%) translateY(200px) scale(0.5);
-
-  }
-
-  100% {
-
-    transform: translate(-50%, -50%) translateY(0) scale(0.85);
-
-  }
-
-}
-
-</style>
 
 <style lang="scss">
 
@@ -438,7 +457,7 @@ export default {
   top: 0;
   left: 0;
 
-  width: 70%;
+  width: 100%;
   height: 100%;
   //overflow: hidden;
 
@@ -454,97 +473,28 @@ export default {
     height: 100%;
     width: 100%;
 
-    transform: translate(-60%, -55%);
+    transform: translate(-70%, -55%);
 
   }
 
-  .Wave {
-
-    z-index: -1;
-    position: absolute;
-
-    top: 51%;
-    left: 76%;
-
-    height: 1200px;
-    width: 900px;
-
-    transform: translate(0%, -50%);
-
-    border-radius: 50%;
-    background-color: var(--mainColor);
-
-    //animation: rotate 5s infinite linear;
-
-    &:before {
-
-      content: "";
-      position: absolute;
-
-      top: -40px;
-      //left: 10%;
-
-      height: 1250px;
-      width: 1250px;
-
-      border-radius: 46%;
-      background-color: var(--mainColor);
-
-      opacity: 0.9;
-
-      animation: rotate 6s infinite ease-in-out;
-
-    }
-
-    &:after {
-
-      content: "";
-      position: absolute;
-
-      top: -50px;
-      //left: 10%;
-
-      height: 1250px;
-      width: 1200px;
-
-      border-radius: 44%;
-      background-color: var(--mainColor);
-
-      opacity: 0.3;
-
-      animation: rotate 8s infinite linear;
-
-    }
-
-  }
-
-}
-
-@keyframes rotate {
-  0% {
-    transform: translate(-50%, 0) rotateZ(0deg);
-  }
-  50% {
-    transform: translate(-50%, -2%) rotateZ(180deg);
-  }
-  100% {
-    transform: translate(-50%, 0%) rotateZ(360deg);
-  }
 }
 
 .RightAside {
 
-  z-index: 1;
+  z-index: 2;
   position: absolute;
 
-  top: 0;
-  right: 0;
+  top: 18%;
+  right: 5%;
 
-  width: 40%;
-  height: 100%;
+  width: 35%;
+  height: 64%;
   overflow: hidden;
 
-  background-color: var(--mainColor);
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255,.4);
+
+  border-radius: 5px;
 
 }
 
@@ -553,24 +503,6 @@ export default {
   transform: rotate(0);
 
   animation: avatarFrame 1.25s infinite linear;
-
-}
-
-@keyframes avatarFrame {
-
-  from {
-
-    transform: translate(-50%, 0) rotate(0);
-    box-shadow: 0 0 5px var(--textColor);
-
-  }
-
-  to {
-
-    transform: translate(-50%, 0) rotate(360deg);
-    box-shadow: 0 0 30px var(--textColor);
-
-  }
 
 }
 
@@ -584,7 +516,45 @@ export default {
 
   position: relative;
 
-  top: 60px;
+  height: auto;
+
+  .codeImg {
+
+    position: relative;
+
+    margin-bottom: -30px;
+
+    width: 85%;
+    height: 85%;
+
+    left: 50%;
+
+    transform: translate(-50%, 0);
+
+    background-size: 105%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    backdrop-filter: blur(10px);
+    opacity: 0.8;
+
+  }
+
+  .codeButton {
+
+    position: relative;
+
+    top: 51px;
+    left: 17px;
+
+    width: 32px;
+
+    padding: 6px !important;
+
+    border-radius: 3px !important;
+
+    transition: all .25s;
+
+  }
 
   .el-input {
 
@@ -595,12 +565,11 @@ export default {
       border: 0;
       background-color: var(--mainColor);
 
-      filter: drop-shadow(0 0 5px var(--mainColor));
       transition: all .25s;
 
-      border-bottom: 1px solid var(--mainColor);
+      border-bottom: 2px solid var(--mainColor);
 
-      color: var(--textColor) !important;
+      color: var(--textnormalColor) !important;
 
     }
 
@@ -609,7 +578,7 @@ export default {
       background-color: var(--mainColor) !important;
 
       border-radius: 3px 3px 0 0;
-      border-bottom: 1px solid #1b7cb9;
+      border-bottom: 2px solid var(--appColor);
 
     }
 
@@ -618,10 +587,9 @@ export default {
     max-width: 90%;
     max-height: 38px;
 
-    top: 50%;
     left: 50%;
 
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 40px);
 
     margin-bottom: 20px;
 
@@ -633,65 +601,50 @@ export default {
 
 <style lang="scss" scoped>
 
-.mentioner {
-
-  position: absolute;
-
-  margin: 95px 0 0 -25px;
-
-}
-
-.Login-bgContainer {
-
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  height: 440px;
-  width: 420px;
-
-  transform: translate(-50%, -50%) translateY(-2%);
-
-  border-radius: 50%;
-
-  background-color: var(--hoverColor);
-
-  box-shadow: 0 0 15px var(--hoverColor);
-
-}
-
 .Login-Main {
 
   .LoginButton {
 
     position: relative;
 
-    top: -10px;
-    left: 5%;
+    top: 50px;
+    left: 14px;
 
-    width: 90%;
+    width: calc(90% - 38px);
 
-    transition: all .35s;
-
-    border: 1px solid var(--ThemeColor);
-    background-color: var(--hoverColor) !important;
+    transition: all .25s;
 
   }
 
-  .LoginButton:hover {
+  .avatarShrink {
 
-    border: 1px solid #1b7cb9;
-
-    background-color: var(--hoverColor) !important;
+    animation: avatarShrink .45s;
 
   }
 
-  .LoginButton:focus {
+  .avatarExpand {
 
-    border: 1px solid #1b7cb9 !important;
+    animation: avatarExpand .45s;
 
-    background-color: var(--hoverColor) !important;
+  }
+
+  .codeIcon {
+
+    position: relative;
+
+    font-size: 16px;
+
+  }
+
+  .mentioner {
+
+    position: absolute;
+
+    width: 100%;
+    height: 30px;
+
+    left: 0;
+    bottom: -45px;
 
   }
 
@@ -699,10 +652,8 @@ export default {
 
     position: relative;
 
-    margin-bottom: -10px;
-
     left: 50%;
-    top: -1%;
+    top: 10px;
 
     min-width: 96px;
     min-height: 96px;
@@ -711,7 +662,8 @@ export default {
     transform: translate(-50%, 0);
     border-radius: 50%;
 
-    background-color: rgba(128, 128, 128, 0.1);
+    backdrop-filter: blur(10px);
+    background-color: var(--textOpacityColor3);
 
     overflow: hidden;
 
@@ -732,21 +684,21 @@ export default {
 
   }
 
-  position: absolute;
+  position: relative;
 
   left: 50%;
   top: 50%;
 
-  height: 340px;
+  height: 350px;
   width: 360px;
 
-  background-color: var(--hoverColor) !important;
-  padding: 30px;
+  padding: 20px;
 
-  border-radius: 5px;
-  transform: translate(-50%, -50%) translateY(-3%);
+  border-radius: 3px;
+  transform: translate(-50%, -50%) translateY(-6%);
 
-  filter: drop-shadow(0 0 5px var(--hoverColor));
+  backdrop-filter: blur(5px);
+  background-color: var(--themeOpacityColor);
   text-align: center;
 
   box-sizing: border-box;
@@ -763,68 +715,6 @@ export default {
 
   width: 100%;
   height: 100%;
-
-  .Login-bgContainer:nth-child(1) {
-
-    opacity: 0.8;
-
-    animation: circling 2.45s infinite;
-
-  }
-
-  .Login-bgContainer:nth-child(2) {
-
-    opacity: 0.25;
-
-    filter: invert(10%);
-
-    animation: circling 7.45s infinite;
-
-  }
-
-  .Login-bgContainer:nth-child(3) {
-
-    opacity: 0.3;
-
-    filter: invert(30%);
-
-    animation: circling 2.85s infinite;
-
-  }
-
-  .Login-bgContainer:nth-child(4) {
-
-    opacity: 0.65;
-
-    animation: circling 1.85s infinite;
-
-  }
-
-  .Login-bgContainer:nth-child(5) {
-
-    opacity: 0.45;
-
-    filter: invert(20%);
-
-    animation: circling 3.85s infinite;
-
-  }
-
-}
-
-@keyframes circling {
-
-  0%, 100% {
-
-    transform: translate(-50%, -50%) translateY(-2%) rotate(360deg) scale(1.1, 1.105);
-
-  }
-
-  50% {
-
-    transform: translate(-50%, -50%) translateY(-2%) rotate(0);
-
-  }
 
 }
 

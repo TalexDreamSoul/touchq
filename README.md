@@ -10,26 +10,29 @@
 [![GitHub stars](https://img.shields.io/github/stars/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/issues)
 [![GitHub license](https://img.shields.io/github/license/TalexDreamSoul/touchq?style=flat-square)](https://github.com/TalexDreamSoul/touchq/blob/main/LICENSE)
-[![GitHub release](https://img.shields.io/badge/release-2.0.0-Lite--beta-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
+[![GitHub release](https://img.shields.io/badge/release-3.0.0--Lite-1b7cb9?style=flat-square)](https://github.com/TalexDreamSoul/touchq/releases)
 
 </div>
 
 TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) 制作的适合于Linux的 [QQ](https://im.qq.com/) 客户端, 目的皆在使用户获得更完美的UI体验
 
-除此之外, TouchQ 还使用了部分其他的优秀框架 [Vue2](https://cn.vuejs.org/) [KoiShi](https://koishi.js.org/) [Element](https://element.eleme.io/#/zh-CN) [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) (排名不分先后, 其余更多详见项目内)
+除此之外, TouchQ 还使用了部分其他的优秀框架 [Vue2](https://cn.vuejs.org/) [Element](https://element.eleme.io/#/zh-CN) [Oicq](https://github.com/takayama-lily/oicq) [<s>KoiShi</s>](https://koishi.js.org/) [<s>go-cqhttp</s>](https://github.com/Mrs4s/go-cqhttp) (排名不分先后, 其余更多详见项目内)
 
 <div align="center">
 </div>
 
-> 目前正在研究 mirai 协议，较长一段时间内不会更新。
-
-> 介于目前开发未完成, 问题较多, 故请各位先耐心等待.
+> 介于目前开发未完成, 问题较多, 请等待正式版(Lites)发布
 
 ## 使用协议
 
-因为依赖框架原因, 本项目使用 [AGPL-3.0](./LICENSE) 协议开源
+因为依赖框架修正, 本项目改使用 [MPL-2.0](./LICENSE) 协议开源
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTalexDreamSoul%2Ftouchq?ref=badge_large)
+
+## 图片展示
+> 重构界面
+![image](https://user-images.githubusercontent.com/59305952/143682785-04b67683-500b-457f-9b93-aeb8b003bd94.png)
+![image](https://user-images.githubusercontent.com/59305952/143682890-5e13bef6-3290-49b9-8b8e-bf917d29b79d.png)
 
 ## 食用方式
 
@@ -40,32 +43,13 @@ TouchQ(TalexTouchChat) 是一个基于 [Electron](https://www.electronjs.org/) �
 # 进入目录后安装依赖
 npm install
 
-# 打开测试环境 (localhost:9080)
+# 打开测试环境
 npm run dev
 
 # 打包生成
 npm run build
 
 ```
-
-#### 后端环境
-##### 除此之外, 当前版本中并没有整合配套的后端, 请自己提供
-
-在 [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 这里找到安装方式, 然后启动默认会填写信息
-
-## 图片展示
-
-> 内置 亮/暗 两种模式
-![image](https://user-images.githubusercontent.com/59305952/136044683-e59428a3-dd28-4803-a4c3-bccc9fbd89e8.png)
-![image](https://user-images.githubusercontent.com/59305952/136044716-2eb8a9fb-b961-42c3-a31c-4dc1fc7c1520.png)
-
-> 动画动效
-![image](https://user-images.githubusercontent.com/59305952/136044813-355105a2-d367-42bb-b1b4-f07706cae116.png)
-
-> 主体展示
-![image](https://user-images.githubusercontent.com/59305952/136044912-03b428ca-47b6-4b45-b4bf-5664ed006a7b.png)
-![image](https://user-images.githubusercontent.com/59305952/136045304-bf52e1ae-d8c1-44ae-af48-29e11300a93b.png)
-![image](https://user-images.githubusercontent.com/59305952/138559993-7dfb6a99-b135-4268-a4b9-2641db46b718.png)
 
 ## Issue
 

@@ -1,0 +1,37 @@
+body {
+
+  //不规则窗口
+  background-color: rgba(0,0,0,0) !important;
+
+  //程序主题色
+  --appColor: #1e73a8;
+  --appSubColor: #1c638f;
+  --appSubColor_shadow: #aeb3ed;
+
+  //风格颜色设计
+
+    //主题颜色
+    --themeColor: #fff;
+    --themeOpacityColor: rgba(255, 255, 255, .4);
+    --color1: #f5f5f5;
+    --color2: #e8e8e8;
+    --color3: #bebebe;
+    --color1_shadow: #d0d0d0;
+
+    //设计颜色
+    --mainColor: #f5f6f7;
+    --mainOpacityColor: rgba(245, 246, 247, .4);
+    --hoverColor: rgba(224, 223, 223);
+    --hoverOpacityColor: rgba(224, 223, 223, .4);
+
+    //文本颜色
+    --textThemeColor: #fff;
+    --textnormalColor: #0d0d0d;
+    --textSubColor: #131618;
+    --textColor3: #0d0c0c;
+    --textOpacityColor3: rgba(13, 12, 12, .1);
+
+    //其他颜色
+    --scrollColor: rgba(0, 0, 0, 0.3);
+
+}

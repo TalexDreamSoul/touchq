@@ -64,7 +64,7 @@ export default {
 
     overflow: visible;
 
-    transform: scale(1.5) translate(-30%, 15%);
+    transform: scale(1.25) translate(-35%, 20%);
 
     width: 300px;
 

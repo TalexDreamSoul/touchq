@@ -1,8 +1,8 @@
 <template>
 
-  <div :class="{ appQuit: quit }" id="app" ref="app">
+  <div :class="{ appQuit: quit }" id="app">
 
-    <div class="applicationHeader">
+    <div v-show="$router.history.current.path === '/login'" class="applicationHeader">
 
       <img class="icon" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" />
 
@@ -10,7 +10,7 @@
 
         TalexTouchChat&nbsp;
 
-        <span class="beta"><span class="lite">2.0.0-Lite</span></span>
+        <span class="beta"><span class="lite">3.0.0-Lite</span></span>
         <span class="github" @click="openGitHub">GitHub&nbsp;</span>
 
       </span>
@@ -21,6 +21,14 @@
     </div>
 
     <div class="mainContainer">
+
+<!--      非登录控件-->
+      <div class="nonLoginControl" v-show="$router.history.current.path !== '/login'">
+
+        <button class="headerButton" @click="close">×</button>
+        <button class="headerButton" @click="min">-</button>
+
+      </div>
 
       <router-view></router-view>
 
@@ -50,18 +58,6 @@ export default {
         quit: false,
 
       }
-
-    },
-
-    beforeDestroy() {
-
-      if( this.$touchq.$app ) {
-
-        this.$touchq.$app.stop()
-
-      }
-
-      this.$touchq.setTheme(this.darkMode)
 
     },
 
@@ -98,10 +94,25 @@ export default {
 
 <style lang="scss">
 
+.nonLoginControl {
+
+  position: absolute;
+
+  right: 0;
+  top: 0;
+
+  width: 100%;
+  height: 28px;
+
+  -webkit-app-region: drag;
+  cursor: move;
+
+}
+
 ::selection {
 
-  color: #fff;
-  background: #4593c4;
+  color: var(--textnormalColor);
+  background: rgba(69, 147, 196, 0.9);
 
 }
 
@@ -124,13 +135,15 @@ export default {
 
 .beta {
 
+  position: relative;
   padding: 2px 3px 1px 3px;
 
+  top: 1px;
   left: 2px;
 
   border-radius: 3px;
 
-  background-color: rgba(255, 0, 0, 0.8);
+  background-color: rgba(253, 75, 75, 0.8);
 
 }
 
@@ -140,16 +153,15 @@ export default {
 
   left: 2px;
 
-  border-radius: 3px;
-
-  background: black linear-gradient(to bottom right, black, black, black, white, white) no-repeat 0 0;
+  background: black linear-gradient(to bottom right, white, white) no-repeat 0 0;
   background-size: 50% 100%;
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
   text-decoration: underline;
 
-  -webkit-animation: slideShine 1.25s linear infinite;animation: slideShine 1.25s linear infinite;
+  animation: slideShine 1.75s linear infinite;
 
 }
 
@@ -177,8 +189,10 @@ export default {
 
 .github {
 
+  position: relative;
   padding: 2px 3px 1px 18px;
 
+  top: 1px;
   left: 2px;
 
   border-radius: 3px;
@@ -195,11 +209,11 @@ export default {
   position: relative;
 
   left: 2px;
-  top: -3px;
+  top: 1px;
 
   font-size: 12px;
 
-  color: var(--textColor);
+  color: var(--textnormalColor);
 
 }
 
@@ -207,8 +221,8 @@ export default {
 
   position: relative;
 
-  left: 2px;
-  top: 2px;
+  left: 3px;
+  top: 0;
 
   width: 20px;
 
@@ -232,7 +246,7 @@ button {
   width: 33px;
   height: 100%;
 
-  background-color: var(--hoverColor);
+  background-color: var(--color1);
 
   z-index: 330;
 
@@ -246,7 +260,7 @@ button {
 
   cursor: pointer;
 
-  background-color: var(--mainColor);
+  background-color: var(--color2);
 
 }
 
@@ -261,7 +275,7 @@ button {
   height: 25px;
 
   border-radius: 5px 5px 0 0;
-  background-color: var(--hoverColor);
+  background-color: var(--color1);
 
   transition: all .25s;
 
@@ -270,28 +284,6 @@ button {
 
   z-index: 330;
   -webkit-app-region: drag
-
-}
-
-body {
-
-  background-color: rgba(0,0,0,0) !important;
-
-  --ThemeColor: #fff;
-
-  --mainColor: #f5f6f7;
-  --hoverColor: #e0dfdf;
-
-  --textColor: #0d0d0d;
-  --subTextColor: grey;
-  --ScrollColor: rgba(0, 0, 0, 0.3);
-
-  * {
-
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-    color: var(--textColor);
-
-  }
 
 }
 

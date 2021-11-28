@@ -27,6 +27,4 @@ requireComponents.keys().forEach(fileName => {
 
     )
 
-    // console.log("已注册: " + fileName + " @" + componentName)
-
 })
