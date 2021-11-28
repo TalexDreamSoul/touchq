@@ -6,91 +6,39 @@
 
       <div class="ListSearchBar">
 
-        <TInput></TInput>
+        <el-input clearable placeholder="搜索"></el-input>
 
       </div>
 
-      <ul class="TabSelector">
+<!--      最近聊天-->
+      <div class="list-block">
 
-        <li @click="selectTab = 0" :class="selectTab === 0 ? 'selected' : ''">
+        <p class="title">最近聊天</p>
 
-          <TIcon class="icon" icon="touchq-yonghu"></TIcon>
+        <div class="items">
 
-          <br />
-          <span>好友</span>
+          <a-avatar icon="plus" />
 
-        </li>
+        </div>
 
-        <li @click="selectTab = 1" :class="selectTab === 1 ? 'selected' : ''">
+      </div>
 
-          <TIcon class="icon" icon="touchq-haoyou"></TIcon>
+<!--      正式联系人列表-->
+      <div class="contact-list-page">
 
-          <br />
+        <el-collapse>
 
-          <span>群组</span>
+          <el-collapse-item title="好友" name="1">
+            <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
+            <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+          </el-collapse-item>
 
-        </li>
+          <el-collapse-item title="群组" name="2">
+            <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
+            <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
+          </el-collapse-item>
 
-      </ul>
-
-      <div class="contactList">
-
-        <ul :class="selectTab === 0 ? '' : 'ListLeft'" class="friend">
-
-          <a-tree blockNode :tree-data="friend.classes" show-icon>
-
-            <template slot="avatar" slot-scope="node">
-
-              <a-avatar :src="`https://q1.qlogo.cn/g?b=qq&s=640&nk=${node.dataRef.user_id}`"></a-avatar>
-
-            </template>
-
-            <template #title="{ key: treeKey, title, dataRef }">
-
-              <a-dropdown :trigger="['contextmenu']">
-
-                <span>{{ title }}</span>
-
-                <template #overlay>
-
-                  <a-menu>
-
-                    <template v-if="dataRef.children">
-
-                      <a-menu-item key="1" @click="changeClassName(dataRef)">修改组名</a-menu-item>
-                      <a-menu-item key="2" @click="deleteClass(dataRef)"><span style="color: red">删除分组</span></a-menu-item>
-
-                    </template>
-
-                    <template v-else>
-
-<!--                      <a-menu-item key="3">发送消息</a-menu-item>-->
-                      <a-menu-item key="4" @click="deleteFriend(dataRef)"><span style="color: red">删除好友</span></a-menu-item>
-
-                    </template>
-
-                  </a-menu>
-
-                </template>
-
-              </a-dropdown>
-
-            </template>
-
-          </a-tree>
-
-        </ul>
-
-        <ul :class="selectTab === 0 ? 'ListRight' : ''" class="group">
-
-          <li v-for="(contact, index) in group.tree" :key="contact.groupId" @click="handleClickContact(contact, index)">
-
-            <img :src="`https://p.qlogo.cn/gh/${contact.groupId}/${contact.groupId}/100`" alt="" />
-            <div><TMarquee class="marquee" :text="contact.groupName"></TMarquee></div>
-
-          </li>
-
-        </ul>
+        </el-collapse>
 
       </div>
 
@@ -190,12 +138,12 @@ export default {
 
           {
 
-        dangerouslyUseHTMLString: true,
+            dangerouslyUseHTMLString: true,
             distinguishCancelAndClose: true,
             confirmButtonText: '删除',
             cancelButtonText: '放弃'
 
-      }).then(async () => {
+          }).then(async () => {
 
         const res = await this.$touchq.client.deleteFriend(userId)
 
@@ -285,81 +233,82 @@ export default {
 
 <style lang="scss">
 
-.contactList {
+.contact-list-page .el-collapse {
 
-  .ant-tree {
+  position: relative;
 
-    * {
+  margin-bottom: 10px;
+  left: 0;
 
-      animation: all .2s
+  width: 100%;
 
-    }
+  .el-collapse-item__header {
 
-    .ant-tree-child-tree {
+    margin-bottom: 20px;
+    padding: 10px;
 
-      li {
+    background-color: var(--mainColor);
 
-        .ant-avatar {
+    border: none;
 
-          //position: relative;
+    font-size: 16px;
 
-          left: -25px;
-          //top: 50%;
 
-          //transform: translateY(-50%);
 
-        }
+  }
 
-        .ant-tree-title {
+  .is-active {
 
-          position: relative;
+    transition: all .25s;
 
-          top: 5px;
-          left: -5px;
+  }
 
-          &:hover {
+  .el-collapse-item__content {
 
-            background-color: var(--hoverColor);
+    padding: 10px;
 
-          }
+    background-color: var(--mainColor);
 
-        }
+  }
 
-        padding: 10px;
+}
 
-        .ant-tree-node-content-wrapper:hover, &:hover {
+.ListAside {
 
-          background-color: var(--hoverColor);
+  .ListSearchBar {
 
-        }
+    .el-input {
 
-      }
+      input {
 
-      .ant-tree-treenode-selected {
+        border: 0;
+        background-color: var(--color2);
 
-        background-color: var(--hoverColor);
+        transition: all .25s;
 
-      }
+        border-bottom: 2px solid rgba(0,0,0,0);
 
-      .ant-tree-node-content-wrapper.ant-tree-node-selected {
-
-        background-color: var(--hoverColor) !important;
+        color: var(--textnormalColor)
 
       }
 
-    }
+      input:focus {
 
-    .ant-tree-node-content-wrapper.ant-tree-node-selected {
+        border-bottom: 2px solid #1b7cb9;
 
-      margin-bottom: 10px;
+        border-radius: 5px 5px 0 0;
 
-      background-color: var(--mainColor);
+      }
 
-    }
+      position: relative;
 
-    .ant-tree-node-content-wrapper:hover {
+      max-width: 90%;
+      max-height: 38px;
 
-      background-color: var(--mainColor);
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
 
     }
 
@@ -371,17 +320,33 @@ export default {
 
 <style lang="scss" scoped>
 
-.ListLeft {
+.list-block {
 
-  opacity: 0;
-  transform: scale(0.85) translateX(-100%);
+  position: relative;
+
+  padding: 10px;
+
+  margin-bottom: 30px;
+
+  .title {
+
+    font-size: 14px;
+
+  }
+
+  .items {
+
+    position: relative;
+
+    left: 10px;
+
+  }
 
 }
 
-.ListRight {
+.contact-list-page {
 
-  opacity: 0;
-  transform: scale(0.85) translateX(100%);
+  position: relative;
 
 }
 
@@ -398,243 +363,20 @@ export default {
 
   }
 
-  .contactList {
-
-    height: calc(100% - 122px);
-
-    ul {
-
-      position: absolute;
-      z-index: 0;
-
-      width: 100%;
-
-      padding: 0;
-
-      top: 50px;
-
-      height: calc(100% - 62px);
-
-      background-color: var(--ThemeColor);
-
-      li {
-
-        &:hover {
-
-          background-color: var(--hoverColor);
-
-          img {
-
-            opacity: 0.95;
-
-            transform: translateX(-5px);
-
-          }
-
-          div {
-
-            opacity: 0.95;
-
-            transform: translateX(-5px);
-
-          }
-
-        }
-
-        padding: 5px 0;
-
-        display: flex;
-
-        justify-content: space-around;
-
-        img {
-
-          position: relative;
-
-          z-index: 1;
-
-          left: 20px;
-          top: 1px;
-
-          height: 42px;
-          width: 42px;
-
-          border-radius: 50%;
-
-          transition: all .25s;
-
-        }
-
-        div {
-
-          z-index: 0;
-
-          height: 44px;
-          width: 100%;
-
-          background-color: var(--ThemeColor);
-
-          transition: all .25s;
-
-          .marquee {
-
-            position: relative;
-
-            left: 30px;
-            top: 13px;
-
-            font-size: 14px;
-
-          }
-
-          overflow: hidden;
-
-        }
-
-        position: relative;
-
-        margin-top: 10px;
-
-        width: 100%;
-
-        list-style-type: none;
-        cursor: pointer;
-
-        transition: all .25s;
-
-      }
-
-      overflow-y: auto;
-      overflow-x: hidden;
-
-      transition: all .25s;
-
-    }
-
-  }
-
   .ListAside {
 
     .ListSearchBar {
 
       position: relative;
 
-      padding: 5px 10px;
+      top: 5px;
+
+      width: 100%;
+      height: 52px;
 
       background-color: var(--ThemeColor);
 
-      border-bottom: 1px solid var(--hoverColor);
-
-    }
-
-    .TabSelector {
-
-      position: relative;
-      z-index: 1;
-
-      display: flex;
-      justify-content: space-around;
-
-      margin: 0 auto;
-      padding: 0;
-
-      background-color: var(--ThemeColor);
-
-      .selected {
-
-        transform: translateY(8px);
-
-        .icon, span {
-
-          color: #1b7cb9;
-
-        }
-
-        &:hover {
-
-          transform: translateY(8px) scale(0.95);
-
-          cursor: not-allowed;
-
-          opacity: 1;
-
-        }
-
-        &:before {
-
-          content: "";
-
-          position: absolute;
-
-          left: 50%;
-          top: -50%;
-
-          width: 15px;
-          height: 3px;
-
-          transform: translate(-50%, 5px);
-          border-radius: 0 0 10px 10px;
-
-          box-shadow: 0 3px 5px #1b7cb9;
-
-          background-color: #1b7cb9;
-
-        }
-
-      }
-
-      li {
-
-        &:hover {
-
-          transform: translateY(-2px);
-
-          opacity: 0.75;
-
-        }
-
-        .icon {
-
-          position: absolute;
-
-          left: 13px;
-          top: 5px;
-
-        }
-
-        span {
-
-          position: absolute;
-
-          left: 10px;
-          bottom: -1px;
-
-          font-size: 11px;
-
-        }
-
-        position: relative;
-
-        display: inline-block;
-
-        margin-top: 10px;
-
-        width: 42px;
-        height: 42px;
-
-        background-color: var(--mainColor);
-        border-radius: 50%;
-        //filter: drop-shadow(0 2px 3px var(--hoverColor));
-
-        list-style-type: none;
-        cursor: pointer;
-
-        transition: all .25s;
-
-      }
-
-      box-shadow: 0 3px 9px var(--hoverColor);
-      filter: drop-shadow(0 2px 3px var(--hoverColor));
+      border-bottom: 2px solid var(--hoverColor);
 
     }
 
@@ -652,10 +394,11 @@ export default {
 
   position: relative;
 
-  margin-top: 25px;
-
   width: 100%;
   height: 100%;
+
+  box-sizing: content-box;
+  overflow-x: hidden;
 
 }
 

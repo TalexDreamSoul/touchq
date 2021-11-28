@@ -86,7 +86,8 @@ export default {
     border-radius: 50%;
     transform: translate(-50%, -50%);
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: var(--themeOpacityColor);
+    backdrop-filter: blur(10px);
 
     animation: breathe 2.85s infinite linear;
 

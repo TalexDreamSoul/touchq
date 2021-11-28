@@ -1,8 +1,8 @@
 <template>
 
-  <div :class="{ appQuit: quit }" id="app" ref="app">
+  <div :class="{ appQuit: quit }" id="app">
 
-    <div class="applicationHeader">
+    <div v-show="$router.history.current.path === '/login'" class="applicationHeader">
 
       <img class="icon" src="https://i.loli.net/2021/10/05/yP5d6Aw19jRNUc7.png" />
 
@@ -21,6 +21,14 @@
     </div>
 
     <div class="mainContainer">
+
+<!--      非登录控件-->
+      <div class="nonLoginControl" v-show="$router.history.current.path !== '/login'">
+
+        <button class="headerButton" @click="close">×</button>
+        <button class="headerButton" @click="min">-</button>
+
+      </div>
 
       <router-view></router-view>
 
@@ -50,18 +58,6 @@ export default {
         quit: false,
 
       }
-
-    },
-
-    beforeDestroy() {
-
-      if( this.$touchq.$app ) {
-
-        this.$touchq.$app.stop()
-
-      }
-
-      this.$touchq.setTheme(this.darkMode)
 
     },
 
@@ -97,6 +93,21 @@ export default {
 </script>
 
 <style lang="scss">
+
+.nonLoginControl {
+
+  position: absolute;
+
+  right: 0;
+  top: 0;
+
+  width: 100%;
+  height: 28px;
+
+  -webkit-app-region: drag;
+  cursor: move;
+
+}
 
 ::selection {
 

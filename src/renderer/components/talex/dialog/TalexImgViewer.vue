@@ -160,7 +160,7 @@ export default {
 
   font-size: 25px;
 
-  color: var(--textColor);
+  color: var(--textnormalColor);
 
 }
 
@@ -307,6 +307,7 @@ export default {
 
   border-radius: 35px;
   background-color: var(--hoverColor);
+  backdrop-filter: blur(10px);
   opacity: 0.65;
 
   z-index: 500;
@@ -377,6 +378,7 @@ export default {
 
   opacity: 0.45;
   background-color: #000;
+  backdrop-filter: blur(10px);
 
   transition: all .45s;
 

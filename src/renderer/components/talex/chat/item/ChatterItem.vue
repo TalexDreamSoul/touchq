@@ -11,7 +11,7 @@
 
 <!--      <Album class="album" v-show="album" :color="albumColor"></Album>-->
 
-      <div class="marquee"><TMarquee :allow="hover" :text="chat.content"></TMarquee></div>
+      {{ chat.content }}
 
     </div>
 
@@ -216,33 +216,22 @@ export default {
 
 .content {
 
-  position: relative;
+  position: absolute;
   display: inline-block;
 
-  left: 7px;
-  top: 0;
+  left: 75px;
+  top: 35px;
 
   width: 50%;
   height: 15px;
 
-  //overflow: hidden;
-
-  font-size: 12px;
-
+  font-size: 11px;
   opacity: 0.75;
-
   color: var(--textColor);
 
-  .marquee {
-
-    position: relative;
-
-    width: 80%;
-    height: 15px;
-
-    overflow: hidden;
-
-  }
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
 }
 
@@ -257,7 +246,7 @@ export default {
   margin-right: -90px;
 
   height: 20px;
-  width: 50%;
+  width: 60%;
 
   overflow: hidden;
 
@@ -284,9 +273,7 @@ export default {
   border-radius: 50%;
 
   top: 3px;
-  left: 5px;
-
-  filter: drop-shadow(0 0 2px var(--textColor)) !important;
+  left: 10px;
 
 }
 
@@ -308,28 +295,29 @@ export default {
 
   transition: all .25s;
 
-  background-color: var(--mainColor);
+  background-color: var(--mainOpacityColor);
+  backdrop-filter: blur(10px);
 
 }
 
-.ChatterItem-Selected::before {
-
-  position: absolute;
-  content: "";
-
-  left: 0;
-  top: 0;
-
-  width: 3px;
-  height: 100%;
-
-  background-color: #1b7cb9;
-  border-radius: 0 5px 5px 0;
-  box-shadow: 3px 0 6px #1b7cb9;
-
-  animation: selected .25s;
-
-}
+//.ChatterItem-Selected::before {
+//
+//  position: absolute;
+//  content: "";
+//
+//  left: 0;
+//  top: 0;
+//
+//  width: 3px;
+//  height: 100%;
+//
+//  //background-color: #1b7cb9;
+//  //border-radius: 0 5px 5px 0;
+//  //box-shadow: 3px 0 6px #1b7cb9;
+//
+//  animation: selected .25s;
+//
+//}
 
 @keyframes selected {
 
@@ -343,13 +331,13 @@ export default {
 
 .ChatterItem-Selected {
 
-  filter: invert(5%);
+  filter: invert(10%);
 
 }
 
 .ChatterItem-Page:hover {
 
-  background-color: var(--hoverColor)
+  background-color: var(--hoverOpacityColor)
 
 }
 

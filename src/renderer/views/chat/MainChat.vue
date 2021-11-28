@@ -12,13 +12,13 @@
 
       <div class="main-container__header">
 
-        <span class="main-container__header__innerContent">{{ (chat && chat.title) || '' }}</span>
+        <span class="main-container__header__innerContent">{{ (chat && chat.name) || '' }}</span>
 
       </div>
 
       <div class="main-container__chat">
 
-        <TalexLightChat @onViewImg="viewImg" ref="LightChat"></TalexLightChat>
+        <TalexLightChat :messages="nowChatMessages" @onViewImg="viewImg" ref="LightChat"></TalexLightChat>
 
       </div>
 
@@ -46,12 +46,17 @@ export default {
 
     return {
 
+      userQQ: this.$touchq.$userData.$nowUser,
+
       imgLookerVisible: false,
       imgLookerSrc: "",
 
       chatLists: new Map(),
       chatListArray: [],
       chat: null,
+
+      chatMap: new Map(),
+      nowChatMessages: [],
 
     }
 
@@ -116,9 +121,9 @@ export default {
 
       this.chat = chat
 
-      const map = this.chatMessageMap
+      this.nowChatMessages = this.chatMap.get(chat.key)
 
-      this.nowChatMessages = map.get(chat.key)
+      console.log("@", this.nowChatMessages)
 
     },
 
@@ -133,8 +138,18 @@ export default {
             console.log(list)
 
             const groupId = list.group.groupId;
+            const msgType = (this.userQQ === list.user_id) ? 'right' : 'left'
 
-            this.chatLists.set(groupId, { url: `https://p.qlogo.cn/gh/${groupId}/${groupId}/640`, name: list.group.groupName, ...list })
+            const obj = { key: groupId, msgType, url: `https://p.qlogo.cn/gh/${groupId}/${groupId}/640`, name: list.group.groupName, ...list }
+
+            this.chatLists.set(groupId, obj)
+
+            const msgs = this.chatMap.get(obj.key) || []
+
+            msgs.push(obj)
+
+            this.chatMap.set(obj.key, msgs)
+
             break
 
           }
@@ -142,15 +157,23 @@ export default {
           case 'private': {
 
             const userId = list.sender.user_id;
+            const msgType = (this.userQQ === list.user_id) ? 'right' : 'left'
 
-            this.chatLists.set(userId, { url: `https://q1.qlogo.cn/g?b=qq&s=640&nk=${userId}`, name: list.sender.nickname, ...list})
+            const obj = { key: userId, msgType, url: `https://q1.qlogo.cn/g?b=qq&s=640&nk=${userId}`, name: list.sender.nickname, ...list}
+
+            this.chatLists.set(userId, obj)
+
+            const msgs = [] || this.chatMap.get(obj.key)
+
+            msgs.push(obj)
+
+            this.chatMap.set(obj.key, msgs)
+
             break
 
           }
 
         }
-
-
 
         this.chatListArray = [ ...Array.from(this.chatLists.values()) ]
 
@@ -166,8 +189,6 @@ export default {
 <style lang="scss">
 
 .MainChat-Page {
-
-  margin-top: 25px;
 
   transition: all .25s;
 
@@ -272,7 +293,7 @@ export default {
 
   margin-bottom: 10px;
 
-  height: 51px;
+  height: 57px;
 
   border-bottom: 2px solid var(--hoverColor);
 

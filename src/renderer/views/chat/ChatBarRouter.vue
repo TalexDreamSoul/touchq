@@ -2,12 +2,29 @@
 
   <div class="ChatBarRouter-Page" ref="RouterPageRef">
 
-    <div class="ChatBarRouter-LeftAside">
+    <div class="AsideSettingMenu" :class="appSettingDrawerVisible ? 'menuJoin' : 'menuQuit'">
+
+      <el-button @click="appSettingDrawerVisible = false">关闭</el-button>
+
+    </div>
+
+    <div class="ChatBarRouter-LeftAside" ref="LeftAsideRef">
 
       <ul class="AsideMenu">
 
-        <li @click="gotoChat()"><MessageIcon :selected="selectMenuIndex === 0"></MessageIcon></li>
-        <li @click="gotoList()"><ListIcon :selected="selectMenuIndex === 1"></ListIcon></li>
+        <li @click="gotoChat()" :class="selectMenuIndex === 0 ? 'selected' : ''">
+
+          <el-icon class="el-icon-s-promotion"></el-icon>
+          <span v-show="selectMenuIndex !== 0"><br />消息</span>
+
+        </li>
+
+        <li @click="gotoList()" :class="selectMenuIndex === 1 ? 'selected' : ''">
+
+          <el-icon class="el-icon-s-custom"></el-icon>
+          <span v-show="selectMenuIndex !== 1"><br />联系</span>
+
+        </li>
 
       </ul>
 
@@ -17,17 +34,45 @@
 
       </div>
 
-      <div class="logout">
+      <el-icon @click.native="appSettingDrawerVisible = true" class="el-icon-s-operation"></el-icon>
 
-        <QuitLoading @clicker="quitLogin"></QuitLoading>
+<!--      <a-dropdown placement="topRight" :trigger="['hover']">-->
 
-      </div>
+<!--        -->
+
+<!--        <a-menu slot="overlay">-->
+
+<!--          <a-menu-item key="1" @click="appSettingDrawerVisible = true">-->
+<!--            <a-icon type="setting" />程序设置-->
+<!--          </a-menu-item>-->
+
+<!--        </a-menu>-->
+
+<!--      </a-dropdown>-->
+
+<!--      <a-popover placement="topLeft" arrow-point-at-center>-->
+
+<!--        <template slot="content">-->
+
+<!--          <p>Content</p>-->
+<!--          <p>Content</p>-->
+
+<!--        </template>-->
+
+<!--        <el-icon class="el-icon-s-operation"></el-icon>-->
+
+<!--      </a-popover>-->
+
 
     </div>
 
-    <div class="ChatBarRouter-RightAside">
+    <div class="ChatBarRouter-RightAside" ref="RightAsideRef">
 
-      <router-view></router-view>
+      <keep-alive>
+
+        <router-view></router-view>
+
+      </keep-alive>
 
     </div>
 
@@ -60,11 +105,19 @@ export default {
       darkMode: false,
       textColor: '#0d0d0d',
 
+      appSettingDrawerVisible: true,
+
     }
 
   },
 
   methods: {
+
+    getSettingDrawerContainer() {
+
+      return this.$refs.LeftAsideRef
+
+    },
 
     updateTheme(theme) {
 
@@ -119,7 +172,99 @@ export default {
 }
 </script>
 
+<style lang="scss">
+
+.ant-dropdown {
+
+  .ant-popover-arrow {
+
+    border-right-color: var(--mainColor) !important;
+    border-bottom-color: var(--mainColor) !important;
+
+  }
+
+  .ant-dropdown-menu {
+
+    background-color: var(--mainColor) !important;
+
+    .ant-dropdown-menu-item {
+
+      &:hover {
+
+        background-color: var(--hoverColor) !important;
+
+      }
+
+    }
+
+  }
+
+  color: var(--textnormalColor)
+
+}
+
+.ChatBarRouter-LeftAside {
+
+  .el-icon-s-operation {
+
+    font-size: 20px;
+
+  }
+
+}
+
+</style>
+
 <style lang="scss" scoped>
+
+.el-icon-s-operation {
+
+  position: absolute;
+
+  bottom: 50px;
+  left: 50%;
+
+  transform: translate(-50%, 0);
+
+  &:hover {
+
+    color: var(--textnormalColor);
+
+    cursor: pointer;
+
+  }
+
+}
+
+.menuQuit {
+
+  transform: translateX(-100%);
+  opacity: 0;
+
+}
+
+.menuJoin {
+
+  transform: translateX(0);
+  opacity: 1;
+
+}
+
+.AsideSettingMenu {
+
+  z-index: 5;
+ position: absolute;
+
+  width: 280px;
+  height: 100%;
+
+  background-color:  var(--mainOpacityColor);
+  backdrop-filter: blur(5px);
+  box-shadow: 3px 0 9px var(--hoverOpacityColor);
+
+  transition: all .45s;
+
+}
 
 .AsideMenu {
 
@@ -128,22 +273,113 @@ export default {
   margin: 0;
   padding: 0;
 
-  top: 80px;
+  top: 160px;
 
   li {
 
     position: relative;
+    padding: 10px;
 
-    margin-bottom: 15px;
+    height: 70px;
+    width: 70px;
 
-    left: -2px;
-
-    width: 100%;
-    height: 48px;
+    margin-bottom: 20px;
 
     list-style-type: none;
 
-    transform: scale(0.75);
+    font-size: 20px;
+
+    text-align: center;
+
+    span {
+
+      position: relative;
+
+      top: -10px;
+
+      font-size: 14px;
+
+    }
+
+    &:hover {
+
+      color: var(--textnormalColor);
+
+      cursor: pointer;
+
+      &:before {
+
+        opacity: 0.3;
+
+      }
+
+    }
+
+    transition: all .25s;
+
+    &:before {
+
+      content: "";
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      height: 48px;
+      width: 48px;
+
+      border-radius: 50%;
+      background-color: var(--color2);
+      opacity: 0.15;
+      filter: invert(10%);
+
+      transform: translate(-50%, -50%);
+
+      transition: all .25s;
+
+    }
+
+  }
+
+  .selected {
+
+    padding: 20px 10px 10px 10px;
+
+    background-color: var(--color2);
+
+    color: var(--appColor);
+
+    &:before {
+
+      left: 5px;
+      top: 50%;
+
+      height: 20px;
+      width: 4px;
+
+      border-radius: 10px;
+      background-color: var(--appColor);
+
+      opacity: 1;
+      filter: invert(0);
+
+      transform: translate(0, -50%);
+
+    }
+
+    &:hover {
+
+      color: var(--appColor);
+
+      cursor: not-allowed;
+
+      &:before {
+
+        opacity: 1;
+
+      }
+
+    }
 
   }
 
@@ -153,18 +389,20 @@ export default {
 
   position: absolute;
 
-  bottom: 60px;
-  left: 7px;
+  top: 50px;
+  left: 50%;
 
   width: 36px;
   height: 36px;
+
+  transform: translate(-50%, 0);
 
   img {
 
     width: 36px;
     height: 36px;
 
-    border-radius: 3px;
+    border-radius: 50%;
 
   }
 
@@ -173,8 +411,8 @@ export default {
     content: "";
     position: absolute;
 
-    left: 28px;
-    top: 28px;
+    left: 26px;
+    top: 26px;
 
     width: 10px;
     height: 10px;
@@ -207,15 +445,15 @@ export default {
     z-index: 2;
     position: absolute;
 
-    padding-left: 5px;
-
     height: 100%;
-    width: 55px;
+    width: 70px;
 
     opacity: 0.8;
 
-    background-color: var(--ThemeColor);
+    background-color: var(--mainColor);
     box-shadow: 3px 0 5px var(--hoverColor);
+
+    overflow: hidden;
 
   }
 
@@ -225,10 +463,10 @@ export default {
     position: absolute;
 
     top: 0;
-    left: 60px;
+    left: 70px;
 
     height: 100%;
-    width: calc(100% - 60px);
+    width: calc(100% - 70px);
 
     overflow: hidden;
 

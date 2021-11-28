@@ -325,8 +325,8 @@ export default {
 
         const el = this.$refs.LoginPageRef
 
-        el.style.transition = 'all .45s'
-        el.style.transform = 'translateY(300px)'
+        el.style.transition = 'all .25s'
+        el.style.transform = 'translateY(200px)'
         el.style.opacity = '0'
 
         setTimeout(() => {
@@ -484,11 +484,11 @@ export default {
   z-index: 2;
   position: absolute;
 
-  top: 17%;
+  top: 18%;
   right: 5%;
 
   width: 35%;
-  height: 66%;
+  height: 64%;
   overflow: hidden;
 
   backdrop-filter: blur(5px);
@@ -516,7 +516,7 @@ export default {
 
   position: relative;
 
-  height: 100%;
+  height: auto;
 
   .codeImg {
 
@@ -543,12 +543,12 @@ export default {
 
     position: relative;
 
-    top: 50px;
-    left: 15px;
+    top: 51px;
+    left: 17px;
 
     width: 32px;
 
-    padding: 7px !important;
+    padding: 6px !important;
 
     border-radius: 3px !important;
 
@@ -608,7 +608,7 @@ export default {
     position: relative;
 
     top: 50px;
-    left: 5%;
+    left: 14px;
 
     width: calc(90% - 38px);
 
@@ -652,10 +652,8 @@ export default {
 
     position: relative;
 
-    margin-bottom: -10px;
-
     left: 50%;
-    top: -1%;
+    top: 10px;
 
     min-width: 96px;
     min-height: 96px;
@@ -691,13 +689,13 @@ export default {
   left: 50%;
   top: 50%;
 
-  height: 340px;
+  height: 350px;
   width: 360px;
 
-  padding: 30px;
+  padding: 20px;
 
   border-radius: 3px;
-  transform: translate(-50%, -50%) translateY(-5%);
+  transform: translate(-50%, -50%) translateY(-6%);
 
   backdrop-filter: blur(5px);
   background-color: var(--themeOpacityColor);

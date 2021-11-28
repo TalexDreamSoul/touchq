@@ -6,23 +6,23 @@
 
       <div class="BubbleMessageContainer" @click="handleClickBubble" v-for="(msg, index) in msgs" :ref="'ref_' + index">
 
-        <div :class="{ bubble_system: msg.type === 'system', bubble_left: msg.type === 'left', bubble_right: msg.type === 'right'}">
+        <div v-if="msg" :class="{ bubble_system: msg.msgType === 'system', bubble_left: msg.msgType === 'left', bubble_right: msg.msgType === 'right'}">
 
-          <div class="bubble_container" v-if="msg.type !== 'system'">
+          <div class="bubble_container" v-if="msg.msgType !== 'system'">
 
-            <div @click="clickAvatar(msg)"><el-avatar class="user_avatar" size="medium" :src="msg.target.image"></el-avatar></div>
+            <div @click="clickAvatar(msg)"><el-avatar class="user_avatar" size="medium" :src="`https://q1.qlogo.cn/g?b=qq&s=640&nk=${msg.sender.user_id}`"></el-avatar></div>
 
           </div>
 
           <div :id="'bubble_content_' + index" style="min-width: 100px;min-height: 25px" class="content">
 
-            <div class="content_addon" v-if="msg.addon !== undefined" v-html="processContentAddon(msg, index)"></div>
+            <div @click="clickAddonContent(msg, index)" class="content_addon" v-if="msg.addon" v-html="processContentAddon(msg, index)"></div>
 
             <span v-else v-html="processContent(msg, index)"></span>
 
-            <div v-if="msg.type !== 'system'">
+            <div v-if="msg.msgType !== 'system'">
 
-              <span class="bubble_title">{{ msg.target.name }}</span>
+              <span class="bubble_title">{{ msg.sender.nickname }}</span>
 
               <div class="content_timer">{{ timer(msg.time) }}</div>
 
@@ -42,7 +42,8 @@
 
 <script>
 
-import Global from '../cmd/Global'
+import Moment from "moment";
+const { shell } = require('electron');
 
 export default {
   name: "TalexLightChat",
@@ -74,6 +75,8 @@ export default {
 
       lastScrollTime: -1,
       msgs: [],
+
+      lastClick: -1,
 
     }
 
@@ -156,6 +159,13 @@ export default {
 
     handleClickBubble(e) {
 
+      if( Date.now() - this.lastClick > 300 ) {
+
+        this.lastClick = Date.now()
+        return
+
+      }
+
       const type = e.target.tagName
 
       if(type === 'IMG') {
@@ -180,53 +190,9 @@ export default {
 
       val = parseInt(val) * 1000
 
-      const date = new Date(val)
-      const now = new Date()
+      Moment.locale("zh-cn")
 
-      const year = date.getFullYear();
-
-      if(now.getFullYear() > year) {
-
-        const month = (date.getMonth() + 1 + '').padStart(2, '0');
-        const d = (date.getDate() + 1 + '').padStart(2, '0');
-
-        return year + '-' + month + '-' + d
-
-      }
-
-      let period = now.getTime() - val
-
-      period += '0'
-
-      period += 0
-
-      if(period >= 7 * 24 * 3600000) {
-
-        const month = (date.getMonth() + 1 + '').padStart(2, '0');
-        const d = (date.getDate() + 1 + '').padStart(2, '0');
-
-        return month + '-' + d
-
-      }
-
-      if(period >= 24 * 3600000) {
-
-        period /= 24 * 3600000
-
-        const dayPrefix = (period === 1) ? '昨天' : period + '天前'
-
-        const hh = (date.getHours() + '').padStart(2, '0');
-        const mm = (date.getMinutes() + '').padStart(2, '0');
-
-        return dayPrefix + ' ' + hh + ':' + mm
-
-      }
-
-      const hh = (date.getHours() + '').padStart(2, '0');
-      const mm = (date.getMinutes() + '').padStart(2, '0');
-      const ss = (date.getSeconds() + '').padStart(2, '0');
-
-      return hh + ":" + mm + ":" + ss;
+      return Moment(val).fromNow()
 
     },
 
@@ -306,7 +272,21 @@ export default {
 
     },
 
+    clickAddonContent(msg, i) {
+
+      if( msg.addon.xml ) {
+
+        console.log(msg.addon.info)
+
+        shell.openExternal( msg.addon.info.targetUrl )
+
+      }
+
+    },
+
     processContentAddon(msg, i) {
+
+      console.log("@", msg)
 
       if(msg.addon.album) {
 
@@ -322,15 +302,141 @@ export default {
 
       }
 
+      if( msg.addon.xml ) {
+
+        const obj = msg.addon
+
+        const { data } = obj
+
+        let parser = new DOMParser();
+
+        let xmlDoc = parser.parseFromString(data, 'text/xml');
+
+        const msgDoc = xmlDoc.getElementsByTagName("msg")[0]
+
+        const { serviceID, action, flag, url } = msgDoc.attributes
+
+        msg.addon.info = {
+
+          serviceID, action, flag, targetUrl: url.nodeValue
+
+        }
+
+        if( action.nodeValue === 'web' ) {
+
+          if( serviceID.nodeValue === '33' ) {
+
+            const item = msgDoc.getElementsByTagName('item')[0]
+
+            const picture = item.getElementsByTagName('picture')[0]
+            const title = item.getElementsByTagName('title')[0]
+            const summary = item.getElementsByTagName('summary')[0]
+
+            const url = picture.attributes.cover.nodeValue
+
+            msg.addon.info = {
+
+              ...msg.addon.info,
+
+              url, title, summary
+
+            }
+
+            return `<div class='chat-card-xml'>
+
+                       <img class='chat-card-picture' alt=" " src='${url}' />
+                       <p class='chat-card-title'><span>${title.innerHTML}</span></p>
+                       <p class='chat-card-summary'>${summary.innerHTML}</p>
+
+                    </div>`
+
+          }
+
+        }
+
+        return `<div class='chat_card_xml'>Error</div>`
+
+      }
+
+    },
+
+    craftContent(oMsg) {
+
+      let content = ''
+
+      const msgs = oMsg.message
+
+      msgs.forEach((msg, index) => {
+
+        switch ( msg.type ) {
+
+          case 'text': {
+
+            let ctx = msg.text
+
+            const regx = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/gi;
+
+            ctx = ctx.replace(regx, function(website){
+
+              return "[Talex:url,url=" + website + "]";
+
+            });
+
+            content += ctx
+
+            break
+
+          }
+
+          case 'image': {
+
+            content += "[Talex:image,url=" + msg.url + ",subType=none]"
+            break
+
+          }
+
+          case 'file': {
+
+            content += "[Talex:file,name=" + msg.name + ",fid=" + msg.fid + ",md5=" + msg.md5 + ",size=" + msg.size + ",duration=" + msg.duration + "]"
+            break
+
+          }
+
+          case 'xml': {
+
+            oMsg.addon = {
+
+              xml: true,
+              data: msg.data
+
+            }
+
+            // content += "[Talex:xml,data=" + Buffer.from(JSON.stringify(msg), 'utf-8').toString("base64") + "]"
+            break
+
+          }
+
+          default: {
+
+            console.warn("---", msg)
+
+          }
+
+        }
+
+      })
+
+      return content
+
     },
 
     processContent(msg, i) {
 
-      if(msg === null || !msg.content) {
+      if(msg === null || !msg.message) {
 
         if(msg.addon) {
 
-          if(msg.addon.album) return "[语音消息]"
+          return
 
         }
 
@@ -340,7 +446,8 @@ export default {
 
       }
 
-      let content = msg.content;
+
+      let content = this.craftContent(msg);
 
       let ind = content.indexOf("<");
 
@@ -358,7 +465,7 @@ export default {
 
       }
 
-      let index = content.indexOf("[CQ:");
+      let index = content.indexOf("[Talex:");
 
       while( index !== -1 ) {
 
@@ -368,7 +475,7 @@ export default {
 
         content = content.replace(str, this.getSpecialCodeHtml(str, i));
 
-        index = content.indexOf("[CQ:", index2);
+        index = content.indexOf("[Talex:", index2);
 
       }
 
@@ -378,7 +485,7 @@ export default {
 
     getSpecialCodeHtml(code, i) {
 
-      code = code.replace("[CQ:", "");
+      code = code.replace("[Talex:", "");
 
       const index1 = code.indexOf(",");
 
@@ -402,6 +509,17 @@ export default {
         const url = code.substring(index2 + 4, index3 - 1)
 
         return "<img class='chat_img' referrerPolicy='no-referrer' alt='无法加载图片' src='" + url + "'/>"
+
+      }
+
+      if( type.toLowerCase() === 'url') {
+
+        const index2 = code.indexOf('url=')
+        const index3 = code.indexOf(']', index2)
+
+        const url = code.substring(index2 + 4, index3)
+
+        return "<a class='chat_url' src='" + url + "'>" + url + "</a>"
 
       }
 
@@ -442,6 +560,8 @@ export default {
         return "<div class='chat_reply'><div class='reply_user'>" + obj.target.name + "</div><div class='contenter'>" + this.processContent(obj, i) + "</div></div>"
 
       }
+
+      if( type.toLowerCase() === 'file' ) { return "文件" }
 
       return code;
 
@@ -653,15 +773,15 @@ export default {
 
     position: relative;
 
-    top: -25px;
+    top: -10px;
     left: 60px;
 
-    background-color: var(--bubble_left);
-    padding: 25px 11px 20px 11px;
+    background-color: var(--themeColor);
+    padding: 5px 11px 25px 11px;
 
     border-radius: 0 9px 9px 5px;
 
-    filter: drop-shadow(0 0 2px var(--bubble_left));
+    filter: drop-shadow(0 0 2px var(--color2));
 
     animation: left_bubble_load .5s;
 
@@ -673,11 +793,14 @@ export default {
       width: -moz-fit-content;
       max-width: 60%;
 
-      left: 9px;
-      top: 5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      left: 0;
+      top: -21px;
 
       opacity: 0.8;
-      font-size: 13px;
+      font-size: 12px;
 
     }
 
@@ -818,6 +941,22 @@ export default {
 
 <style lang="scss">
 
+@keyframes marqueeLoading {
+
+  from {
+
+    left: 100%;
+
+  }
+
+  to {
+
+    left: -100%;
+
+  }
+
+}
+
 .ContainerHolder {
 
   padding: 0;
@@ -840,6 +979,123 @@ export default {
 
 }
 
+// 连接定义
+
+.chat-card-xml {
+
+  position: relative;
+
+  margin-top: 5px;
+
+  width: 260px;
+  height: 100px;
+
+  border-radius: 5px;
+  box-shadow: 0 0 9px var(--color3);
+  background-color: var(--themeOpacityColor);
+
+  backdrop-filter: blur(5px);
+
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+
+    transform: scale(1.02);
+
+    .chat-card-picture {
+
+      border-radius: 50%;
+
+      transform: translate(0, -50%) scale(1.05);
+      box-shadow: 0 0 9px var(--hoverColor)
+
+    }
+
+    .chat-card-title {
+
+      top: 50%;
+
+      font-size: 17px;
+      transform: translate(0, -50%);
+
+      max-width: 100%;
+      overflow: hidden;
+
+      span {
+
+        position: relative;
+
+        animation: marqueeLoading 6.5s linear infinite 1s
+
+      }
+
+    }
+
+    .chat-card-summary {
+
+      opacity: 0;
+
+    }
+
+  }
+
+  .chat-card-title {
+
+    position: absolute;
+
+    max-width: 60%;
+
+    left: calc(5% + 80px);
+    top: 15px;
+
+    color: var(--textnormalColor);
+    transition: all .25s;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    &:hover { opacity: 0.9 }
+
+  }
+
+  .chat-card-summary {
+
+    position: relative;
+
+    left: calc(5% + 80px);
+    top: 40px;
+
+    width: 60%;
+
+    font-size: 11px;
+    color: var(--textnormalColor);
+    transition: all .25s;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+  }
+
+  .chat-card-picture {
+
+    position: absolute;
+
+    left: 5%;
+    top: 50%;
+
+    width: 72px;
+    height: 72px;
+
+    transform: translate(0, -50%);
+
+    border-radius: 5px;
+
+  }
+
+}
+
 // 聊天图片定义
 
 .chat_img:hover {
@@ -851,6 +1107,18 @@ export default {
   box-sizing: content-box;
 
   border-bottom: 2px solid #1b7cb9;
+
+}
+
+.chat_img:active, .chat_img:focus {
+
+  margin: 2px;
+
+  padding: -10px;
+  opacity: 1;
+  box-sizing: content-box;
+
+  border: 2px solid #1b7cb9;
 
 }
 
@@ -872,7 +1140,7 @@ export default {
   height: auto;
   opacity: 0.95;
 
-  border-bottom: 2px solid rgba(0, 0, 0, 0);
+  border: 2px solid rgba(0, 0, 0, 0);
 
   transition: all .35s;
 
@@ -936,7 +1204,7 @@ export default {
 
     border-radius: 50%;
 
-    filter: drop-shadow(0 0 3px var(--textColor))
+    //filter: drop-shadow(0 0 3px var(--textColor))
 
   }
 
@@ -944,7 +1212,7 @@ export default {
 
     border-radius: 50%;
 
-    filter: drop-shadow(0 0 5px var(--textColor))
+    filter: drop-shadow(0 0 1px var(--textColor))
 
   }
 

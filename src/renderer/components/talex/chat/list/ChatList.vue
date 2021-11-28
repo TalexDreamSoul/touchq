@@ -171,7 +171,7 @@ export default {
 
     selectChatIndex(latest, old) {
 
-      this.chatList[old].loading = false
+      if( this.chatList[old] ) this.chatList[old].loading = false
 
       if(latest < 0) return
 
@@ -249,14 +249,13 @@ export default {
       input {
 
         border: 0;
-        background-color: var(--mainColor);
+        background-color: var(--color2);
 
-        filter: drop-shadow(0 0 5px var(--hoverBg)) invert(8%);
-        transition: all .05s;
+        transition: all .25s;
 
         border-bottom: 2px solid rgba(0,0,0,0);
 
-        color: var(--textColor)
+        color: var(--textnormalColor)
 
       }
 
@@ -305,7 +304,7 @@ export default {
   opacity: 0.65;
   text-align: center;
 
-  color: var(--textColor)
+  color: var(--textnormalColor)
 
 }
 
@@ -313,7 +312,7 @@ export default {
 
   position: relative;
 
-  top: -1px;
+  top: 5px;
 
   width: 100%;
   height: 52px;
@@ -381,9 +380,9 @@ export default {
 
   box-sizing: content-box;
 
-  background-color: var(--defaultBg);
+  background-color: var(--mainColor);
 
-  border-right: 2px solid var(--selectedBg);
+  border-right: 2px solid var(--hoverColor);
 
   z-index: 310;
 
